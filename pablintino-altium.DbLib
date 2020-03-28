@@ -1,0 +1,285 @@
+[OutputDatabaseLinkFile]
+Version = 1.1
+
+[DatabaseLinks]
+ConnectionString = Provider=SQLNCLI11.1; User ID=alib_BF1Z7ZPTW0AS; Password="tKa5zHNt3Lgxl8ew"; Initial Catalog=altium_library; Data Source=db.altiumlibrary.com; Initial File Name=""; Server SPN=""
+AddMode = 3
+RemoveMode = 1
+UpdateMode = 2
+ViewMode = 0
+LeftQuote = [
+RightQuote = ]
+QuoteTableNames = 1
+UseTableSchemaName = 0
+DefaultColumnType = VARCHAR(255)
+LibraryDatabaseType = 
+LibraryDatabasePath = 
+DatabasePathRelative = 0
+TopPanelCollapsed = 0
+LibrarySearchPath = 
+OrcadMultiValueDelimiter = ,
+SearchSubDirectories = 0
+SchemaName = 
+LastFocusedTable = z_OpticsLightPipes
+
+
+[Table12]
+SchemaName = 
+TableName = Capacitors - Ceramic - 0603
+Enabled = True
+UserWhere = 0
+UserWhereText = 
+
+[Table13]
+SchemaName = 
+TableName = Capacitors - Ceramic - 0805
+Enabled = True
+UserWhere = 0
+UserWhereText = 
+
+[Table14]
+SchemaName = 
+TableName = Capacitors - Ceramic - 1206
+Enabled = True
+UserWhere = 0
+UserWhereText = 
+
+[Table15]
+SchemaName = 
+TableName = Capacitors - Ceramic - 1210
+Enabled = True
+UserWhere = 0
+UserWhereText = 
+
+[Table16]
+SchemaName = 
+TableName = Capacitors - Ceramic - 1812
+Enabled = True
+UserWhere = 0
+UserWhereText = 
+
+[Table17]
+SchemaName = 
+TableName = Capacitors - Ceramic - 2220
+Enabled = True
+UserWhere = 0
+UserWhereText = 
+
+[Table110]
+SchemaName = 
+TableName = z_CapacitorsAluminumElectrolytic
+Enabled = False
+UserWhere = 0
+UserWhereText = 
+
+[Table111]
+SchemaName = 
+TableName = z_CapacitorsAluminumPolymer
+Enabled = False
+UserWhere = 0
+UserWhereText = 
+
+[Table112]
+SchemaName = 
+TableName = z_CapacitorsCeramic
+Enabled = False
+UserWhere = 0
+UserWhereText = 
+
+[FieldMap122]
+Options = FieldName=Capacitors - Ceramic - 0603.Description|TableNameOnly=Capacitors - Ceramic - 0603|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap123]
+Options = FieldName=Capacitors - Ceramic - 0603.Footprint Path|TableNameOnly=Capacitors - Ceramic - 0603|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap124]
+Options = FieldName=Capacitors - Ceramic - 0603.Footprint Path 2|TableNameOnly=Capacitors - Ceramic - 0603|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap125]
+Options = FieldName=Capacitors - Ceramic - 0603.Footprint Path 3|TableNameOnly=Capacitors - Ceramic - 0603|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap126]
+Options = FieldName=Capacitors - Ceramic - 0603.Footprint Ref|TableNameOnly=Capacitors - Ceramic - 0603|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap127]
+Options = FieldName=Capacitors - Ceramic - 0603.Footprint Ref 2|TableNameOnly=Capacitors - Ceramic - 0603|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap128]
+Options = FieldName=Capacitors - Ceramic - 0603.Footprint Ref 3|TableNameOnly=Capacitors - Ceramic - 0603|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap129]
+Options = FieldName=Capacitors - Ceramic - 0603.Part Number|TableNameOnly=Capacitors - Ceramic - 0603|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap130]
+Options = FieldName=Capacitors - Ceramic - 0603.Library Path|TableNameOnly=Capacitors - Ceramic - 0603|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap131]
+Options = FieldName=Capacitors - Ceramic - 0603.Library Ref|TableNameOnly=Capacitors - Ceramic - 0603|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap132]
+Options = FieldName=Capacitors - Ceramic - 0603.Value|TableNameOnly=Capacitors - Ceramic - 0603|FieldNameOnly=Value|FieldType=1|ParameterName=Value|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap133]
+Options = FieldName=Capacitors - Ceramic - 0805.Description|TableNameOnly=Capacitors - Ceramic - 0805|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap134]
+Options = FieldName=Capacitors - Ceramic - 0805.Footprint Path|TableNameOnly=Capacitors - Ceramic - 0805|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap135]
+Options = FieldName=Capacitors - Ceramic - 0805.Footprint Path 2|TableNameOnly=Capacitors - Ceramic - 0805|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap136]
+Options = FieldName=Capacitors - Ceramic - 0805.Footprint Path 3|TableNameOnly=Capacitors - Ceramic - 0805|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap137]
+Options = FieldName=Capacitors - Ceramic - 0805.Footprint Ref|TableNameOnly=Capacitors - Ceramic - 0805|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap138]
+Options = FieldName=Capacitors - Ceramic - 0805.Footprint Ref 2|TableNameOnly=Capacitors - Ceramic - 0805|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap139]
+Options = FieldName=Capacitors - Ceramic - 0805.Footprint Ref 3|TableNameOnly=Capacitors - Ceramic - 0805|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap140]
+Options = FieldName=Capacitors - Ceramic - 0805.Part Number|TableNameOnly=Capacitors - Ceramic - 0805|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap141]
+Options = FieldName=Capacitors - Ceramic - 0805.Library Path|TableNameOnly=Capacitors - Ceramic - 0805|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap142]
+Options = FieldName=Capacitors - Ceramic - 0805.Library Ref|TableNameOnly=Capacitors - Ceramic - 0805|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap143]
+Options = FieldName=Capacitors - Ceramic - 0805.Value|TableNameOnly=Capacitors - Ceramic - 0805|FieldNameOnly=Value|FieldType=1|ParameterName=Value|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap144]
+Options = FieldName=Capacitors - Ceramic - 1206.Description|TableNameOnly=Capacitors - Ceramic - 1206|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap145]
+Options = FieldName=Capacitors - Ceramic - 1206.Footprint Path|TableNameOnly=Capacitors - Ceramic - 1206|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap146]
+Options = FieldName=Capacitors - Ceramic - 1206.Footprint Path 2|TableNameOnly=Capacitors - Ceramic - 1206|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap147]
+Options = FieldName=Capacitors - Ceramic - 1206.Footprint Path 3|TableNameOnly=Capacitors - Ceramic - 1206|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap148]
+Options = FieldName=Capacitors - Ceramic - 1206.Footprint Ref|TableNameOnly=Capacitors - Ceramic - 1206|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap149]
+Options = FieldName=Capacitors - Ceramic - 1206.Footprint Ref 2|TableNameOnly=Capacitors - Ceramic - 1206|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap150]
+Options = FieldName=Capacitors - Ceramic - 1206.Footprint Ref 3|TableNameOnly=Capacitors - Ceramic - 1206|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap151]
+Options = FieldName=Capacitors - Ceramic - 1206.Part Number|TableNameOnly=Capacitors - Ceramic - 1206|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap152]
+Options = FieldName=Capacitors - Ceramic - 1206.Library Path|TableNameOnly=Capacitors - Ceramic - 1206|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap153]
+Options = FieldName=Capacitors - Ceramic - 1206.Library Ref|TableNameOnly=Capacitors - Ceramic - 1206|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap154]
+Options = FieldName=Capacitors - Ceramic - 1206.Value|TableNameOnly=Capacitors - Ceramic - 1206|FieldNameOnly=Value|FieldType=1|ParameterName=Value|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap155]
+Options = FieldName=Capacitors - Ceramic - 1210.Description|TableNameOnly=Capacitors - Ceramic - 1210|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap156]
+Options = FieldName=Capacitors - Ceramic - 1210.Footprint Path|TableNameOnly=Capacitors - Ceramic - 1210|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap157]
+Options = FieldName=Capacitors - Ceramic - 1210.Footprint Path 2|TableNameOnly=Capacitors - Ceramic - 1210|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap158]
+Options = FieldName=Capacitors - Ceramic - 1210.Footprint Path 3|TableNameOnly=Capacitors - Ceramic - 1210|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap159]
+Options = FieldName=Capacitors - Ceramic - 1210.Footprint Ref|TableNameOnly=Capacitors - Ceramic - 1210|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap160]
+Options = FieldName=Capacitors - Ceramic - 1210.Footprint Ref 2|TableNameOnly=Capacitors - Ceramic - 1210|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap161]
+Options = FieldName=Capacitors - Ceramic - 1210.Footprint Ref 3|TableNameOnly=Capacitors - Ceramic - 1210|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap162]
+Options = FieldName=Capacitors - Ceramic - 1210.Part Number|TableNameOnly=Capacitors - Ceramic - 1210|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap163]
+Options = FieldName=Capacitors - Ceramic - 1210.Library Path|TableNameOnly=Capacitors - Ceramic - 1210|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap164]
+Options = FieldName=Capacitors - Ceramic - 1210.Library Ref|TableNameOnly=Capacitors - Ceramic - 1210|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap165]
+Options = FieldName=Capacitors - Ceramic - 1210.Value|TableNameOnly=Capacitors - Ceramic - 1210|FieldNameOnly=Value|FieldType=1|ParameterName=Value|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap166]
+Options = FieldName=Capacitors - Ceramic - 1812.Description|TableNameOnly=Capacitors - Ceramic - 1812|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap167]
+Options = FieldName=Capacitors - Ceramic - 1812.Footprint Path|TableNameOnly=Capacitors - Ceramic - 1812|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap168]
+Options = FieldName=Capacitors - Ceramic - 1812.Footprint Path 2|TableNameOnly=Capacitors - Ceramic - 1812|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap169]
+Options = FieldName=Capacitors - Ceramic - 1812.Footprint Path 3|TableNameOnly=Capacitors - Ceramic - 1812|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap170]
+Options = FieldName=Capacitors - Ceramic - 1812.Footprint Ref|TableNameOnly=Capacitors - Ceramic - 1812|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap171]
+Options = FieldName=Capacitors - Ceramic - 1812.Footprint Ref 2|TableNameOnly=Capacitors - Ceramic - 1812|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap172]
+Options = FieldName=Capacitors - Ceramic - 1812.Footprint Ref 3|TableNameOnly=Capacitors - Ceramic - 1812|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap173]
+Options = FieldName=Capacitors - Ceramic - 1812.Part Number|TableNameOnly=Capacitors - Ceramic - 1812|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap174]
+Options = FieldName=Capacitors - Ceramic - 1812.Library Path|TableNameOnly=Capacitors - Ceramic - 1812|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap175]
+Options = FieldName=Capacitors - Ceramic - 1812.Library Ref|TableNameOnly=Capacitors - Ceramic - 1812|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap176]
+Options = FieldName=Capacitors - Ceramic - 1812.Value|TableNameOnly=Capacitors - Ceramic - 1812|FieldNameOnly=Value|FieldType=1|ParameterName=Value|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap177]
+Options = FieldName=Capacitors - Ceramic - 2220.Description|TableNameOnly=Capacitors - Ceramic - 2220|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap178]
+Options = FieldName=Capacitors - Ceramic - 2220.Footprint Path|TableNameOnly=Capacitors - Ceramic - 2220|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap179]
+Options = FieldName=Capacitors - Ceramic - 2220.Footprint Path 2|TableNameOnly=Capacitors - Ceramic - 2220|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap180]
+Options = FieldName=Capacitors - Ceramic - 2220.Footprint Path 3|TableNameOnly=Capacitors - Ceramic - 2220|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap181]
+Options = FieldName=Capacitors - Ceramic - 2220.Footprint Ref|TableNameOnly=Capacitors - Ceramic - 2220|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap182]
+Options = FieldName=Capacitors - Ceramic - 2220.Footprint Ref 2|TableNameOnly=Capacitors - Ceramic - 2220|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap183]
+Options = FieldName=Capacitors - Ceramic - 2220.Footprint Ref 3|TableNameOnly=Capacitors - Ceramic - 2220|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap184]
+Options = FieldName=Capacitors - Ceramic - 2220.Part Number|TableNameOnly=Capacitors - Ceramic - 2220|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap185]
+Options = FieldName=Capacitors - Ceramic - 2220.Library Path|TableNameOnly=Capacitors - Ceramic - 2220|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap186]
+Options = FieldName=Capacitors - Ceramic - 2220.Library Ref|TableNameOnly=Capacitors - Ceramic - 2220|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+
+[FieldMap187]
+Options = FieldName=Capacitors - Ceramic - 2220.Value|TableNameOnly=Capacitors - Ceramic - 2220|FieldNameOnly=Value|FieldType=1|ParameterName=Value|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
