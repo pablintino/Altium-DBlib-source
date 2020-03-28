@@ -2,13 +2,13 @@
 Version = 1.1
 
 [DatabaseLinks]
-ConnectionString = Provider=SQLNCLI11.1; User ID=alib_BF1Z7ZPTW0AS; Password="tKa5zHNt3Lgxl8ew"; Initial Catalog=altium_library; Data Source=db.altiumlibrary.com; Initial File Name=""; Server SPN=""
+ConnectionString = Provider=MSDASQL.1;Persist Security Info=False;Data Source=altiumlibrary-pablintino;Initial Catalog=altiumlibrary
 AddMode = 3
 RemoveMode = 1
 UpdateMode = 2
 ViewMode = 0
-LeftQuote = [
-RightQuote = ]
+LeftQuote = `
+RightQuote = `
 QuoteTableNames = 1
 UseTableSchemaName = 0
 DefaultColumnType = VARCHAR(255)
@@ -20,7 +20,7 @@ LibrarySearchPath =
 OrcadMultiValueDelimiter = ,
 SearchSubDirectories = 0
 SchemaName = 
-LastFocusedTable = z_OpticsLightPipes
+LastFocusedTable = z_CapacitorsCeramic
 
 
 [Table12]
@@ -65,19 +65,6 @@ Enabled = True
 UserWhere = 0
 UserWhereText = 
 
-[Table110]
-SchemaName = 
-TableName = z_CapacitorsAluminumElectrolytic
-Enabled = False
-UserWhere = 0
-UserWhereText = 
-
-[Table111]
-SchemaName = 
-TableName = z_CapacitorsAluminumPolymer
-Enabled = False
-UserWhere = 0
-UserWhereText = 
 
 [Table112]
 SchemaName = 
