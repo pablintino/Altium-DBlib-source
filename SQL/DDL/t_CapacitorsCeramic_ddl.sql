@@ -134,7 +134,7 @@ SELECT `Applications`              AS `Applications`,
        `TemperatureCoefficient`    AS `Temperature Coefficient`,
        `ThicknessMax`              AS `Thickness (Max)`,
        `Tolerance`                 AS `Tolerance`,
-       `TYPE`                      AS `Type`,
+       `type`                      AS `Type`,
        `value`                     AS `Value`,
        `VoltageRated`              AS `Voltage - Rated`
 FROM t_CapacitorsCeramic t
@@ -202,7 +202,7 @@ SELECT `Applications`              AS `Applications`,
        `TemperatureCoefficient`    AS `Temperature Coefficient`,
        `ThicknessMax`              AS `Thickness (Max)`,
        `Tolerance`                 AS `Tolerance`,
-       `TYPE`                      AS `Type`,
+       `type`                      AS `Type`,
        `value`                     AS `Value`,
        `VoltageRated`              AS `Voltage - Rated`
 FROM t_CapacitorsCeramic t
@@ -270,7 +270,7 @@ SELECT `Applications`              AS `Applications`,
        `TemperatureCoefficient`    AS `Temperature Coefficient`,
        `ThicknessMax`              AS `Thickness (Max)`,
        `Tolerance`                 AS `Tolerance`,
-       `TYPE`                      AS `Type`,
+       `type`                      AS `Type`,
        `value`                     AS `Value`,
        `VoltageRated`              AS `Voltage - Rated`
 FROM t_CapacitorsCeramic t
@@ -338,7 +338,7 @@ SELECT `Applications`              AS `Applications`,
        `TemperatureCoefficient`    AS `Temperature Coefficient`,
        `ThicknessMax`              AS `Thickness (Max)`,
        `Tolerance`                 AS `Tolerance`,
-       `TYPE`                      AS `Type`,
+       `type`                      AS `Type`,
        `value`                     AS `Value`,
        `VoltageRated`              AS `Voltage - Rated`
 FROM t_CapacitorsCeramic t
@@ -407,7 +407,7 @@ SELECT `Applications`              AS `Applications`,
        `TemperatureCoefficient`    AS `Temperature Coefficient`,
        `ThicknessMax`              AS `Thickness (Max)`,
        `Tolerance`                 AS `Tolerance`,
-       `TYPE`                      AS `Type`,
+       `type`                      AS `Type`,
        `value`                     AS `Value`,
        `VoltageRated`              AS `Voltage - Rated`
 FROM t_CapacitorsCeramic t
