@@ -82,13 +82,25 @@ UserWhere=0
 UserWhereText=
 [Table11]
 SchemaName=
-TableName=t_CapacitorsCeramic
-Enabled=False
+TableName=Inductors_Power
+Enabled=True
 UserWhere=0
 UserWhereText=
 [Table12]
 SchemaName=
+TableName=t_CapacitorsCeramic
+Enabled=False
+UserWhere=0
+UserWhereText=
+[Table13]
+SchemaName=
 TableName=t_ResistorsSurfaceMount
+Enabled=False
+UserWhere=0
+UserWhereText=
+[Table14]
+SchemaName=
+TableName=t_InductorsFixed
 Enabled=False
 UserWhere=0
 UserWhereText=
@@ -113,184 +125,226 @@ Options=FieldName=CapacitorsCeramic_0603.Library Path|TableNameOnly=CapacitorsCe
 [FieldMap10]
 Options=FieldName=CapacitorsCeramic_0603.Library Ref|TableNameOnly=CapacitorsCeramic_0603|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap11]
-Options=FieldName=CapacitorsCeramic_0805.Description|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_0603.Comment|TableNameOnly=CapacitorsCeramic_0603|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap12]
-Options=FieldName=CapacitorsCeramic_0805.Footprint Path|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_0805.Description|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap13]
-Options=FieldName=CapacitorsCeramic_0805.Footprint Path 2|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_0805.Footprint Path|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap14]
-Options=FieldName=CapacitorsCeramic_0805.Footprint Path 3|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_0805.Footprint Path 2|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap15]
-Options=FieldName=CapacitorsCeramic_0805.Footprint Ref|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_0805.Footprint Path 3|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap16]
-Options=FieldName=CapacitorsCeramic_0805.Footprint Ref 2|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_0805.Footprint Ref|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap17]
-Options=FieldName=CapacitorsCeramic_0805.Footprint Ref 3|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_0805.Footprint Ref 2|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap18]
-Options=FieldName=CapacitorsCeramic_0805.Part Number|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_0805.Footprint Ref 3|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap19]
-Options=FieldName=CapacitorsCeramic_0805.Library Path|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_0805.Part Number|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap20]
-Options=FieldName=CapacitorsCeramic_0805.Library Ref|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_0805.Library Path|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap21]
-Options=FieldName=CapacitorsCeramic_1206.Description|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_0805.Library Ref|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap22]
-Options=FieldName=CapacitorsCeramic_1206.Footprint Path|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_0805.Comment|TableNameOnly=CapacitorsCeramic_0805|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap23]
-Options=FieldName=CapacitorsCeramic_1206.Footprint Path 2|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1206.Description|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap24]
-Options=FieldName=CapacitorsCeramic_1206.Footprint Path 3|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1206.Footprint Path|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap25]
-Options=FieldName=CapacitorsCeramic_1206.Footprint Ref|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1206.Footprint Path 2|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap26]
-Options=FieldName=CapacitorsCeramic_1206.Footprint Ref 2|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1206.Footprint Path 3|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap27]
-Options=FieldName=CapacitorsCeramic_1206.Footprint Ref 3|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1206.Footprint Ref|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap28]
-Options=FieldName=CapacitorsCeramic_1206.Part Number|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1206.Footprint Ref 2|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap29]
-Options=FieldName=CapacitorsCeramic_1206.Library Path|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1206.Footprint Ref 3|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap30]
-Options=FieldName=CapacitorsCeramic_1206.Library Ref|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1206.Part Number|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap31]
-Options=FieldName=CapacitorsCeramic_1210.Description|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1206.Library Path|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap32]
-Options=FieldName=CapacitorsCeramic_1210.Footprint Path|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1206.Library Ref|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap33]
-Options=FieldName=CapacitorsCeramic_1210.Footprint Path 2|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1206.Comment|TableNameOnly=CapacitorsCeramic_1206|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap34]
-Options=FieldName=CapacitorsCeramic_1210.Footprint Path 3|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1210.Description|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap35]
-Options=FieldName=CapacitorsCeramic_1210.Footprint Ref|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1210.Footprint Path|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap36]
-Options=FieldName=CapacitorsCeramic_1210.Footprint Ref 2|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1210.Footprint Path 2|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap37]
-Options=FieldName=CapacitorsCeramic_1210.Footprint Ref 3|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1210.Footprint Path 3|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap38]
-Options=FieldName=CapacitorsCeramic_1210.Part Number|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1210.Footprint Ref|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap39]
-Options=FieldName=CapacitorsCeramic_1210.Library Path|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1210.Footprint Ref 2|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap40]
-Options=FieldName=CapacitorsCeramic_1210.Library Ref|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1210.Footprint Ref 3|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap41]
-Options=FieldName=CapacitorsCeramic_2220.Description|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1210.Part Number|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap42]
-Options=FieldName=CapacitorsCeramic_2220.Footprint Path|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1210.Library Path|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap43]
-Options=FieldName=CapacitorsCeramic_2220.Footprint Path 2|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1210.Library Ref|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap44]
-Options=FieldName=CapacitorsCeramic_2220.Footprint Path 3|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_1210.Comment|TableNameOnly=CapacitorsCeramic_1210|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap45]
-Options=FieldName=CapacitorsCeramic_2220.Footprint Ref|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_2220.Description|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap46]
-Options=FieldName=CapacitorsCeramic_2220.Footprint Ref 2|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_2220.Footprint Path|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap47]
-Options=FieldName=CapacitorsCeramic_2220.Footprint Ref 3|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_2220.Footprint Path 2|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap48]
-Options=FieldName=CapacitorsCeramic_2220.Part Number|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_2220.Footprint Path 3|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap49]
-Options=FieldName=CapacitorsCeramic_2220.Library Path|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_2220.Footprint Ref|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap50]
-Options=FieldName=CapacitorsCeramic_2220.Library Ref|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_2220.Footprint Ref 2|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap51]
-Options=FieldName=CapacitorsCeramic_2220.LastUpdated|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=LastUpdated|FieldType=1|ParameterName=LastUpdated|VisibleOnAdd=False|AddMode=1|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_2220.Footprint Ref 3|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap52]
-Options=FieldName=ResistorsSurfaceMount_0603.Description|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_2220.Part Number|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap53]
-Options=FieldName=ResistorsSurfaceMount_0603.Footprint Path|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_2220.Library Path|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap54]
-Options=FieldName=ResistorsSurfaceMount_0603.Footprint Path 2|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_2220.Library Ref|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap55]
-Options=FieldName=ResistorsSurfaceMount_0603.Footprint Path 3|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_2220.LastUpdated|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=LastUpdated|FieldType=1|ParameterName=LastUpdated|VisibleOnAdd=False|AddMode=1|RemoveMode=0|UpdateMode=0
 [FieldMap56]
-Options=FieldName=ResistorsSurfaceMount_0603.Footprint Ref|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=CapacitorsCeramic_2220.Comment|TableNameOnly=CapacitorsCeramic_2220|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap57]
-Options=FieldName=ResistorsSurfaceMount_0603.Footprint Ref 2|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0603.Description|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap58]
-Options=FieldName=ResistorsSurfaceMount_0603.Footprint Ref 3|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0603.Footprint Path|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap59]
-Options=FieldName=ResistorsSurfaceMount_0603.Part Number|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0603.Footprint Path 2|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap60]
-Options=FieldName=ResistorsSurfaceMount_0603.Library Path|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0603.Footprint Path 3|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap61]
-Options=FieldName=ResistorsSurfaceMount_0603.Library Ref|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0603.Footprint Ref|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap62]
-Options=FieldName=ResistorsSurfaceMount_0805.Description|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0603.Footprint Ref 2|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap63]
-Options=FieldName=ResistorsSurfaceMount_0805.Footprint Path|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0603.Footprint Ref 3|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap64]
-Options=FieldName=ResistorsSurfaceMount_0805.Footprint Path 2|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0603.Part Number|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap65]
-Options=FieldName=ResistorsSurfaceMount_0805.Footprint Path 3|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0603.Library Path|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap66]
-Options=FieldName=ResistorsSurfaceMount_0805.Footprint Ref|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0603.Library Ref|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap67]
-Options=FieldName=ResistorsSurfaceMount_0805.Footprint Ref 2|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0603.Comment|TableNameOnly=ResistorsSurfaceMount_0603|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap68]
-Options=FieldName=ResistorsSurfaceMount_0805.Footprint Ref 3|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0805.Description|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap69]
-Options=FieldName=ResistorsSurfaceMount_0805.Part Number|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0805.Footprint Path|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap70]
-Options=FieldName=ResistorsSurfaceMount_0805.Library Path|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0805.Footprint Path 2|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap71]
-Options=FieldName=ResistorsSurfaceMount_0805.Library Ref|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0805.Footprint Path 3|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap72]
-Options=FieldName=ResistorsSurfaceMount_1206.Description|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0805.Footprint Ref|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap73]
-Options=FieldName=ResistorsSurfaceMount_1206.Footprint Path|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0805.Footprint Ref 2|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap74]
-Options=FieldName=ResistorsSurfaceMount_1206.Footprint Path 2|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0805.Footprint Ref 3|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap75]
-Options=FieldName=ResistorsSurfaceMount_1206.Footprint Path 3|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0805.Part Number|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap76]
-Options=FieldName=ResistorsSurfaceMount_1206.Footprint Ref|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0805.Library Path|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap77]
-Options=FieldName=ResistorsSurfaceMount_1206.Footprint Ref 2|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0805.Library Ref|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap78]
-Options=FieldName=ResistorsSurfaceMount_1206.Footprint Ref 3|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_0805.Comment|TableNameOnly=ResistorsSurfaceMount_0805|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap79]
-Options=FieldName=ResistorsSurfaceMount_1206.Part Number|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1206.Description|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap80]
-Options=FieldName=ResistorsSurfaceMount_1206.Library Path|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1206.Footprint Path|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap81]
-Options=FieldName=ResistorsSurfaceMount_1206.Library Ref|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1206.Footprint Path 2|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap82]
-Options=FieldName=ResistorsSurfaceMount_1210.Description|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1206.Footprint Path 3|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap83]
-Options=FieldName=ResistorsSurfaceMount_1210.Footprint Path|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1206.Footprint Ref|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap84]
-Options=FieldName=ResistorsSurfaceMount_1210.Footprint Path 2|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1206.Footprint Ref 2|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap85]
-Options=FieldName=ResistorsSurfaceMount_1210.Footprint Path 3|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1206.Footprint Ref 3|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap86]
-Options=FieldName=ResistorsSurfaceMount_1210.Footprint Ref|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1206.Part Number|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap87]
-Options=FieldName=ResistorsSurfaceMount_1210.Footprint Ref 2|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1206.Library Path|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap88]
-Options=FieldName=ResistorsSurfaceMount_1210.Footprint Ref 3|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1206.Library Ref|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap89]
-Options=FieldName=ResistorsSurfaceMount_1210.Part Number|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1206.Comment|TableNameOnly=ResistorsSurfaceMount_1206|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap90]
-Options=FieldName=ResistorsSurfaceMount_1210.Library Path|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1210.Description|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap91]
-Options=FieldName=ResistorsSurfaceMount_1210.Library Ref|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1210.Footprint Path|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap92]
-Options=FieldName=ResistorsSurfaceMount_2220.Description|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1210.Footprint Path 2|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap93]
-Options=FieldName=ResistorsSurfaceMount_2220.Footprint Path|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1210.Footprint Path 3|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap94]
-Options=FieldName=ResistorsSurfaceMount_2220.Footprint Path 2|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1210.Footprint Ref|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap95]
-Options=FieldName=ResistorsSurfaceMount_2220.Footprint Path 3|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1210.Footprint Ref 2|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap96]
-Options=FieldName=ResistorsSurfaceMount_2220.Footprint Ref|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1210.Footprint Ref 3|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap97]
-Options=FieldName=ResistorsSurfaceMount_2220.Footprint Ref 2|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1210.Part Number|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap98]
-Options=FieldName=ResistorsSurfaceMount_2220.Footprint Ref 3|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1210.Library Path|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap99]
-Options=FieldName=ResistorsSurfaceMount_2220.Part Number|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1210.Library Ref|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap100]
-Options=FieldName=ResistorsSurfaceMount_2220.Library Path|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+Options=FieldName=ResistorsSurfaceMount_1210.Comment|TableNameOnly=ResistorsSurfaceMount_1210|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap101]
+Options=FieldName=ResistorsSurfaceMount_2220.Description|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap102]
+Options=FieldName=ResistorsSurfaceMount_2220.Footprint Path|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap103]
+Options=FieldName=ResistorsSurfaceMount_2220.Footprint Path 2|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap104]
+Options=FieldName=ResistorsSurfaceMount_2220.Footprint Path 3|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap105]
+Options=FieldName=ResistorsSurfaceMount_2220.Footprint Ref|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap106]
+Options=FieldName=ResistorsSurfaceMount_2220.Footprint Ref 2|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap107]
+Options=FieldName=ResistorsSurfaceMount_2220.Footprint Ref 3|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap108]
+Options=FieldName=ResistorsSurfaceMount_2220.Part Number|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap109]
+Options=FieldName=ResistorsSurfaceMount_2220.Library Path|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap110]
 Options=FieldName=ResistorsSurfaceMount_2220.Library Ref|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap111]
+Options=FieldName=ResistorsSurfaceMount_2220.Comment|TableNameOnly=ResistorsSurfaceMount_2220|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap112]
+Options=FieldName=Inductors_Power.Description|TableNameOnly=Inductors_Power|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap113]
+Options=FieldName=Inductors_Power.Footprint Path|TableNameOnly=Inductors_Power|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap114]
+Options=FieldName=Inductors_Power.Footprint Path 2|TableNameOnly=Inductors_Power|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap115]
+Options=FieldName=Inductors_Power.Footprint Path 3|TableNameOnly=Inductors_Power|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap116]
+Options=FieldName=Inductors_Power.Footprint Ref|TableNameOnly=Inductors_Power|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap117]
+Options=FieldName=Inductors_Power.Footprint Ref 2|TableNameOnly=Inductors_Power|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap118]
+Options=FieldName=Inductors_Power.Footprint Ref 3|TableNameOnly=Inductors_Power|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap119]
+Options=FieldName=Inductors_Power.Part Number|TableNameOnly=Inductors_Power|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap120]
+Options=FieldName=Inductors_Power.Library Path|TableNameOnly=Inductors_Power|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap121]
+Options=FieldName=Inductors_Power.Library Ref|TableNameOnly=Inductors_Power|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap122]
+Options=FieldName=Inductors_Power.Comment|TableNameOnly=Inductors_Power|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
