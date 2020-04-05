@@ -100,25 +100,55 @@ UserWhere=0
 UserWhereText=
 [Table14]
 SchemaName=
+TableName=BJT_Discrete_NPN
+Enabled=True
+UserWhere=0
+UserWhereText=
+[Table15]
+SchemaName=
+TableName=BJT_Discrete_PNP
+Enabled=True
+UserWhere=0
+UserWhereText=
+[Table16]
+SchemaName=
+TableName=Ferrite_Beads
+Enabled=True
+UserWhere=0
+UserWhereText=
+[Table17]
+SchemaName=
 TableName=t_CapacitorsCeramic
 Enabled=False
 UserWhere=0
 UserWhereText=
-[Table15]
+[Table18]
 SchemaName=
 TableName=t_ResistorsSurfaceMount
 Enabled=False
 UserWhere=0
 UserWhereText=
-[Table16]
+[Table19]
 SchemaName=
 TableName=t_InductorsFixed
 Enabled=False
 UserWhere=0
 UserWhereText=
-[Table17]
+[Table20]
 SchemaName=
 TableName=t_MOSFET_Discrete
+Enabled=False
+UserWhere=0
+UserWhereText=
+[Table21]
+SchemaName=
+TableName=t_BJT_Discrete
+Enabled=False
+UserWhere=0
+UserWhereText=
+[Table22]
+SchemaName=
+TableName=t_FerriteBeads
 Enabled=False
 UserWhere=0
 UserWhereText=
@@ -410,3 +440,69 @@ Options=FieldName=MOSFET_Discrete_P.Library Path|TableNameOnly=MOSFET_Discrete_P
 Options=FieldName=MOSFET_Discrete_P.Library Ref|TableNameOnly=MOSFET_Discrete_P|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap144]
 Options=FieldName=MOSFET_Discrete_P.Comment|TableNameOnly=MOSFET_Discrete_P|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap145]
+Options=FieldName=BJT_Discrete_NPN.Description|TableNameOnly=BJT_Discrete_NPN|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap146]
+Options=FieldName=BJT_Discrete_NPN.Footprint Path|TableNameOnly=BJT_Discrete_NPN|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap147]
+Options=FieldName=BJT_Discrete_NPN.Footprint Path 2|TableNameOnly=BJT_Discrete_NPN|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap148]
+Options=FieldName=BJT_Discrete_NPN.Footprint Path 3|TableNameOnly=BJT_Discrete_NPN|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap149]
+Options=FieldName=BJT_Discrete_NPN.Footprint Ref|TableNameOnly=BJT_Discrete_NPN|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap150]
+Options=FieldName=BJT_Discrete_NPN.Footprint Ref 2|TableNameOnly=BJT_Discrete_NPN|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap151]
+Options=FieldName=BJT_Discrete_NPN.Footprint Ref 3|TableNameOnly=BJT_Discrete_NPN|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap152]
+Options=FieldName=BJT_Discrete_NPN.Part Number|TableNameOnly=BJT_Discrete_NPN|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap153]
+Options=FieldName=BJT_Discrete_NPN.Library Path|TableNameOnly=BJT_Discrete_NPN|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap154]
+Options=FieldName=BJT_Discrete_NPN.Library Ref|TableNameOnly=BJT_Discrete_NPN|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap155]
+Options=FieldName=BJT_Discrete_NPN.Comment|TableNameOnly=BJT_Discrete_NPN|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap156]
+Options=FieldName=BJT_Discrete_PNP.Description|TableNameOnly=BJT_Discrete_PNP|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap157]
+Options=FieldName=BJT_Discrete_PNP.Footprint Path|TableNameOnly=BJT_Discrete_PNP|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap158]
+Options=FieldName=BJT_Discrete_PNP.Footprint Path 2|TableNameOnly=BJT_Discrete_PNP|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap159]
+Options=FieldName=BJT_Discrete_PNP.Footprint Path 3|TableNameOnly=BJT_Discrete_PNP|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap160]
+Options=FieldName=BJT_Discrete_PNP.Footprint Ref|TableNameOnly=BJT_Discrete_PNP|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap161]
+Options=FieldName=BJT_Discrete_PNP.Footprint Ref 2|TableNameOnly=BJT_Discrete_PNP|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap162]
+Options=FieldName=BJT_Discrete_PNP.Footprint Ref 3|TableNameOnly=BJT_Discrete_PNP|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap163]
+Options=FieldName=BJT_Discrete_PNP.Part Number|TableNameOnly=BJT_Discrete_PNP|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap164]
+Options=FieldName=BJT_Discrete_PNP.Library Path|TableNameOnly=BJT_Discrete_PNP|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap165]
+Options=FieldName=BJT_Discrete_PNP.Library Ref|TableNameOnly=BJT_Discrete_PNP|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap166]
+Options=FieldName=BJT_Discrete_PNP.Comment|TableNameOnly=BJT_Discrete_PNP|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap167]
+Options=FieldName=Ferrite_Beads.Description|TableNameOnly=BJT_Discrete_PNP|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap168]
+Options=FieldName=Ferrite_Beads.Footprint Path|TableNameOnly=Ferrite_Beads|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap169]
+Options=FieldName=Ferrite_Beads.Footprint Path 2|TableNameOnly=Ferrite_Beads|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap170]
+Options=FieldName=Ferrite_Beads.Footprint Path 3|TableNameOnly=Ferrite_Beads|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap171]
+Options=FieldName=Ferrite_Beads.Footprint Ref|TableNameOnly=Ferrite_Beads|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap172]
+Options=FieldName=Ferrite_Beads.Footprint Ref 2|TableNameOnly=Ferrite_Beads|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap173]
+Options=FieldName=Ferrite_Beads.Footprint Ref 3|TableNameOnly=Ferrite_Beads|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap174]
+Options=FieldName=Ferrite_Beads.Part Number|TableNameOnly=Ferrite_Beads|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap175]
+Options=FieldName=Ferrite_Beads.Library Path|TableNameOnly=Ferrite_Beads|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap176]
+Options=FieldName=Ferrite_Beads.Library Ref|TableNameOnly=Ferrite_Beads|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap177]
+Options=FieldName=Ferrite_Beads.Comment|TableNameOnly=Ferrite_Beads|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
