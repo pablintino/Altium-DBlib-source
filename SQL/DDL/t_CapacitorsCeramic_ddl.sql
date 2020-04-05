@@ -39,7 +39,7 @@ CREATE TABLE t_CapacitorsCeramic
     `value`                     VARCHAR(100) DEFAULT NULL,
     `comment`                   VARCHAR(100) DEFAULT NULL,
     `manufacturerpartno`        VARCHAR(100) NOT NULL,
-    `manufacturer`              VARCHAR(100) DEFAULT NULL,
+    `manufacturer`              VARCHAR(100) NOT NULL,
     `description`               VARCHAR(200) DEFAULT NULL,
     `price`                     VARCHAR(100) DEFAULT NULL,
     `lifecycle`                 VARCHAR(100) DEFAULT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE t_CapacitorsCeramic
     INDEX (`lastupdated`),
     INDEX (`archived`),
     INDEX (`manufacturerpartno`),
-    PRIMARY KEY (`manufacturerpartno`)
+    PRIMARY KEY (`manufacturerpartno`, `manufacturer`)
 ) CHARACTER SET utf16
   COLLATE utf16_general_ci;
 

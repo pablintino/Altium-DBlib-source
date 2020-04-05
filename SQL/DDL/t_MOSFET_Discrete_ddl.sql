@@ -31,7 +31,7 @@ create table t_MOSFET_Discrete
     `value`                        VARCHAR(100) DEFAULT NULL,
     `comment`                      VARCHAR(100) DEFAULT NULL,
     `manufacturerpartno`           VARCHAR(100) NOT NULL,
-    `manufacturer`                 VARCHAR(100) DEFAULT NULL,
+    `manufacturer`                 VARCHAR(100) NOT NULL,
     `description`                  VARCHAR(200) DEFAULT NULL,
     `price`                        VARCHAR(100) DEFAULT NULL,
     `lifecycle`                    VARCHAR(100) DEFAULT NULL,
@@ -68,7 +68,7 @@ create table t_MOSFET_Discrete
     INDEX (`lastupdated`),
     INDEX (`archived`),
     INDEX (`manufacturerpartno`),
-    PRIMARY KEY (`manufacturerpartno`)
+    PRIMARY KEY (`manufacturerpartno`, `manufacturer`)
 );
 
 
