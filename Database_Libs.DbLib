@@ -88,19 +88,37 @@ UserWhere=0
 UserWhereText=
 [Table12]
 SchemaName=
+TableName=MOSFET_Discrete_N
+Enabled=True
+UserWhere=0
+UserWhereText=
+[Table13]
+SchemaName=
+TableName=MOSFET_Discrete_P
+Enabled=True
+UserWhere=0
+UserWhereText=
+[Table14]
+SchemaName=
 TableName=t_CapacitorsCeramic
 Enabled=False
 UserWhere=0
 UserWhereText=
-[Table13]
+[Table15]
 SchemaName=
 TableName=t_ResistorsSurfaceMount
 Enabled=False
 UserWhere=0
 UserWhereText=
-[Table14]
+[Table16]
 SchemaName=
 TableName=t_InductorsFixed
+Enabled=False
+UserWhere=0
+UserWhereText=
+[Table17]
+SchemaName=
+TableName=t_MOSFET_Discrete
 Enabled=False
 UserWhere=0
 UserWhereText=
@@ -348,3 +366,47 @@ Options=FieldName=Inductors_Power.Library Path|TableNameOnly=Inductors_Power|Fie
 Options=FieldName=Inductors_Power.Library Ref|TableNameOnly=Inductors_Power|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap122]
 Options=FieldName=Inductors_Power.Comment|TableNameOnly=Inductors_Power|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap123]
+Options=FieldName=MOSFET_Discrete_N.Description|TableNameOnly=MOSFET_Discrete_N|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap124]
+Options=FieldName=MOSFET_Discrete_N.Footprint Path|TableNameOnly=MOSFET_Discrete_N|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap125]
+Options=FieldName=MOSFET_Discrete_N.Footprint Path 2|TableNameOnly=MOSFET_Discrete_N|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap126]
+Options=FieldName=MOSFET_Discrete_N.Footprint Path 3|TableNameOnly=MOSFET_Discrete_N|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap127]
+Options=FieldName=MOSFET_Discrete_N.Footprint Ref|TableNameOnly=MOSFET_Discrete_N|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap128]
+Options=FieldName=MOSFET_Discrete_N.Footprint Ref 2|TableNameOnly=MOSFET_Discrete_N|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap129]
+Options=FieldName=MOSFET_Discrete_N.Footprint Ref 3|TableNameOnly=MOSFET_Discrete_N|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap130]
+Options=FieldName=MOSFET_Discrete_N.Part Number|TableNameOnly=MOSFET_Discrete_N|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap131]
+Options=FieldName=MOSFET_Discrete_N.Library Path|TableNameOnly=MOSFET_Discrete_N|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap132]
+Options=FieldName=MOSFET_Discrete_N.Library Ref|TableNameOnly=MOSFET_Discrete_N|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap133]
+Options=FieldName=MOSFET_Discrete_N.Comment|TableNameOnly=MOSFET_Discrete_N|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap134]
+Options=FieldName=MOSFET_Discrete_P.Description|TableNameOnly=MOSFET_Discrete_P|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap135]
+Options=FieldName=MOSFET_Discrete_P.Footprint Path|TableNameOnly=MOSFET_Discrete_P|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap136]
+Options=FieldName=MOSFET_Discrete_P.Footprint Path 2|TableNameOnly=MOSFET_Discrete_P|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap137]
+Options=FieldName=MOSFET_Discrete_P.Footprint Path 3|TableNameOnly=MOSFET_Discrete_P|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap138]
+Options=FieldName=MOSFET_Discrete_P.Footprint Ref|TableNameOnly=MOSFET_Discrete_P|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap139]
+Options=FieldName=MOSFET_Discrete_P.Footprint Ref 2|TableNameOnly=MOSFET_Discrete_P|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap140]
+Options=FieldName=MOSFET_Discrete_P.Footprint Ref 3|TableNameOnly=MOSFET_Discrete_P|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap141]
+Options=FieldName=MOSFET_Discrete_P.Part Number|TableNameOnly=MOSFET_Discrete_P|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap142]
+Options=FieldName=MOSFET_Discrete_P.Library Path|TableNameOnly=MOSFET_Discrete_P|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap143]
+Options=FieldName=MOSFET_Discrete_P.Library Ref|TableNameOnly=MOSFET_Discrete_P|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap144]
+Options=FieldName=MOSFET_Discrete_P.Comment|TableNameOnly=MOSFET_Discrete_P|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
