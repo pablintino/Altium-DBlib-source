@@ -122,7 +122,7 @@ TableName=Diodes_TVS
 Enabled=True
 UserWhere=0
 UserWhereText=
-[Table16]
+[Table17]
 SchemaName=
 TableName=Diodes_Rectifiers_Discrete
 Enabled=True
@@ -130,49 +130,73 @@ UserWhere=0
 UserWhereText=
 [Table18]
 SchemaName=
-TableName=t_CapacitorsCeramic
-Enabled=False
+TableName=Diodes_Zener_Discrete
+Enabled=True
 UserWhere=0
 UserWhereText=
 [Table19]
 SchemaName=
-TableName=t_ResistorsSurfaceMount
-Enabled=False
+TableName=ConectorsTerminalBlocksWiretoBoard
+Enabled=True
 UserWhere=0
 UserWhereText=
 [Table20]
 SchemaName=
-TableName=t_InductorsFixed
+TableName=t_CapacitorsCeramic
 Enabled=False
 UserWhere=0
 UserWhereText=
 [Table21]
 SchemaName=
-TableName=t_MOSFET_Discrete
+TableName=t_ResistorsSurfaceMount
 Enabled=False
 UserWhere=0
 UserWhereText=
 [Table22]
 SchemaName=
-TableName=t_BJT_Discrete
+TableName=t_InductorsFixed
 Enabled=False
 UserWhere=0
 UserWhereText=
 [Table23]
 SchemaName=
-TableName=t_FerriteBeads
+TableName=t_MOSFET_Discrete
 Enabled=False
 UserWhere=0
 UserWhereText=
 [Table24]
 SchemaName=
-TableName=t_DiodesTVS
+TableName=t_BJT_Discrete
 Enabled=False
 UserWhere=0
 UserWhereText=
 [Table25]
 SchemaName=
+TableName=t_FerriteBeads
+Enabled=False
+UserWhere=0
+UserWhereText=
+[Table26]
+SchemaName=
+TableName=t_DiodesTVS
+Enabled=False
+UserWhere=0
+UserWhereText=
+[Table27]
+SchemaName=
 TableName=t_DiodesRectifiersDiscrete
+Enabled=False
+UserWhere=0
+UserWhereText=
+[Table28]
+SchemaName=
+TableName=t_DiodesZenerDiscrete
+Enabled=False
+UserWhere=0
+UserWhereText=
+[Table28]
+SchemaName=
+TableName=t_ConnectorsTerminalBlocksWiretoBoard
 Enabled=False
 UserWhere=0
 UserWhereText=
@@ -574,3 +598,47 @@ Options=FieldName=Diodes_Rectifiers_Discrete.Library Path|TableNameOnly=Diodes_R
 Options=FieldName=Diodes_Rectifiers_Discrete.Library Ref|TableNameOnly=Diodes_Rectifiers_Discrete|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
 [FieldMap199]
 Options=FieldName=Diodes_Rectifiers_Discrete.Comment|TableNameOnly=Diodes_Rectifiers_Discrete|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap200]
+Options=FieldName=Diodes_Zener_Discrete.Description|TableNameOnly=Diodes_Zener_Discrete|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap201]
+Options=FieldName=Diodes_Zener_Discrete.Footprint Path|TableNameOnly=Diodes_Zener_Discrete|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap202]
+Options=FieldName=Diodes_Zener_Discrete.Footprint Path 2|TableNameOnly=Diodes_Zener_Discrete|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap203]
+Options=FieldName=Diodes_Zener_Discrete.Footprint Path 3|TableNameOnly=Diodes_Zener_Discrete|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap204]
+Options=FieldName=Diodes_Zener_Discrete.Footprint Ref|TableNameOnly=Diodes_Zener_Discrete|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap205]
+Options=FieldName=Diodes_Zener_Discrete.Footprint Ref 2|TableNameOnly=Diodes_Zener_Discrete|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap206]
+Options=FieldName=Diodes_Zener_Discrete.Footprint Ref 3|TableNameOnly=Diodes_Zener_Discrete|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap207]
+Options=FieldName=Diodes_Zener_Discrete.Part Number|TableNameOnly=Diodes_Zener_Discrete|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap208]
+Options=FieldName=Diodes_Zener_Discrete.Library Path|TableNameOnly=Diodes_Zener_Discrete|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap209]
+Options=FieldName=Diodes_Zener_Discrete.Library Ref|TableNameOnly=Diodes_Zener_Discrete|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap210]
+Options=FieldName=Diodes_Zener_Discrete.Comment|TableNameOnly=Diodes_Zener_Discrete|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap211]
+Options=FieldName=ConectorsTerminalBlocksWiretoBoard.Description|TableNameOnly=ConectorsTerminalBlocksWiretoBoard|FieldNameOnly=Description|FieldType=1|ParameterName=[Description]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap212]
+Options=FieldName=ConectorsTerminalBlocksWiretoBoard.Footprint Path|TableNameOnly=ConectorsTerminalBlocksWiretoBoard|FieldNameOnly=Footprint Path|FieldType=1|ParameterName=[Footprint Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap213]
+Options=FieldName=ConectorsTerminalBlocksWiretoBoard.Footprint Path 2|TableNameOnly=ConectorsTerminalBlocksWiretoBoard|FieldNameOnly=Footprint Path 2|FieldType=1|ParameterName=[Footprint Path 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap214]
+Options=FieldName=ConectorsTerminalBlocksWiretoBoard.Footprint Path 3|TableNameOnly=ConectorsTerminalBlocksWiretoBoard|FieldNameOnly=Footprint Path 3|FieldType=1|ParameterName=[Footprint Path 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap215]
+Options=FieldName=ConectorsTerminalBlocksWiretoBoard.Footprint Ref|TableNameOnly=ConectorsTerminalBlocksWiretoBoard|FieldNameOnly=Footprint Ref|FieldType=1|ParameterName=[Footprint Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap216]
+Options=FieldName=ConectorsTerminalBlocksWiretoBoard.Footprint Ref 2|TableNameOnly=ConectorsTerminalBlocksWiretoBoard|FieldNameOnly=Footprint Ref 2|FieldType=1|ParameterName=[Footprint Ref 2]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap217]
+Options=FieldName=ConectorsTerminalBlocksWiretoBoard.Footprint Ref 3|TableNameOnly=ConectorsTerminalBlocksWiretoBoard|FieldNameOnly=Footprint Ref 3|FieldType=1|ParameterName=[Footprint Ref 3]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap218]
+Options=FieldName=ConectorsTerminalBlocksWiretoBoard.Part Number|TableNameOnly=ConectorsTerminalBlocksWiretoBoard|FieldNameOnly=Part Number|FieldType=0|ParameterName=Part Number|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap219]
+Options=FieldName=ConectorsTerminalBlocksWiretoBoard.Library Path|TableNameOnly=ConectorsTerminalBlocksWiretoBoard|FieldNameOnly=Library Path|FieldType=1|ParameterName=[Library Path]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap220]
+Options=FieldName=ConectorsTerminalBlocksWiretoBoard.Library Ref|TableNameOnly=ConectorsTerminalBlocksWiretoBoard|FieldNameOnly=Library Ref|FieldType=1|ParameterName=[Library Ref]|VisibleOnAdd=False|AddMode=0|RemoveMode=0|UpdateMode=0
+[FieldMap221]
+Options=FieldName=ConectorsTerminalBlocksWiretoBoard.Comment|TableNameOnly=ConectorsTerminalBlocksWiretoBoard|FieldNameOnly=Comment|FieldType=1|ParameterName=Comment|VisibleOnAdd=True|AddMode=0|RemoveMode=0|UpdateMode=0

@@ -65,7 +65,8 @@ create table t_DiodesRectifiersDiscrete
     INDEX (`archived`),
     INDEX (`manufacturerpartno`),
     PRIMARY KEY (`manufacturerpartno`, `manufacturer`)
-);
+) CHARACTER SET utf16
+  COLLATE utf16_general_ci;
 
 DROP VIEW IF EXISTS Diodes_Rectifiers_Discrete;
 
