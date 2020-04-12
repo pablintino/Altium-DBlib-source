@@ -1,36 +1,13 @@
-from sqlalchemy import select, join
 from sqlalchemy.orm import sessionmaker
 from models import ResistorModel, LibraryReference, FootprintReference, ComponentModel, component_footprint_asc_table
-from alchemy import encoders, session_manager, views
+import alchemy
 import json
 
-Session = sessionmaker(session_manager.engine)
+Session = sessionmaker(alchemy.engine)
 session = Session()
 
-#session_manager.metadata.drop_all(session_manager.engine)
-
-#stuff_view = views.view("resistor_view", session_manager.metadata,
-#                        select(
-#                            [
-#                                ResistorModel.id,
-#                                ResistorModel.tolerance,
-#                                ResistorModel.power_max,
-#                                ComponentModel.mpn,
-#                                ComponentModel.manufacturer,
-#                                ComponentModel.created_on,
-#                                ComponentModel.updated_on,
-#                                ComponentModel.type,
-#                                ComponentModel.value,
-#                                ComponentModel.package,
-#                                ComponentModel.description,
-#                                ComponentModel.comment,
-#                            ]
-#                        ).select_from(
-#                            ResistorModel.__table__.join(ComponentModel).join(LibraryReference).join(
-#                                component_footprint_asc_table).join(FootprintReference))
-#                        )
-
-session_manager.metadata.create_all(session_manager.engine)
+alchemy.metadata.drop_all(alchemy.engine)
+alchemy.metadata.create_all(alchemy.engine)
 
 # Create
 library_ref = LibraryReference(symbol_path='path_test', symbol_ref='symbol_ref_test')
@@ -56,4 +33,4 @@ resistor_example = ResistorModel(
 session.add(resistor_example)
 session.commit()
 
-print(json.dumps(session.query(ResistorModel).first(), cls=encoders.AlchemyEncoder))
+print(json.dumps(session.query(ResistorModel).first(), cls=alchemy.AlchemyEncoder))
