@@ -1,7 +1,10 @@
 from sqlalchemy.orm import sessionmaker
-from models import ResistorModel, LibraryReference, FootprintReference, ComponentModel, component_footprint_asc_table
 import alchemy
 import json
+
+from models.footprint_reference_model import FootprintReference
+from models.library_reference_model import LibraryReference
+from models.resistor_model import ResistorModel
 
 Session = sessionmaker(alchemy.engine)
 session = Session()
