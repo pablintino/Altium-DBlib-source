@@ -44,3 +44,7 @@ class ComponentModel(Base):
             type(self).__name__,
             ', '.join('%s=%s' % item for item in vars(self).items())
         )
+
+    @staticmethod
+    def get_unique_constraints():
+        return dict([(c.name, any([c.primary_key, c.unique])) for c in ComponentModel.__table__.columns])
