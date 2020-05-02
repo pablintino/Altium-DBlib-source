@@ -2,3 +2,4 @@ sqlalchemy
 pyodbc
 confuse
 flask
+flask-restful

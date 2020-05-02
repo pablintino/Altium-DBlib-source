@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, Boolean
 from sqlalchemy.orm import relationship
 from .join_tables import component_footprint_asc_table
 from .module_base import Base
@@ -9,6 +9,7 @@ class FootprintReference(Base):
     id = Column(Integer, primary_key=True)
     footprint_path = Column(String(300))
     footprint_ref = Column(String(150))
+    is_through_hole = Column(Boolean())
 
     # relationships
     components_f = relationship("ComponentModel",

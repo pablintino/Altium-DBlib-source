@@ -13,8 +13,9 @@ class MosfetTransistorModel(ComponentModel):
     vgs_max = Column(String(30))
     vgs_th = Column(String(30))
     vds_max = Column(String(30))
-    ids_max = Column(String(50))
-    power_max = Column(String(50))
+    ids_max = Column(String(30))
+    power_max = Column(String(30))
+    channel_type = Column(String(30))
 
     # Tells the ORM the type of a specific component by the distinguish column
     __mapper_args__ = {
