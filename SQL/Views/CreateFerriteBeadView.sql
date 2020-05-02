@@ -23,8 +23,7 @@
  *
  **/
 
-
- create view FerriteBeadsView as select                   mpn as [Part Number],
+create view [Ferrite Beads] as select                   mpn as [Part Number],
     [Value]                             = MAX(value),
     [Number of Lines]                   = MAX(number_of_lines),
     [DC Resistance]                     = MAX(dc_resistance),

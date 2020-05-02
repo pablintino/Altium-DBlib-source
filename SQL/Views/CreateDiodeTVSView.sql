@@ -23,8 +23,7 @@
  *
  **/
 
-
- create view DiodesTVSView as select         mpn as [Part Number],
+create view [Diodes TVS] as select         mpn as [Part Number],
     [Value]                             = MAX(value),
     [Standoff Reverse Voltage]          = MAX(voltage_reverse_standoff),
     [Minimum Breakdown Voltage]         = MAX(voltage_breakdown_min),

@@ -23,8 +23,7 @@
  *
  **/
 
-
- create view BjtTransistorsView as select                mpn as [Part Number],
+create view [Transistors BJT] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Collector Emiter Saturation Voltage]       = MAX(vce_sat_max),
     [hfe Gain]                                  = MAX(hfe),

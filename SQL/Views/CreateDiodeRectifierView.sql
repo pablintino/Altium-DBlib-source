@@ -23,8 +23,7 @@
  *
  **/
 
-
- create view DiodesRectifierView as select           mpn as [Part Number],
+create view [Diodes Rectifier] as select           mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Forward Voltage]                           = MAX(forward_voltage),
     [Reverse Leakage Current]                   = MAX(reverse_current_leakage),

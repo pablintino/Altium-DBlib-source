@@ -23,38 +23,30 @@
  *
  **/
 
-create view [Transistors Mosfet] as select                   mpn as [Part Number],
-    [Value]                             = MAX(value),
-    [Drain Source Resistance]           = MAX(rds_on),
-    [Gate Source Max Voltage]           = MAX(vgs_max),
-    [Gate Source Threshold Voltage]     = MAX(vgs_th),
-    [Drain Source Max Voltage]          = MAX(vds_max),
-    [Drain Source Max Current]          = MAX(ids_max),
-    [Maximum Power]                     = MAX(power_max),
-    [Channel Type]                      = MAX(channel_type),
-    [Created On]                        = MAX(created_on),
-    [Updated On]                        = MAX(updated_on),
-    [Type]                              = MAX(type),
-    [Package]                           = MAX(package),
-    [Description]                       = MAX(description),
-    [Comment]                           = MAX(comment),
-    [Library Path]                      = MAX(symbol_path),
-    [Library Ref]                       = MAX(symbol_ref),
-    [Footprint Path 1]                  = MAX([FootprintPath1]),
-    [Footprint Path 2]                  = MAX([FootprintPath2]),
-    [Footprint Path 3]                  = MAX([FootprintPath3]),
-    [Footprint Ref 1]                   = MAX([FootprintRef1]),
-    [Footprint Ref 2]                   = MAX([FootprintRef2]),
-    [Footprint Ref 3]                   = MAX([FootprintRef3]),
-    [Through Hole]                      = MAX(CAST([is_through_hole] AS tinyint))
+create view [Capacitors 1210] as select                mpn as [Part Number],
+    [Value]                                     = MAX(value),
+    [Tolerance]                                 = MAX(tolerance),
+    [Voltage]                                   = MAX(voltage),
+    [Composition]                               = MAX(composition),
+    [Created On]                                = MAX(created_on),
+    [Updated On]                                = MAX(updated_on),
+    [Type]                                      = MAX(type),
+    [Package]                                   = MAX(package),
+    [Description]                               = MAX(description),
+    [Comment]                                   = MAX(comment),
+    [Library Path]                              = MAX(symbol_path),
+    [Library Ref]                               = MAX(symbol_ref),
+    [Footprint Path 1]                          = MAX([FootprintPath1]),
+    [Footprint Path 2]                          = MAX([FootprintPath2]),
+    [Footprint Path 3]                          = MAX([FootprintPath3]),
+    [Footprint Ref 1]                           = MAX([FootprintRef1]),
+    [Footprint Ref 2]                           = MAX([FootprintRef2]),
+    [Footprint Ref 3]                           = MAX([FootprintRef3]),
+    [Through Hole]                              = MAX(CAST([is_through_hole] AS tinyint))
 from (
-         select m.rds_on                                                                                        rds_on,
-                m.vgs_max                                                                                       vgs_max,
-                m.vgs_th                                                                                        vgs_th,
-                m.vds_max                                                                                       vds_max,
-                m.ids_max                                                                                       ids_max,
-                m.power_max                                                                                     power_max,
-                m.channel_type                                                                                  channel_type,
+         select ca.tolerance                                                                                    tolerance,
+                ca.voltage                                                                                      voltage,
+                ca.composition                                                                                  composition,
                 c.manufacturer                                                                                  manufacturer,
                 c.mpn                                                                                           mpn,
                 c.value                                                                                         value,
@@ -73,15 +65,16 @@ from (
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from mosfet_transistor m
+         from capacitor ca
                   inner join component c
-                             on m.id = c.id
+                             on ca.id = c.id
                   inner join component_footprint_asc cf
                              on c.id = cf.component_id
                   inner join footprint_ref f
                              on cf.footprint_ref_id = f.id
                   inner join library_ref lf
                              on c.library_ref_id = lf.id
+		where c.package = '1210 (3225 Metric)'
      ) d
          pivot
          (

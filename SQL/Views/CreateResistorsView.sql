@@ -23,8 +23,7 @@
  *
  **/
 
-
- create view ResistorsView as select                   mpn as [Part Number],
+create view [Resistors All] as select                   mpn as [Part Number],
     [Value]             = MAX(value),
     [Power Max]         = MAX(power_max),
     [Tolerance]         = MAX(tolerance),

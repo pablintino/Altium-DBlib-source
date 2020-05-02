@@ -23,8 +23,7 @@
  *
  **/
 
-
- create view CrystalOscillatorsView as select           mpn as [Part Number],
+create view [Crystal Oscillators] as select           mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Load Capacitance]                          = MAX(load_capacitance),
     [Frequency]                                 = MAX(frequency),

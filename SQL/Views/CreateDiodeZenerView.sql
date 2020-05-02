@@ -23,8 +23,7 @@
  *
  **/
 
-
- create view DiodesZenerView as select       mpn as [Part Number],
+create view [Diodes Zener] as select       mpn as [Part Number],
     [Value]                             = MAX(value),
     [Tolerance]                         = MAX(tolerance),
     [Maximum Power]                     = MAX(power_max),
