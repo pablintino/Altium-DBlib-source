@@ -22,23 +22,17 @@
 #  SOFTWARE.
 #
 
-from sqlalchemy import Column, String, ForeignKey
-from .component_model import ComponentModel
 
+class CreateComponentDto:
 
-class FerriteBeadModel(ComponentModel):
-    __tablename__ = 'ferrite_bead'
+    def __init__(self, component_type, specific_dto, symbol_ref_id, footprint_ref_ids):
+        self.component_type = component_type
+        self.specific_dto = specific_dto
+        self.symbol_ref_id = symbol_ref_id
+        self.footprint_ref_ids = footprint_ref_ids
 
-    # Primary key
-    id = Column(ForeignKey("component.id"), primary_key=True)
-
-    # Specific properties of a ferrite bead
-    number_of_lines = Column(String(30))
-    dc_resistance = Column(String(30))
-    impedance_freq = Column(String(30))
-    current_rating = Column(String(30))
-
-    # Tells the ORM the type of a specific component by the distinguish column
-    __mapper_args__ = {
-        'polymorphic_identity': __tablename__,
-    }
+    def __repr__(self):
+        return '%s(%s)' % (
+            type(self).__name__,
+            ', '.join('%s=%s' % item for item in vars(self).items())
+        )

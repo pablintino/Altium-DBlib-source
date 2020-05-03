@@ -22,23 +22,21 @@
 #  SOFTWARE.
 #
 
-from sqlalchemy import Column, String, ForeignKey
-from .component_model import ComponentModel
+from flask_restful import Resource
+from flask import request
+from marshmallow import ValidationError
+
+from dtos.schemas.create_component_schema import CreateComponentSchema
+from services import component_service
 
 
-class FerriteBeadModel(ComponentModel):
-    __tablename__ = 'ferrite_bead'
-
-    # Primary key
-    id = Column(ForeignKey("component.id"), primary_key=True)
-
-    # Specific properties of a ferrite bead
-    number_of_lines = Column(String(30))
-    dc_resistance = Column(String(30))
-    impedance_freq = Column(String(30))
-    current_rating = Column(String(30))
-
-    # Tells the ORM the type of a specific component by the distinguish column
-    __mapper_args__ = {
-        'polymorphic_identity': __tablename__,
-    }
+class ComponentListResource(Resource):
+    def post(self):
+        json_data = request.json
+        try:
+            creation_dto = CreateComponentSchema().load(data=json_data)
+            component_service.create_component(creation_dto['specific_dto'], creation_dto['component_type'])
+            return CreateComponentSchema().dump(creation_dto), 201
+        except ValidationError as error:
+            print(error.messages)
+            return {"errors": error.messages}, 400

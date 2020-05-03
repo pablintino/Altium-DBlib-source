@@ -1,5 +1,8 @@
+marshmallow
 sqlalchemy
 pyodbc
 confuse
 flask
 flask-restful
+flask-marshmallow
+marshmallow-polyfield
