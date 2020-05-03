@@ -23,13 +23,23 @@
 #
 
 
-import os
-import logging
-from app.globals import app, api
-from rest_layer.resources import routes
+from os import environ, path
+from dotenv import load_dotenv
 
-routes.initialize_routes(api)
-logging.basicConfig(level=os.environ.get("LOGLEVEL", "DEBUG"))
+basedir = path.abspath(path.dirname(__file__))
+load_dotenv(path.join(basedir, '.env'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+class Config:
+    """Set Flask configuration variables from .env file."""
+
+    # General Flask Config
+    SECRET_KEY = environ.get('SECRET_KEY')
+    FLASK_ENV = environ.get('FLASK_ENV')
+    FLASK_APP = 'wsgi.py'
+    FLASK_DEBUG = 1
+
+    # Database
+    SQLALCHEMY_DATABASE_URI = environ.get("SQLALCHEMY_DATABASE_URI")
+    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -25,10 +25,10 @@
 
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
-from .module_base import Base
+from app import db
 
 
-class LibraryReference(Base):
+class LibraryReference(db.Model):
     __tablename__ = "library_ref"
     id = Column(Integer, primary_key=True)
     symbol_path = Column(String(300))

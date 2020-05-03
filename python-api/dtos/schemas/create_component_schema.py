@@ -25,7 +25,7 @@
 
 from marshmallow import fields
 from marshmallow_polyfield import PolyField
-from app.globals import ma
+from app import marshmallow
 from dtos.schemas import schema_mapper
 
 
@@ -48,7 +48,7 @@ def shape_schema_deserialization_disambiguation(object_dict, parent_object_dict)
         return schema_type()
 
 
-class CreateComponentSchema(ma.Schema):
+class CreateComponentSchema(marshmallow.Schema):
     component_type = fields.String(required=True)
     specific_dto = PolyField(
         serialization_schema_selector=shape_schema_serialization_disambiguation,

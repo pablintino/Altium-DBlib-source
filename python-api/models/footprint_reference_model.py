@@ -24,12 +24,12 @@
 
 
 from sqlalchemy import Column, String, Integer, Boolean
-from sqlalchemy.orm import relationship
 from .join_tables import component_footprint_asc_table
-from .module_base import Base
+from sqlalchemy.orm import relationship
+from app import db
 
 
-class FootprintReference(Base):
+class FootprintReference(db.Model):
     __tablename__ = "footprint_ref"
     id = Column(Integer, primary_key=True)
     footprint_path = Column(String(300))

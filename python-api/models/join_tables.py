@@ -23,9 +23,9 @@
 #
 
 from sqlalchemy import Column, Integer, ForeignKey, Table
-from .module_base import Base
+from app import db
 
-component_footprint_asc_table = Table('component_footprint_asc', Base.metadata,
+component_footprint_asc_table = Table('component_footprint_asc', db.metadata,
                                       Column('component_id', Integer, ForeignKey('component.id')),
                                       Column('footprint_ref_id', Integer, ForeignKey('footprint_ref.id'))
                                       )

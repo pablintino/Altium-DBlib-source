@@ -22,13 +22,13 @@
 #  SOFTWARE.
 #
 
-from app.globals import ma
+from app import marshmallow
 from dtos.component_dtos import CrystalOscillatorDto, DiodeRectifierDto, DiodeTVSDto, FerriteBeadDto, ResistorDto, \
     MosfetTransistorDto, CapacitorDto, DiodeZenerDto, PowerInductorDto, BjtTransistorDto
 from marshmallow import fields, post_load
 
 
-class ComponentSchema(ma.Schema):
+class ComponentSchema(marshmallow.Schema):
     id = fields.Integer(missing=None, default=None)
     type = fields.String()
     mpn = fields.String()

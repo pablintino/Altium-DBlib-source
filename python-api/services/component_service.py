@@ -23,7 +23,7 @@
 #
 
 import logging
-import os
+from app import db
 
 from models import ResistorModel
 
@@ -31,11 +31,22 @@ __logger = logging.getLogger(__name__)
 
 
 def create_resistor_component(resistor_dto):
-    resistor_model = ResistorModel(power_max= resistor_dto.power_max , tolerance=resistor_dto.tolerance)
+    resistor_model = ResistorModel(
+        power_max=resistor_dto.power_max,
+        tolerance=resistor_dto.tolerance,
+        value=resistor_dto.value,
+        package=resistor_dto.package,
+        description=resistor_dto.description,
+        comment=resistor_dto.comment,
+        type=resistor_dto.type,
+        mpn=resistor_dto.mpn,
+        manufacturer=resistor_dto.manufacturer
+    )
     return resistor_model
 
 
 def create_component(dto, component_type):
-    create_resistor_component(dto)
-
-
+    model = create_resistor_component(dto)
+    db.session.add(model)
+    db.session.commit()
+    print(model)

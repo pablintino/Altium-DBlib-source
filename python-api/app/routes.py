@@ -23,6 +23,9 @@
 #
 
 
-import confuse
+from rest_layer.component_list_resource import ComponentListResource
+from rest_layer.metadata_api import MetadataResource
+from app import api
 
-app_config = confuse.Configuration('component-app', __name__)
+api.add_resource(MetadataResource, '/metadata')
+api.add_resource(ComponentListResource, '/components')

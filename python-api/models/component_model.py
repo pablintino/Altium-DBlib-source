@@ -24,13 +24,13 @@
 
 
 from sqlalchemy import Column, String, Integer, DateTime, UniqueConstraint, ForeignKey
+from .join_tables import component_footprint_asc_table
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from .module_base import Base
-from .join_tables import component_footprint_asc_table
+from app import db
 
 
-class ComponentModel(Base):
+class ComponentModel(db.Model):
     __tablename__ = 'component'
 
     # Primary key
