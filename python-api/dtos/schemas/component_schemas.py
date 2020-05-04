@@ -31,8 +31,8 @@ from marshmallow import fields, post_load
 class ComponentSchema(marshmallow.Schema):
     id = fields.Integer(missing=None, default=None)
     type = fields.String()
-    mpn = fields.String()
-    manufacturer = fields.String()
+    mpn = fields.String(required=True)
+    manufacturer = fields.String(required=True)
     value = fields.String()
     package = fields.String()
     description = fields.String()

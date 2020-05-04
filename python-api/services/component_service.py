@@ -22,31 +22,28 @@
 #  SOFTWARE.
 #
 
+
 import logging
 from app import db
-
-from models import ResistorModel
+from dtos import component_model_dto_mappings
+from models import ComponentModel
+from services.exceptions import ResourceAlreadyExists
 
 __logger = logging.getLogger(__name__)
 
 
-def create_resistor_component(resistor_dto):
-    resistor_model = ResistorModel(
-        power_max=resistor_dto.power_max,
-        tolerance=resistor_dto.tolerance,
-        value=resistor_dto.value,
-        package=resistor_dto.package,
-        description=resistor_dto.description,
-        comment=resistor_dto.comment,
-        type=resistor_dto.type,
-        mpn=resistor_dto.mpn,
-        manufacturer=resistor_dto.manufacturer
-    )
-    return resistor_model
-
-
 def create_component(dto, component_type):
-    model = create_resistor_component(dto)
-    db.session.add(model)
-    db.session.commit()
-    print(model)
+    mapper = component_model_dto_mappings.get_mapper_for_dto(dto)
+    model = mapper.to_model(dto)
+    __logger.debug(f'Creating component with mpn={dto.mpn} and manufacturer={dto.manufacturer}')
+    exists = db.session.query(ComponentModel.id).filter_by(mpn=dto.mpn,
+                                                           manufacturer=dto.manufacturer).scalar() is not None
+    if not exists:
+        db.session.add(model)
+        db.session.commit()
+        __logger.debug(f'Component created with ID {model.id}')
+        return model
+    else:
+        __logger.warning(
+            f'Cannot create the given component cause already exists mpn={dto.mpn}, manufacturer={dto.manufacturer}')
+        raise ResourceAlreadyExists(msg='The given component already exists')

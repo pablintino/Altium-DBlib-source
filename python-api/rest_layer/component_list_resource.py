@@ -26,8 +26,10 @@ from flask_restful import Resource
 from flask import request
 from marshmallow import ValidationError
 
+from dtos import component_model_dto_mappings
 from dtos.schemas.create_component_schema import CreateComponentSchema
 from services import component_service
+from services.exceptions import ResourceAlreadyExists
 
 
 class ComponentListResource(Resource):
@@ -35,8 +37,11 @@ class ComponentListResource(Resource):
         json_data = request.json
         try:
             creation_dto = CreateComponentSchema().load(data=json_data)
-            component_service.create_component(creation_dto['specific_dto'], creation_dto['component_type'])
+            model = component_service.create_component(creation_dto['specific_dto'], creation_dto['component_type'])
+            creation_dto['specific_dto'] = component_model_dto_mappings.get_mapper_for_model(model).to_dto(model)
             return CreateComponentSchema().dump(creation_dto), 201
         except ValidationError as error:
             print(error.messages)
             return {"errors": error.messages}, 400
+        except ResourceAlreadyExists as error:
+            return {"errors": error.msg}, 400

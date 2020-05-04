@@ -28,7 +28,7 @@ from .library_reference_model import LibraryReference
 from .footprint_reference_model import FootprintReference
 from .resistor_model import ResistorModel
 from .capacitor_model import CapacitorModel
-from .diode_tvs_model import DiodeZenerModel
+from .diode_tvs_model import DiodeTVSModel
 from .diode_zener_model import DiodeZenerModel
 from .diode_rectifier_model import DiodeRectifierModel
 from .power_inductor_model import PowerInductorModel

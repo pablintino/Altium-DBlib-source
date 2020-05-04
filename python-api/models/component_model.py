@@ -40,8 +40,8 @@ class ComponentModel(db.Model):
     type = Column(String(50))
 
     # General component properties
-    mpn = Column(String(100), nullable=False)
-    manufacturer = Column(String(100), nullable=False)
+    mpn = Column(String(100), nullable=False, index=True)
+    manufacturer = Column(String(100), nullable=False, index=True)
     created_on = Column(DateTime(), default=datetime.now)
     updated_on = Column(DateTime(), default=datetime.now, onupdate=datetime.now)
     value = Column(String(100))

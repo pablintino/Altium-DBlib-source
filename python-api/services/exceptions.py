@@ -1,7 +1,14 @@
 # base app exception
 class Error(Exception):
+    def __init__(self, msg=None):
+        self.msg = msg
     pass
 
 
-class ResourceNotFoundError(Exception):
+class ResourceNotFoundError(Error):
     pass
+
+
+class ResourceAlreadyExists(Error):
+    pass
+

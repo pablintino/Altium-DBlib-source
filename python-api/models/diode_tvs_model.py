@@ -27,7 +27,7 @@ from sqlalchemy import Column, String, ForeignKey
 from .component_model import ComponentModel
 
 
-class DiodeZenerModel(ComponentModel):
+class DiodeTVSModel(ComponentModel):
     __tablename__ = 'diode_tvs'
 
     # Primary key
