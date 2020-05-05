@@ -23,21 +23,21 @@
 #
 
 
-from dtos.component_dtos import ResistorDto, CapacitorDto, DiodeTVSDto, DiodeZenerDto, DiodeRectifierDto, \
+from dtos.components_dtos import ResistorDto, CapacitorDto, DiodeTVSDto, DiodeZenerDto, DiodeRectifierDto, \
     FerriteBeadDto, MosfetTransistorDto, PowerInductorDto, BjtTransistorDto, CrystalOscillatorDto
 from dtos.schemas.component_schemas import BjtTransistorSchema, CapacitorSchema, CrystalOscillatorSchema, \
     DiodeRectifierSchema, DiodeTVSSchema, DiodeZenerSchema, FerriteBeadSchema, MosfetTransistorSchema, \
     PowerInductorSchema, ResistorSchema
 
 
-def get_schema_for_dto(component_type):
+def get_schema_for_dto_name(component_type):
     schema_map = {
         "resistor": ResistorSchema,
         "capacitor": CapacitorSchema,
         "diode_tvs": DiodeTVSSchema,
         "diode_zener": DiodeZenerSchema,
         "diode_rectifier": DiodeRectifierSchema,
-        "ferrite_bead" : FerriteBeadSchema,
+        "ferrite_bead": FerriteBeadSchema,
         "crystal_oscillator": CrystalOscillatorSchema,
         "bjt_transistor": BjtTransistorSchema,
         "mosfet_transistor": MosfetTransistorSchema,
@@ -46,8 +46,7 @@ def get_schema_for_dto(component_type):
     return schema_map.get(component_type)
 
 
-def get_dto_for_schema(schema):
-
+def get_schema_for_dto_class_name(schema):
     schema_map = {
         ResistorDto.__name__: ResistorSchema,
         CapacitorDto.__name__: CapacitorSchema,

@@ -19,3 +19,14 @@ def get_component_metadata():
         components[inheritance_inst] = model_descritor
     return components
 
+
+def get_poymorphic_component_models():
+    models = {}
+    mapper = inspect(ComponentModel)
+    for inheritance_inst in filter(
+            lambda x: mapper.polymorphic_map[x].polymorphic_identity != mapper.polymorphic_identity,
+            mapper.polymorphic_map):
+        comp_mapper = mapper.polymorphic_map[inheritance_inst]
+        models[inheritance_inst]=comp_mapper.entity
+
+    return models

@@ -25,35 +25,33 @@
 
 import logging
 from app import db
-from dtos import components_models_dto_mappings
-from models import ComponentModel
-from services import metadata_service
+from dtos.symbols_dtos import SymbolDto
+from models import LibraryReference
 from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError
 
 __logger = logging.getLogger(__name__)
 
 
-def create_component(dto, component_type):
-    mapper = components_models_dto_mappings.get_mapper_for_dto(dto)
-    model = mapper.to_model(dto)
-    __logger.debug(f'Creating component with mpn={dto.mpn} and manufacturer={dto.manufacturer}')
-    exists = db.session.query(ComponentModel.id).filter_by(mpn=dto.mpn,
-                                                           manufacturer=dto.manufacturer).scalar() is not None
+def create_symbol(symbol_dto):
+    model = SymbolDto.to_model(symbol_dto)
+    __logger.debug(f'Creating symbol with path={symbol_dto.path} and reference={symbol_dto.reference}')
+    exists = db.session.query(LibraryReference.id).filter_by(symbol_path=symbol_dto.path,
+                                                             symbol_ref=symbol_dto.reference).scalar() is not None
     if not exists:
         db.session.add(model)
         db.session.commit()
-        __logger.debug(f'Component created with ID {model.id}')
+        __logger.debug(f'Symbol created with ID {model.id}')
         return model
     else:
         __logger.warning(
-            f'Cannot create the given component cause already exists mpn={dto.mpn}, manufacturer={dto.manufacturer}')
-        raise ResourceAlreadyExists(msg='The given component already exists')
+            f'Cannot create the given symbol cause already exists path={symbol_dto.path} and reference={symbol_dto.reference}')
+        raise ResourceAlreadyExists(msg='The given symbol already exists')
 
 
-def get_component(component_id):
-    __logger.debug(f'Querying component with id={component_id}')
-    component = db.session.query(ComponentModel.id, ComponentModel.type).filter_by(id=component_id).first()
-    if component is None:
-        raise ResourceNotFoundError(f'Component with ID {component_id} does not exist')
+def get_symbol(symbol_id):
+    __logger.debug(f'Querying symbol with id={symbol_id}')
+    symbol = LibraryReference.query.get(symbol_id)
+    if symbol is None:
+        raise ResourceNotFoundError(f'Component with ID {symbol_id} does not exist')
     else:
-        return metadata_service.get_polymorphic_identity(component.type).query.get(component_id)
+        return symbol

@@ -31,6 +31,7 @@ __logger = logging.getLogger(__name__)
 
 # Stores components metadata to present it to api consumers
 __component_metadata = {}
+__polymorphic_identities = {}
 
 
 def get_component_metadata():
@@ -40,9 +41,17 @@ def get_component_metadata():
     return items
 
 
+def get_polymorphic_identity(identity):
+    if identity in __polymorphic_identities:
+        return __polymorphic_identities[identity]
+    return None
+
+
 def __init():
     global __component_metadata
+    global __polymorphic_identities
     __component_metadata = metadata_utils.get_component_metadata()
+    __polymorphic_identities = metadata_utils.get_poymorphic_component_models()
 
 
 # Initialize service instance

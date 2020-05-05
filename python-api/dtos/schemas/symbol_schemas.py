@@ -23,23 +23,19 @@
 #
 
 
-from sqlalchemy import Column, String, Integer
-from sqlalchemy.orm import relationship
-from app import db
+from app import marshmallow
+from marshmallow import fields, post_load
+
+from dtos.symbols_dtos import SymbolDto
 
 
-class LibraryReference(db.Model):
-    __tablename__ = "library_ref"
-    id = Column(Integer, primary_key=True)
-    symbol_path = Column(String(300))
-    symbol_ref = Column(String(150))
-    description = Column(String(200))
+class SymbolSchema(marshmallow.Schema):
+    id = fields.Integer(missing=None, default=None)
+    path = fields.String()
+    reference = fields.String()
+    encoded_data = fields.String()
+    description = fields.String()
 
-    # relationships
-    library_components = relationship("ComponentModel", back_populates='library_ref', lazy=True)
-
-    def __repr__(self):
-        return "LibraryReference %s %s" % (
-            self.symbol_path,
-            self.symbol_ref,
-        )
+    @post_load
+    def make_symbol_dto(self, data, **kwargs):
+        return SymbolDto(**data)

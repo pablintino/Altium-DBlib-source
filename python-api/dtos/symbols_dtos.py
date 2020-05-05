@@ -23,23 +23,36 @@
 #
 
 
-from sqlalchemy import Column, String, Integer
-from sqlalchemy.orm import relationship
-from app import db
+from models import LibraryReference
 
 
-class LibraryReference(db.Model):
-    __tablename__ = "library_ref"
-    id = Column(Integer, primary_key=True)
-    symbol_path = Column(String(300))
-    symbol_ref = Column(String(150))
-    description = Column(String(200))
+class SymbolDto:
 
-    # relationships
-    library_components = relationship("ComponentModel", back_populates='library_ref', lazy=True)
+    def __init__(self, **kwargs):
+        self.id = kwargs.get('id', None)
+        self.path = kwargs.get('path', '')
+        self.reference = kwargs.get('reference', '')
+        self.encoded_data = kwargs.get('encoded_data', '')
+        self.description = kwargs.get('description', '')
 
     def __repr__(self):
-        return "LibraryReference %s %s" % (
-            self.symbol_path,
-            self.symbol_ref,
+        return '%s(%s)' % (
+            type(self).__name__,
+            ', '.join('%s=%s' % item for item in vars(self).items())
         )
+
+    @staticmethod
+    def to_model(data):
+        return LibraryReference(
+            symbol_path=data.path,
+            symbol_ref=data.reference,
+            description=data.description)
+
+    @staticmethod
+    def from_model(data, encoded_symbol):
+        return SymbolDto(
+            id=data.id,
+            path=data.symbol_path,
+            reference=data.symbol_ref,
+            description=data.description,
+            encoded_data=encoded_symbol)

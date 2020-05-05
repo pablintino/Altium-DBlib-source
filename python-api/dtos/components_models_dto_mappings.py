@@ -25,7 +25,7 @@
 
 from abc import abstractmethod, ABC
 
-from dtos.component_dtos import ResistorDto, CapacitorDto, CrystalOscillatorDto, DiodeRectifierDto, DiodeTVSDto, \
+from dtos.components_dtos import ResistorDto, CapacitorDto, CrystalOscillatorDto, DiodeRectifierDto, DiodeTVSDto, \
     DiodeZenerDto, FerriteBeadDto, MosfetTransistorDto, BjtTransistorDto, PowerInductorDto
 from models import ResistorModel, CapacitorModel, CrystalOscillatorModel, DiodeRectifierModel, DiodeZenerModel, \
     DiodeTVSModel, FerriteBeadModel, MosfetTransistorModel, BjtTransistorModel, PowerInductorModel

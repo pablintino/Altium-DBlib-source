@@ -23,9 +23,11 @@
 #
 
 
-from rest_layer.component_list_resource import ComponentListResource
+from rest_layer.component_resource import ComponentResource
 from rest_layer.metadata_api import MetadataResource
 from app import api
+from rest_layer.symbol_resource import SymbolResource
 
 api.add_resource(MetadataResource, '/metadata')
-api.add_resource(ComponentListResource, '/components')
+api.add_resource(ComponentResource, '/components', '/components/<string:id>')
+api.add_resource(SymbolResource, '/symbols', '/symbols/<string:id>')

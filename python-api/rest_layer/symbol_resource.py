@@ -23,23 +23,31 @@
 #
 
 
-from sqlalchemy import Column, String, Integer
-from sqlalchemy.orm import relationship
-from app import db
+from flask_restful import Resource
+from flask import request
+from marshmallow import ValidationError
+
+from dtos.schemas.symbol_schemas import SymbolSchema
+from dtos.symbols_dtos import SymbolDto
+from services import symbols_service
+from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError
 
 
-class LibraryReference(db.Model):
-    __tablename__ = "library_ref"
-    id = Column(Integer, primary_key=True)
-    symbol_path = Column(String(300))
-    symbol_ref = Column(String(150))
-    description = Column(String(200))
+class SymbolResource(Resource):
+    def post(self):
+        try:
+            symbol_dto = SymbolSchema().load(data=request.json)
+            symbol_model = symbols_service.create_symbol(symbol_dto)
+            return SymbolSchema().dump(SymbolDto.from_model(symbol_model, '')), 201
+        except ValidationError as error:
+            print(error.messages)
+            return {"errors": error.messages}, 400
+        except ResourceAlreadyExists as error:
+            return {"errors": error.msg}, 400
 
-    # relationships
-    library_components = relationship("ComponentModel", back_populates='library_ref', lazy=True)
-
-    def __repr__(self):
-        return "LibraryReference %s %s" % (
-            self.symbol_path,
-            self.symbol_ref,
-        )
+    def get(self, id):
+        try:
+            symbol_model = symbols_service.get_symbol(id)
+            return SymbolSchema().dump(SymbolDto.from_model(symbol_model, '')), 201
+        except ResourceNotFoundError as error:
+            return {"errors": error.msg}, 404

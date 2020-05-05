@@ -26,22 +26,31 @@ from flask_restful import Resource
 from flask import request
 from marshmallow import ValidationError
 
-from dtos import component_model_dto_mappings
+from dtos import components_models_dto_mappings
+from dtos.schemas import schema_mapper
 from dtos.schemas.create_component_schema import CreateComponentSchema
 from services import component_service
-from services.exceptions import ResourceAlreadyExists
+from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError
 
 
-class ComponentListResource(Resource):
+class ComponentResource(Resource):
     def post(self):
-        json_data = request.json
         try:
-            creation_dto = CreateComponentSchema().load(data=json_data)
+            creation_dto = CreateComponentSchema().load(data=request.json)
             model = component_service.create_component(creation_dto['specific_dto'], creation_dto['component_type'])
-            creation_dto['specific_dto'] = component_model_dto_mappings.get_mapper_for_model(model).to_dto(model)
+            creation_dto['specific_dto'] = components_models_dto_mappings.get_mapper_for_model(model).to_dto(model)
             return CreateComponentSchema().dump(creation_dto), 201
         except ValidationError as error:
             print(error.messages)
             return {"errors": error.messages}, 400
         except ResourceAlreadyExists as error:
             return {"errors": error.msg}, 400
+
+    def get(self, id):
+        try:
+            model = component_service.get_component(id)
+            resulting_dto = components_models_dto_mappings.get_mapper_for_model(model).to_dto(model)
+            return schema_mapper.get_schema_for_dto_class_name(resulting_dto.__class__.__name__)().dump(
+                resulting_dto), 200
+        except ResourceNotFoundError as error:
+            return {"errors": error.msg}, 404

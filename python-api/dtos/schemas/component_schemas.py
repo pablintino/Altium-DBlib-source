@@ -23,7 +23,7 @@
 #
 
 from app import marshmallow
-from dtos.component_dtos import CrystalOscillatorDto, DiodeRectifierDto, DiodeTVSDto, FerriteBeadDto, ResistorDto, \
+from dtos.components_dtos import CrystalOscillatorDto, DiodeRectifierDto, DiodeTVSDto, FerriteBeadDto, ResistorDto, \
     MosfetTransistorDto, CapacitorDto, DiodeZenerDto, PowerInductorDto, BjtTransistorDto
 from marshmallow import fields, post_load
 
