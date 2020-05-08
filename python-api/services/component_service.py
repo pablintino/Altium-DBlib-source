@@ -26,7 +26,7 @@
 import logging
 from app import db
 from dtos import components_models_dto_mappings
-from models import ComponentModel
+from models import ComponentModel, LibraryReference, FootprintReference
 from services import metadata_service
 from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError
 
@@ -48,6 +48,51 @@ def create_component(dto, component_type):
         __logger.warning(
             f'Cannot create the given component cause already exists mpn={dto.mpn}, manufacturer={dto.manufacturer}')
         raise ResourceAlreadyExists(msg='The given component already exists')
+
+
+def create_symbol_relation(component_id, symbol_id):
+    __logger.debug(f'Creating new symbol relation for component {component_id} and symbol {symbol_id}')
+    component = ComponentModel.query.get(component_id)
+    if component is not None:
+        library_ref = LibraryReference.query.get(symbol_id)
+        if library_ref is not None:
+            component.library_ref = library_ref
+            component.library_ref_id = symbol_id
+            db.session.add(component)
+            db.session.commit()
+            __logger.debug(f'Component symbol updated. Component {component_id} symbol {symbol_id}')
+            return component
+        else:
+            raise ResourceNotFoundError(f'Symbol with ID {symbol_id} does not exist')
+    else:
+        raise ResourceNotFoundError(f'Component with ID {component_id} does not exist')
+
+
+def create_footprint_relation(component_id, footprint_id):
+    __logger.debug(f'Creating new footprint relation for component {component_id} and footprint {footprint_id}')
+    component = ComponentModel.query.get(component_id)
+    if component is not None:
+        footprint_ref = FootprintReference.query.get(footprint_id)
+        if footprint_ref is not None:
+            component.footprint_refs.append(footprint_ref)
+            db.session.add(component)
+            db.session.add(footprint_ref)
+            db.session.commit()
+            __logger.debug(f'Component footprints updated. Component {component_id} symbol {footprint_id}')
+            return component
+        else:
+            raise ResourceNotFoundError(f'Footprint with ID {footprint_id} does not exist')
+    else:
+        raise ResourceNotFoundError(f'Component with ID {component_id} does not exist')
+
+
+def get_component_symbol_relation(component_id):
+    __logger.debug(f'Querying symbol relation for component {component_id}')
+    component = ComponentModel.query.get(component_id)
+    if component is not None:
+        return component.library_ref_id
+    else:
+        raise ResourceNotFoundError(f'Component with ID {component_id} does not exist')
 
 
 def get_component(component_id):

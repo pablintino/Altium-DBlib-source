@@ -37,6 +37,7 @@ create view [Transistors BJT] as select                mpn as [Part Number],
     [Package]                                   = MAX(package),
     [Description]                               = MAX(description),
     [Comment]                                   = MAX(comment),
+    [Through Hole]                              = MAX(CAST([is_through_hole] AS tinyint)),
     [Library Path]                              = MAX(symbol_path),
     [Library Ref]                               = MAX(symbol_ref),
     [Footprint Path 1]                          = MAX([FootprintPath1]),
@@ -44,8 +45,8 @@ create view [Transistors BJT] as select                mpn as [Part Number],
     [Footprint Path 3]                          = MAX([FootprintPath3]),
     [Footprint Ref 1]                           = MAX([FootprintRef1]),
     [Footprint Ref 2]                           = MAX([FootprintRef2]),
-    [Footprint Ref 3]                           = MAX([FootprintRef3]),
-    [Through Hole]                              = MAX(CAST([is_through_hole] AS tinyint))
+    [Footprint Ref 3]                           = MAX([FootprintRef3])
+    
 from (
          select b.vce_sat_max                                                                                   vce_sat_max,
                 b.hfe                                                                                           hfe,
@@ -62,11 +63,11 @@ from (
                 c.package                                                                                       package,
                 c.description                                                                                   description,
                 c.comment                                                                                       comment,
+                c.is_through_hole                                                                               is_through_hole,
                 lf.symbol_path                                                                                  symbol_path,
                 lf.symbol_ref                                                                                   symbol_ref,
                 f.footprint_path                                                                                footprint_path,
                 f.footprint_ref                                                                                 footprint_ref,
-                f.is_through_hole                                                                               is_through_hole,
                 'FootprintPath' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(

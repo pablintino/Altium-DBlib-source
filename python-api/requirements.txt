@@ -7,4 +7,3 @@ flask-sqlalchemy
 flask-marshmallow
 marshmallow-polyfield
 marshmallow-sqlalchemy
-python-dotenv

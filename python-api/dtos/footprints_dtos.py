@@ -23,10 +23,10 @@
 #
 
 
-from models import LibraryReference
+from models import FootprintReference
 
 
-class SymbolDto:
+class FootprintDto:
 
     def __init__(self, **kwargs):
         self.id = kwargs.get('id', None)
@@ -43,25 +43,25 @@ class SymbolDto:
 
     @staticmethod
     def to_model(data):
-        return LibraryReference(
-            symbol_path=data.path,
-            symbol_ref=data.reference,
+        return FootprintReference(
+            footprint_path=data.path,
+            footprint_ref=data.reference,
             description=data.description)
 
     @staticmethod
-    def from_model(data, encoded_symbol):
-        return SymbolDto(
+    def from_model(data, encoded_footprint):
+        return FootprintDto(
             id=data.id,
-            path=data.symbol_path,
-            reference=data.symbol_ref,
+            path=data.footprint_path,
+            reference=data.footprint_ref,
             description=data.description,
-            encoded_data=encoded_symbol)
+            encoded_data=encoded_footprint)
 
 
-class SymbolComponentReferenceDto:
+class FootprintComponentReferenceDto:
 
     def __init__(self, **kwargs):
-        self.symbol_id = kwargs.get('symbol_id', None)
+        self.footprint_id = kwargs.get('footprint_id', None)
 
     def __repr__(self):
         return '%s(%s)' % (

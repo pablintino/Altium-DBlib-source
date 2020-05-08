@@ -23,35 +23,31 @@
 #
 
 
-import logging
-from app import db
-from dtos.symbols_dtos import SymbolDto
-from models import LibraryReference
+from flask_restful import Resource
+from flask import request
+from marshmallow import ValidationError
+
+from dtos.footprints_dtos import FootprintDto
+from dtos.schemas.footprint_schemas import FootprintSchema
+from services import footprints_service
 from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError
 
-__logger = logging.getLogger(__name__)
 
+class FootprintResource(Resource):
+    def post(self):
+        try:
+            footprint_dto = FootprintSchema().load(data=request.json)
+            footprint_model = footprints_service.create_footprint(footprint_dto)
+            return FootprintSchema().dump(FootprintDto.from_model(footprint_model, '')), 201
+        except ValidationError as error:
+            print(error.messages)
+            return {"errors": error.messages}, 400
+        except ResourceAlreadyExists as error:
+            return {"errors": error.msg}, 400
 
-def create_symbol(symbol_dto):
-    model = SymbolDto.to_model(symbol_dto)
-    __logger.debug(f'Creating symbol with path={symbol_dto.path} and reference={symbol_dto.reference}')
-    exists = db.session.query(LibraryReference.id).filter_by(symbol_path=symbol_dto.path,
-                                                             symbol_ref=symbol_dto.reference).scalar() is not None
-    if not exists:
-        db.session.add(model)
-        db.session.commit()
-        __logger.debug(f'Symbol created with ID {model.id}')
-        return model
-    else:
-        __logger.warning(
-            f'Cannot create the given symbol cause already exists path={symbol_dto.path} and reference={symbol_dto.reference}')
-        raise ResourceAlreadyExists(msg='The given symbol already exists')
-
-
-def get_symbol(symbol_id):
-    __logger.debug(f'Querying symbol with id={symbol_id}')
-    symbol = LibraryReference.query.get(symbol_id)
-    if symbol is None:
-        raise ResourceNotFoundError(f'Symbol with ID {symbol_id} does not exist')
-    else:
-        return symbol
+    def get(self, id):
+        try:
+            footprints_model = footprints_service.get_footprint(id)
+            return FootprintSchema().dump(FootprintDto.from_model(footprints_model, '')), 201
+        except ResourceNotFoundError as error:
+            return {"errors": error.msg}, 404

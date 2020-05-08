@@ -25,33 +25,34 @@
 
 import logging
 from app import db
+from dtos.footprints_dtos import FootprintDto
 from dtos.symbols_dtos import SymbolDto
-from models import LibraryReference
+from models import LibraryReference, FootprintReference
 from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError
 
 __logger = logging.getLogger(__name__)
 
 
-def create_symbol(symbol_dto):
-    model = SymbolDto.to_model(symbol_dto)
-    __logger.debug(f'Creating symbol with path={symbol_dto.path} and reference={symbol_dto.reference}')
-    exists = db.session.query(LibraryReference.id).filter_by(symbol_path=symbol_dto.path,
-                                                             symbol_ref=symbol_dto.reference).scalar() is not None
+def create_footprint(footprint_dto):
+    model = FootprintDto.to_model(footprint_dto)
+    __logger.debug(f'Creating footprint with path={footprint_dto.path} and reference={footprint_dto.reference}')
+    exists = db.session.query(FootprintReference.id).filter_by(footprint_path=footprint_dto.path,
+                                                               footprint_ref=footprint_dto.reference).scalar() is not None
     if not exists:
         db.session.add(model)
         db.session.commit()
-        __logger.debug(f'Symbol created with ID {model.id}')
+        __logger.debug(f'Footprint created with ID {model.id}')
         return model
     else:
         __logger.warning(
-            f'Cannot create the given symbol cause already exists path={symbol_dto.path} and reference={symbol_dto.reference}')
-        raise ResourceAlreadyExists(msg='The given symbol already exists')
+            f'Cannot create the given footprint cause already exists path={footprint_dto.path} and reference={footprint_dto.reference}')
+        raise ResourceAlreadyExists(msg='The given footprint already exists')
 
 
-def get_symbol(symbol_id):
-    __logger.debug(f'Querying symbol with id={symbol_id}')
-    symbol = LibraryReference.query.get(symbol_id)
+def get_footprint(footprint_id):
+    __logger.debug(f'Querying footprint with id={footprint_id}')
+    symbol = FootprintReference.query.get(footprint_id)
     if symbol is None:
-        raise ResourceNotFoundError(f'Symbol with ID {symbol_id} does not exist')
+        raise ResourceNotFoundError(f'Footprint with ID {footprint_id} does not exist')
     else:
         return symbol

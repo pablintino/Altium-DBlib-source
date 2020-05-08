@@ -26,7 +26,7 @@
 class ComponentDto:
 
     def __init__(self, **kwargs):
-        self.id = kwargs.get('id', '')
+        self.id = kwargs.get('id', None)
         self.type = kwargs.get('type', '')
         self.mpn = kwargs.get('mpn', '')
         self.manufacturer = kwargs.get('manufacturer', '')
@@ -34,6 +34,7 @@ class ComponentDto:
         self.package = kwargs.get('package', '')
         self.description = kwargs.get('description', '')
         self.comment = kwargs.get('comment', '')
+        self.is_through_hole = kwargs.get('is_through_hole', None)
 
     def __repr__(self):
         return '%s(%s)' % (

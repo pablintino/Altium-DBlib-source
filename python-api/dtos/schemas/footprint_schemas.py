@@ -25,11 +25,10 @@
 
 from app import marshmallow
 from marshmallow import fields, post_load
+from dtos.footprints_dtos import FootprintDto, FootprintComponentReferenceDto
 
-from dtos.symbols_dtos import SymbolDto, SymbolComponentReferenceDto
 
-
-class SymbolSchema(marshmallow.Schema):
+class FootprintSchema(marshmallow.Schema):
     id = fields.Integer(missing=None, default=None)
     path = fields.String()
     reference = fields.String()
@@ -37,13 +36,13 @@ class SymbolSchema(marshmallow.Schema):
     description = fields.String()
 
     @post_load
-    def make_symbol_dto(self, data, **kwargs):
-        return SymbolDto(**data)
+    def make_footprint_dto(self, data, **kwargs):
+        return FootprintDto(**data)
 
 
-class SymbolComponentReferenceSchema(marshmallow.Schema):
-    symbol_id = fields.Integer(required=True)
+class FootprintComponentReferenceSchema(marshmallow.Schema):
+    footprint_id = fields.Integer(required=True)
 
     @post_load
-    def make_symbol_component_reference_dto(self, data, **kwargs):
-        return SymbolComponentReferenceDto(**data)
+    def make_footprint_component_reference_dto(self, data, **kwargs):
+        return FootprintComponentReferenceDto(**data)

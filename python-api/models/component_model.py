@@ -23,7 +23,7 @@
 #
 
 
-from sqlalchemy import Column, String, Integer, DateTime, UniqueConstraint, ForeignKey
+from sqlalchemy import Column, String, Integer, DateTime, UniqueConstraint, ForeignKey, Boolean
 from .join_tables import component_footprint_asc_table
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -48,6 +48,7 @@ class ComponentModel(db.Model):
     package = Column(String(100))
     description = Column(String(200))
     comment = Column(String(100))
+    is_through_hole = Column(Boolean())
 
     # Relationships
     library_ref_id = Column(Integer, ForeignKey('library_ref.id'))

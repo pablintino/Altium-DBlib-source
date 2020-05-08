@@ -58,6 +58,7 @@ class ResistorModelMapper(DtoModelMaper):
             package=dto.package,
             description=dto.description,
             comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
             type=dto.type,
             mpn=dto.mpn,
             manufacturer=dto.manufacturer
@@ -78,6 +79,7 @@ class CapactitorModelMapper(DtoModelMaper):
             package=dto.package,
             description=dto.description,
             comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
             type=dto.type,
             mpn=dto.mpn,
             manufacturer=dto.manufacturer
@@ -98,6 +100,7 @@ class CrystalOscillatorModelMapper(DtoModelMaper):
             package=dto.package,
             description=dto.description,
             comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
             type=dto.type,
             mpn=dto.mpn,
             manufacturer=dto.manufacturer
@@ -120,6 +123,7 @@ class DiodeRectifierModelMapper(DtoModelMaper):
             package=dto.package,
             description=dto.description,
             comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
             type=dto.type,
             mpn=dto.mpn,
             manufacturer=dto.manufacturer
@@ -140,6 +144,7 @@ class DiodeTVSModelMapper(DtoModelMaper):
             package=dto.package,
             description=dto.description,
             comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
             type=dto.type,
             mpn=dto.mpn,
             manufacturer=dto.manufacturer
@@ -161,6 +166,7 @@ class DiodeZenerModelMapper(DtoModelMaper):
             package=dto.package,
             description=dto.description,
             comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
             type=dto.type,
             mpn=dto.mpn,
             manufacturer=dto.manufacturer
@@ -182,6 +188,7 @@ class FerriteBeadModelMapper(DtoModelMaper):
             package=dto.package,
             description=dto.description,
             comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
             type=dto.type,
             mpn=dto.mpn,
             manufacturer=dto.manufacturer
@@ -206,6 +213,7 @@ class MosfetTransistorModelMapper(DtoModelMaper):
             package=dto.package,
             description=dto.description,
             comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
             type=dto.type,
             mpn=dto.mpn,
             manufacturer=dto.manufacturer
@@ -229,6 +237,7 @@ class BjtTransistorModelMapper(DtoModelMaper):
             package=dto.package,
             description=dto.description,
             comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
             type=dto.type,
             mpn=dto.mpn,
             manufacturer=dto.manufacturer
@@ -252,6 +261,7 @@ class PowerInductorModelMapper(DtoModelMaper):
             package=dto.package,
             description=dto.description,
             comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
             type=dto.type,
             mpn=dto.mpn,
             manufacturer=dto.manufacturer

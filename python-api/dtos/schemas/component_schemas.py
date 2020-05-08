@@ -36,6 +36,7 @@ class ComponentSchema(marshmallow.Schema):
     value = fields.String()
     package = fields.String()
     description = fields.String()
+    is_through_hole = fields.Boolean()
     comment = fields.String()
 
 

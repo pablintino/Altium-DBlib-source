@@ -24,10 +24,16 @@
 
 
 from rest_layer.component_resource import ComponentResource
+from rest_layer.footprint_component_reference_resource import FootprintComponentReferenceResource
+from rest_layer.footprint_resource import FootprintResource
 from rest_layer.metadata_api import MetadataResource
 from app import api
+from rest_layer.symbol_component_reference_resource import SymbolComponentReferenceResource
 from rest_layer.symbol_resource import SymbolResource
 
 api.add_resource(MetadataResource, '/metadata')
 api.add_resource(ComponentResource, '/components', '/components/<string:id>')
+api.add_resource(SymbolComponentReferenceResource, '/components/<string:id>/symbol')
+api.add_resource(FootprintComponentReferenceResource, '/components/<string:id>/footprints')
 api.add_resource(SymbolResource, '/symbols', '/symbols/<string:id>')
+api.add_resource(FootprintResource, '/footprints', '/footprints/<string:id>')
