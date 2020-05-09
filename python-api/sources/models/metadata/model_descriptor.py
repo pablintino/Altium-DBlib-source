@@ -1,5 +1,3 @@
-
-
 class FieldModelDescriptor:
     def __init__(self, name, is_mandatory, nullable):
         self.name = name

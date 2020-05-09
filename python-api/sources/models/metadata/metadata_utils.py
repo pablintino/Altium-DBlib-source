@@ -27,6 +27,6 @@ def get_poymorphic_component_models():
             lambda x: mapper.polymorphic_map[x].polymorphic_identity != mapper.polymorphic_identity,
             mapper.polymorphic_map):
         comp_mapper = mapper.polymorphic_map[inheritance_inst]
-        models[inheritance_inst]=comp_mapper.entity
+        models[inheritance_inst] = comp_mapper.entity
 
     return models

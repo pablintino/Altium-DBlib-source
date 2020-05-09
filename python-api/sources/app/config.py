@@ -27,7 +27,6 @@ from os import environ
 
 
 class Config:
-
     # General Flask Config
     SECRET_KEY = environ.get('SECRET_KEY')
     FLASK_ENV = environ.get('FLASK_ENV')

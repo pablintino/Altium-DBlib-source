@@ -52,4 +52,3 @@ class SymbolComponentReferenceResource(Resource):
             return SymbolComponentReferenceSchema().dump(dto), 200
         except ResourceNotFoundError as error:
             return {"errors": error.msg}, 404
-
