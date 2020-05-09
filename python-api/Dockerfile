@@ -36,6 +36,9 @@ RUN apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc-dev
 
 COPY requirements.txt /tmp/
 
+# Set FLASK APP used mainly for migrations
+ENV FLASK_APP='app/wsgi.py'
+
 # upgrade pip and install required python packages
 RUN pip install -U pip
 RUN pip install -r /tmp/requirements.txt

@@ -30,8 +30,8 @@ class Config:
     # General Flask Config
     SECRET_KEY = environ.get('SECRET_KEY')
     FLASK_ENV = environ.get('FLASK_ENV')
-    FLASK_APP = 'wsgi.py'
-    FLASK_DEBUG = 1
+    FLASK_APP = environ.get('FLASK_APP')
+    FLASK_DEBUG = environ.get('FLASK_DEBUG', 1)
 
     # Database
     SQLALCHEMY_DATABASE_URI = environ.get("SQLALCHEMY_DATABASE_URI")
