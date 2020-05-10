@@ -5,13 +5,13 @@ The project is based on:
 - Flask and Flask extensions like Flask-Restful, Flask-SQLAlchemy, Flask-Migrations, etc.
 - SQLAlchemy
 
-##Organization
+## Organization
 - *SQL* directory: Contains the all the views that formats database data into something that Altium can understand. The 
 data in the DB is structured in a multiple table manner but Altium queries a single table for component, symbols and 
 footprints data. This views format that multi-table information into a single table.
 - *sources* directory: The Python API
 
-##Enviroment
+## Enviroment
 The application is meant to be runned as a Docker container. In order to configure the container the following environment variables
 cab be used:
 - SECRET_KEY: Flask secret used for cookies signing among others
