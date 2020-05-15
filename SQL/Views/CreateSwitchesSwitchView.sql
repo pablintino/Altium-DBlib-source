@@ -23,15 +23,14 @@
  *
  **/
 
-create view [Inductors Power] as select                   mpn as [Part Number],
+create view [Switches Switch] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Manufacturer]                              = MAX(manufacturer),
-    [Resistance DCR]                            = MAX(resistance_dcr),
-    [Test Frequency]                            = MAX(inductance_freq_test),
+    [Function]                                  = MAX(function),
+    [Maximum Voltage Rating]                    = MAX(voltage_rating),
     [Current Rating]                            = MAX(current_rating),
-    [Current Saturation]                        = MAX(current_saturation),
-    [Core Material]                             = MAX(core_material),
-    [Tolerance]                                 = MAX(tolerance),
+    [Circuit Type]                              = MAX(circuit_type),
+    [Number of Positions]                       = MAX(number_of_positions),
     [Created On]                                = MAX(created_on),
     [Updated On]                                = MAX(updated_on),
     [Type]                                      = MAX(type),
@@ -47,34 +46,33 @@ create view [Inductors Power] as select                   mpn as [Part Number],
     [Footprint Ref 1]                           = MAX([FootprintRef1]),
     [Footprint Ref 2]                           = MAX([FootprintRef2]),
     [Footprint Ref 3]                           = MAX([FootprintRef3])
+    
 from (
-         select p.resistance_dcr                                                                              resistance_dcr,
-                p.inductance_freq_test                                                                        inductance_freq_test,
-                p.current_rating                                                                              current_rating,
-                p.current_saturation                                                                          current_saturation,
-                p.core_material                                                                               core_material,
-                p.tolerance                                                                                   tolerance,
-                c.manufacturer                                                                                manufacturer,
-                c.mpn                                                                                         mpn,
-                c.value                                                                                       value,
-                c.created_on                                                                                  created_on,
-                c.updated_on                                                                                  updated_on,
-                c.type                                                                                        type,
-                c.package                                                                                     package,
-                c.description                                                                                 description,
-                c.comment                                                                                     comment,
-                c.is_through_hole                                                                             is_through_hole,
-                lf.symbol_path                                                                                symbol_path,
-                lf.symbol_ref                                                                                 symbol_ref,
-                f.footprint_path                                                                              footprint_path,
-                f.footprint_ref                                                                               footprint_ref,
+         select s.voltage_rating                                                                                voltage_rating,
+                s.current_rating                                                                                current_rating,
+                s.circuit_type                                                                                  circuit_type,
+                s.number_of_positions                                                                           number_of_positions,
+                c.manufacturer                                                                                  manufacturer,
+                c.mpn                                                                                           mpn,
+                c.value                                                                                         value,
+                c.created_on                                                                                    created_on,
+                c.updated_on                                                                                    updated_on,
+                c.type                                                                                          type,
+                c.package                                                                                       package,
+                c.description                                                                                   description,
+                c.comment                                                                                       comment,
+                c.is_through_hole                                                                               is_through_hole,
+                lf.symbol_path                                                                                  symbol_path,
+                lf.symbol_ref                                                                                   symbol_ref,
+                f.footprint_path                                                                                footprint_path,
+                f.footprint_ref                                                                                 footprint_ref,
                 'FootprintPath' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from power_inductor p
+         from switch_switch p
                   inner join component c
-                             on p.id = c.id
+                             on s.id = c.id
                   inner join component_footprint_asc cf
                              on c.id = cf.component_id
                   inner join footprint_ref f

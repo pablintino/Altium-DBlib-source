@@ -25,6 +25,7 @@
 
 create view [Transistors BJT] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
+    [Manufacturer]                              = MAX(manufacturer),
     [Collector Emiter Saturation Voltage]       = MAX(vce_sat_max),
     [hfe Gain]                                  = MAX(hfe),
     [Collector Emiter Max. Votage]              = MAX(vce_max),

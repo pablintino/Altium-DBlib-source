@@ -25,6 +25,7 @@
 
 create view [Capacitors 0805] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
+    [Manufacturer]                              = MAX(manufacturer),
     [Tolerance]                                 = MAX(tolerance),
     [Voltage]                                   = MAX(voltage),
     [Composition]                               = MAX(composition),

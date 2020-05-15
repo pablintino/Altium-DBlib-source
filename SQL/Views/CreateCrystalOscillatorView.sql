@@ -25,6 +25,7 @@
 
 create view [Crystal Oscillators] as select           mpn as [Part Number],
     [Value]                                     = MAX(value),
+    [Manufacturer]                              = MAX(manufacturer),
     [Load Capacitance]                          = MAX(load_capacitance),
     [Frequency]                                 = MAX(frequency),
     [Frquency Tolerance]                        = MAX(frequency_tolerance),

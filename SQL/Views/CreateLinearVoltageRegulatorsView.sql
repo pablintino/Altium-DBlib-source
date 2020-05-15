@@ -23,13 +23,17 @@
  *
  **/
 
-
-create view [Capacitors 1206] as select                mpn as [Part Number],
+create view [Linear Regulators] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Manufacturer]                              = MAX(manufacturer),
-    [Tolerance]                                 = MAX(tolerance),
-    [Voltage]                                   = MAX(voltage),
-    [Composition]                               = MAX(composition),
+    [Gain Bandwith]                             = MAX(gain_bandwith),
+    [Minimum/Fixed Output Voltage]              = MAX(voltage_output_min_fixed),
+    [Maximum Output Voltage]                    = MAX(voltage_output_max),
+    [Output Current]                            = MAX(current_output),
+    [Maximum Supply Current]                    = MAX(current_supply_max),
+    [Maximum Dropout Voltage]                   = MAX(voltage_dropout_max),
+    [PSSR]                                      = MAX(pssr),
+    [Output Type]                               = MAX(output_type),
     [Created On]                                = MAX(created_on),
     [Updated On]                                = MAX(updated_on),
     [Type]                                      = MAX(type),
@@ -45,10 +49,16 @@ create view [Capacitors 1206] as select                mpn as [Part Number],
     [Footprint Ref 1]                           = MAX([FootprintRef1]),
     [Footprint Ref 2]                           = MAX([FootprintRef2]),
     [Footprint Ref 3]                           = MAX([FootprintRef3])
+    
 from (
-         select ca.tolerance                                                                                    tolerance,
-                ca.voltage                                                                                      voltage,
-                ca.composition                                                                                  composition,
+         select l.voltage_output_min_fixed                                                                      voltage_output_min_fixed,
+                l.voltage_output_max                                                                            voltage_output_max,
+                l.current_output                                                                                current_output,
+                l.current_supply_max                                                                            current_supply_max,
+                l.voltage_dropout_max                                                                           voltage_dropout_max,
+                l.pssr                                                                                          pssr,
+                l.output_type                                                                                   output_type,
+                l.gain_bandwith                                                                                 gain_bandwith,
                 c.manufacturer                                                                                  manufacturer,
                 c.mpn                                                                                           mpn,
                 c.value                                                                                         value,
@@ -67,16 +77,15 @@ from (
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from capacitor ca
+         from linear_voltage_regulator l
                   inner join component c
-                             on ca.id = c.id
+                             on l.id = c.id
                   inner join component_footprint_asc cf
                              on c.id = cf.component_id
                   inner join footprint_ref f
                              on cf.footprint_ref_id = f.id
                   inner join library_ref lf
                              on c.library_ref_id = lf.id
-		where c.package = '1206 (3216 Metric)'
      ) d
          pivot
          (

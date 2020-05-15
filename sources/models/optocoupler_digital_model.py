@@ -23,8 +23,26 @@
 #
 
 
-from app import create_app
+from sqlalchemy import Column, String, ForeignKey
+from .component_model import ComponentModel
 
 
-if __name__ == '__main__':
-    create_app().run(debug=True, use_debugger=False, use_reloader=False)
+class OptocouplerDigitalModel(ComponentModel):
+    __tablename__ = 'optocoupler_digital'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a digital optocoupler
+    voltage_isolation = Column(String(30))
+    voltage_saturation_max = Column(String(30))
+    current_transfer_ratio_max = Column(String(30))
+    current_transfer_ratio_min = Column(String(30))
+    voltage_forward_typical = Column(String(30))
+    voltage_output_max = Column(String(30))
+    number_of_channels = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

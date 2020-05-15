@@ -23,13 +23,17 @@
  *
  **/
 
-
-create view [Capacitors 1206] as select                mpn as [Part Number],
+create view [OpAmps] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Manufacturer]                              = MAX(manufacturer),
-    [Tolerance]                                 = MAX(tolerance),
-    [Voltage]                                   = MAX(voltage),
-    [Composition]                               = MAX(composition),
+    [Gain Bandwith Product]                     = MAX(gain_bandwith),
+    [Output Type]                               = MAX(output_type),
+    [Input Type]                                = MAX(input_type),
+    [Amplifier Type]                            = MAX(amplifier_type),
+    [Slew Rate]                                 = MAX(slew_rate),
+    [Voltage Supplies]                          = MAX(voltage_supplies),
+    [Input Offset Voltage]                      = MAX(voltage_input_offset),
+    [Output Current]                            = MAX(current_output),
     [Created On]                                = MAX(created_on),
     [Updated On]                                = MAX(updated_on),
     [Type]                                      = MAX(type),
@@ -45,10 +49,16 @@ create view [Capacitors 1206] as select                mpn as [Part Number],
     [Footprint Ref 1]                           = MAX([FootprintRef1]),
     [Footprint Ref 2]                           = MAX([FootprintRef2]),
     [Footprint Ref 3]                           = MAX([FootprintRef3])
+    
 from (
-         select ca.tolerance                                                                                    tolerance,
-                ca.voltage                                                                                      voltage,
-                ca.composition                                                                                  composition,
+         select o.gain_bandwith                                                                                 gain_bandwith,
+                o.output_type                                                                                   output_type,
+                o.input_type                                                                                    input_type,
+                o.amplifier_type                                                                                amplifier_type,
+                o.slew_rate                                                                                     slew_rate,
+                o.voltage_supplies                                                                              voltage_supplies,
+                o.voltage_input_offset                                                                          voltage_input_offset,
+                o.current_output                                                                                current_output,
                 c.manufacturer                                                                                  manufacturer,
                 c.mpn                                                                                           mpn,
                 c.value                                                                                         value,
@@ -67,16 +77,15 @@ from (
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from capacitor ca
+         from opamp o
                   inner join component c
-                             on ca.id = c.id
+                             on o.id = c.id
                   inner join component_footprint_asc cf
                              on c.id = cf.component_id
                   inner join footprint_ref f
                              on cf.footprint_ref_id = f.id
                   inner join library_ref lf
                              on c.library_ref_id = lf.id
-		where c.package = '1206 (3216 Metric)'
      ) d
          pivot
          (

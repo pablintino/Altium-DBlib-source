@@ -23,8 +23,28 @@
 #
 
 
-from app import create_app
+from sqlalchemy import Column, String, ForeignKey
+from .component_model import ComponentModel
 
 
-if __name__ == '__main__':
-    create_app().run(debug=True, use_debugger=False, use_reloader=False)
+class MicrocontrollerModel(ComponentModel):
+    __tablename__ = 'microcontroller'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a resistor
+    core = Column(String(50))
+    core_size = Column(String(30))
+    speed = Column(String(30))
+    flash_size = Column(String(30))
+    ram_size = Column(String(30))
+    peripherals = Column(String(250))
+    connectivity = Column(String(250))
+    voltage_supply = Column(String(50))
+
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

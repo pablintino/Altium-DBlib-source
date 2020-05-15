@@ -23,8 +23,23 @@
 #
 
 
-from app import create_app
+from sqlalchemy import Column, String, ForeignKey
+from .component_model import ComponentModel
 
 
-if __name__ == '__main__':
-    create_app().run(debug=True, use_debugger=False, use_reloader=False)
+class SwitchSwitchModel(ComponentModel):
+    __tablename__ = 'switch_switch'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a switch
+    voltage_rating = Column(String(30))
+    current_rating = Column(String(30))
+    number_of_positions = Column(String(30))
+    circuit_type = Column(String(50))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

@@ -26,9 +26,18 @@
 from abc import abstractmethod, ABC
 
 from dtos.components_dtos import ResistorDto, CapacitorDto, CrystalOscillatorDto, DiodeRectifierDto, DiodeTVSDto, \
-    DiodeZenerDto, FerriteBeadDto, MosfetTransistorDto, BjtTransistorDto, PowerInductorDto
+    DiodeZenerDto, FerriteBeadDto, MosfetTransistorDto, BjtTransistorDto, PowerInductorDto, DCDCVoltageRegulatorDto, \
+    LinearVoltageRegulatorDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
+    OptocouplerLinearDto, LedIndicatorDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto
 from models import ResistorModel, CapacitorModel, CrystalOscillatorModel, DiodeRectifierModel, DiodeZenerModel, \
-    DiodeTVSModel, FerriteBeadModel, MosfetTransistorModel, BjtTransistorModel, PowerInductorModel
+    DiodeTVSModel, FerriteBeadModel, MosfetTransistorModel, BjtTransistorModel, PowerInductorModel, \
+    DCDCVoltageRegulatorModel, LinearVoltageRegulatorModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
+    MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel
+from models.connector_pcb_model import ConnectorPcbModel
+from models.led_indicator import LedIndicatorModel
+from models.switch_pushbutton_model import SwitchPushButtonModel
+from models.switch_switch_model import SwitchSwitchModel
+from models.transceiver_model import TransceiverModel
 
 
 class DtoModelMaper(ABC):
@@ -268,6 +277,321 @@ class PowerInductorModelMapper(DtoModelMaper):
         )
 
 
+class DCDCVoltageRegulatorModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(DCDCVoltageRegulatorModelMapper, self).__init__(DCDCVoltageRegulatorModel, DCDCVoltageRegulatorDto)
+
+    def to_model(self, dto):
+        return DCDCVoltageRegulatorModel(
+            voltage_input_min=dto.voltage_input_min,
+            voltage_output_min_fixed=dto.voltage_output_min_fixed,
+            voltage_output_max=dto.voltage_output_max,
+            current_output=dto.current_output,
+            frequency_switching=dto.frequency_switching,
+            topology=dto.topology,
+            output_type=dto.output_type,
+            number_of_outputs=dto.number_of_outputs,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
+
+class LinearVoltageRegulatorModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(LinearVoltageRegulatorModelMapper, self).__init__(LinearVoltageRegulatorModel, LinearVoltageRegulatorDto)
+
+    def to_model(self, dto):
+        return LinearVoltageRegulatorModel(
+            gain_bandwith=dto.gain_bandwith,
+            output_type=dto.output_type,
+            voltage_output_min_fixed=dto.voltage_output_min_fixed,
+            voltage_output_max=dto.voltage_output_max,
+            voltage_dropout_max=dto.voltage_dropout_max,
+            current_supply_max=dto.current_supply_max,
+            current_output=dto.current_output,
+            pssr=dto.pssr,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
+
+class MicrocontrollerModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(MicrocontrollerModelMapper, self).__init__(MicrocontrollerModel, MicrocontrollerDto)
+
+    def to_model(self, dto):
+        return MicrocontrollerModel(
+            core=dto.core,
+            core_size=dto.core_size,
+            speed=dto.speed,
+            flash_size=dto.flash_size,
+            ram_size=dto.ram_size,
+            peripherals=dto.peripherals,
+            connectivity=dto.connectivity,
+            voltage_supply=dto.voltage_supply,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
+
+class OpAmpModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(OpAmpModelMapper, self).__init__(OpAmpModel, OpAmpDto)
+
+    def to_model(self, dto):
+        return OpAmpModel(
+            gain_bandwith=dto.gain_bandwith,
+            output_type=dto.output_type,
+            input_type=dto.input_type,
+            amplifier_type=dto.amplifier_type,
+            slew_rate=dto.slew_rate,
+            voltage_supplies=dto.voltage_supplies,
+            voltage_input_offset=dto.voltage_input_offset,
+            current_output=dto.current_output,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
+
+class PotentiometerModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(PotentiometerModelMapper, self).__init__(PotentiometerModel, PotentiometerDto)
+
+    def to_model(self, dto):
+        return PotentiometerModel(
+            power_max=dto.power_max,
+            tolerance=dto.tolerance,
+            resistance_min=dto.resistance_min,
+            resistance_max=dto.resistance_max,
+            number_of_turns=dto.number_of_turns,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
+
+class MemoryModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(MemoryModelMapper, self).__init__(MemoryModel, MemoryDto)
+
+    def to_model(self, dto):
+        return MemoryModel(
+            technology=dto.technology,
+            memory_type=dto.memory_type,
+            size=dto.size,
+            interface=dto.interface,
+            clock_frequency=dto.clock_frequency,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
+
+class OptocouplerDigitalModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(OptocouplerDigitalModelMapper, self).__init__(OptocouplerDigitalModel, OptocouplerDigitalDto)
+
+    def to_model(self, dto):
+        return OptocouplerDigitalModel(
+            voltage_isolation=dto.voltage_isolation,
+            voltage_saturation_max=dto.voltage_saturation_max,
+            current_transfer_ratio_max=dto.current_transfer_ratio_max,
+            current_transfer_ratio_min=dto.current_transfer_ratio_min,
+            voltage_forward_typical=dto.voltage_forward_typical,
+            voltage_output_max=dto.voltage_output_max,
+            number_of_channels=dto.number_of_channels,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
+
+class OptocouplerLinearModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(OptocouplerLinearModelMapper, self).__init__(OptocouplerLinearModel, OptocouplerLinearDto)
+
+    def to_model(self, dto):
+        return OptocouplerLinearModel(
+            voltage_isolation=dto.voltage_isolation,
+            transfer_gain=dto.transfer_gain,
+            input_forward_voltage=dto.input_forward_voltage,
+            servo_gain=dto.servo_gain,
+            forward_gain=dto.forward_gain,
+            non_linearity=dto.non_linearity,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
+
+class LedIndicatorModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(LedIndicatorModelMapper, self).__init__(LedIndicatorModel, LedIndicatorDto)
+
+    def to_model(self, dto):
+        return LedIndicatorModelMapper(
+            forward_voltage=dto.forward_voltage,
+            color=dto.color,
+            lens_style=dto.lens_style,
+            lens_transparency=dto.lens_transparency,
+            dominant_wavelength=dto.dominant_wavelength,
+            test_current=dto.test_current,
+            lens_size=dto.lens_size,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
+
+class SwitchPushButtonModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(SwitchPushButtonModelMapper, self).__init__(SwitchPushButtonModel, SwitchPushButtonDto)
+
+    def to_model(self, dto):
+        return SwitchPushButtonModel(
+            function=dto.function,
+            dc_voltage_rating=dto.dc_voltage_rating,
+            ac_voltage_rating=dto.ac_voltage_rating,
+            current_rating=dto.current_rating,
+            circuit_type=dto.circuit_type,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
+
+class SwitchSwitchModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(SwitchSwitchModelMapper, self).__init__(SwitchSwitchModel, SwitchSwitchDto)
+
+    def to_model(self, dto):
+        return SwitchSwitchModel(
+            voltage_rating=dto.voltage_rating,
+            current_rating=dto.current_rating,
+            number_of_positions=dto.number_of_positions,
+            circuit_type=dto.circuit_type,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
+
+class TransceiverModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(TransceiverModelMapper, self).__init__(TransceiverModel, TransceiverDto)
+
+    def to_model(self, dto):
+        return TransceiverModel(
+            duplex=dto.duplex,
+            data_rate=dto.data_rate,
+            protocol=dto.protocol,
+            voltage_supply=dto.voltage_supply,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
+
+class ConnectorPcbModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(ConnectorPcbModelMapper, self).__init__(ConnectorPcbModel, ConnectorPcbDto)
+
+    def to_model(self, dto):
+        return ConnectorPcbModel(
+            orientation=dto.orientation,
+            pitch=dto.pitch,
+            voltage_rating=dto.voltage_rating,
+            current_rating=dto.current_rating,
+            number_of_rows=dto.number_of_rows,
+            number_of_contacts=dto.number_of_contacts,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
+
 mapper_instances = [
     ResistorModelMapper(),
     CapactitorModelMapper(),
@@ -278,7 +602,20 @@ mapper_instances = [
     FerriteBeadModelMapper(),
     MosfetTransistorModelMapper(),
     BjtTransistorModelMapper(),
-    PowerInductorModelMapper()
+    PowerInductorModelMapper(),
+    DCDCVoltageRegulatorModelMapper(),
+    LinearVoltageRegulatorModelMapper(),
+    MicrocontrollerModelMapper(),
+    OpAmpModelMapper(),
+    PotentiometerModelMapper(),
+    MemoryModelMapper(),
+    OptocouplerDigitalModelMapper(),
+    OptocouplerLinearModelMapper(),
+    LedIndicatorModelMapper(),
+    SwitchPushButtonModelMapper(),
+    SwitchSwitchModelMapper(),
+    TransceiverModelMapper(),
+    ConnectorPcbModelMapper()
 ]
 
 model_to_dto_quick_dict = {}

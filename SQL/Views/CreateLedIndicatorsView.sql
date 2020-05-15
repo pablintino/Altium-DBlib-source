@@ -23,15 +23,16 @@
  *
  **/
 
-create view [Inductors Power] as select                   mpn as [Part Number],
+create view [LED Indicators] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Manufacturer]                              = MAX(manufacturer),
-    [Resistance DCR]                            = MAX(resistance_dcr),
-    [Test Frequency]                            = MAX(inductance_freq_test),
-    [Current Rating]                            = MAX(current_rating),
-    [Current Saturation]                        = MAX(current_saturation),
-    [Core Material]                             = MAX(core_material),
-    [Tolerance]                                 = MAX(tolerance),
+    [Gain Bandwith Product]                     = MAX(forward_voltage),
+    [Output Type]                               = MAX(color),
+    [Input Type]                                = MAX(lens_style),
+    [Amplifier Type]                            = MAX(lens_transparency),
+    [Slew Rate]                                 = MAX(dominant_wavelength),
+    [Voltage Supplies]                          = MAX(test_current),
+    [Input Offset Voltage]                      = MAX(lens_size),
     [Created On]                                = MAX(created_on),
     [Updated On]                                = MAX(updated_on),
     [Type]                                      = MAX(type),
@@ -47,34 +48,36 @@ create view [Inductors Power] as select                   mpn as [Part Number],
     [Footprint Ref 1]                           = MAX([FootprintRef1]),
     [Footprint Ref 2]                           = MAX([FootprintRef2]),
     [Footprint Ref 3]                           = MAX([FootprintRef3])
+    
 from (
-         select p.resistance_dcr                                                                              resistance_dcr,
-                p.inductance_freq_test                                                                        inductance_freq_test,
-                p.current_rating                                                                              current_rating,
-                p.current_saturation                                                                          current_saturation,
-                p.core_material                                                                               core_material,
-                p.tolerance                                                                                   tolerance,
-                c.manufacturer                                                                                manufacturer,
-                c.mpn                                                                                         mpn,
-                c.value                                                                                       value,
-                c.created_on                                                                                  created_on,
-                c.updated_on                                                                                  updated_on,
-                c.type                                                                                        type,
-                c.package                                                                                     package,
-                c.description                                                                                 description,
-                c.comment                                                                                     comment,
-                c.is_through_hole                                                                             is_through_hole,
-                lf.symbol_path                                                                                symbol_path,
-                lf.symbol_ref                                                                                 symbol_ref,
-                f.footprint_path                                                                              footprint_path,
-                f.footprint_ref                                                                               footprint_ref,
+         select i.forward_voltage                                                                               forward_voltage,
+                i.color                                                                                         color,
+                i.lens_style                                                                                    lens_style,
+                i.lens_transparency                                                                             lens_transparency,
+                i.dominant_wavelength                                                                           dominant_wavelength,
+                i.test_current                                                                                  test_current,
+                i.lens_size                                                                                     lens_size,
+                c.manufacturer                                                                                  manufacturer,
+                c.mpn                                                                                           mpn,
+                c.value                                                                                         value,
+                c.created_on                                                                                    created_on,
+                c.updated_on                                                                                    updated_on,
+                c.type                                                                                          type,
+                c.package                                                                                       package,
+                c.description                                                                                   description,
+                c.comment                                                                                       comment,
+                c.is_through_hole                                                                               is_through_hole,
+                lf.symbol_path                                                                                  symbol_path,
+                lf.symbol_ref                                                                                   symbol_ref,
+                f.footprint_path                                                                                footprint_path,
+                f.footprint_ref                                                                                 footprint_ref,
                 'FootprintPath' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from power_inductor p
+         from led_indicator i
                   inner join component c
-                             on p.id = c.id
+                             on i.id = c.id
                   inner join component_footprint_asc cf
                              on c.id = cf.component_id
                   inner join footprint_ref f

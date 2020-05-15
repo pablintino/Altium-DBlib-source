@@ -23,8 +23,27 @@
 #
 
 
-from app import create_app
+from sqlalchemy import Column, String, ForeignKey
+from .component_model import ComponentModel
 
 
-if __name__ == '__main__':
-    create_app().run(debug=True, use_debugger=False, use_reloader=False)
+class DCDCVoltageRegulatorModel(ComponentModel):
+    __tablename__ = 'dcdc_voltage_regulator'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a resistor
+    voltage_input_min = Column(String(30))
+    voltage_output_min_fixed = Column(String(30))
+    voltage_output_max = Column(String(30))
+    current_output = Column(String(30))
+    frequency_switching = Column(String(30))
+    topology = Column(String(50))
+    output_type = Column(String(50))
+    number_of_outputs = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

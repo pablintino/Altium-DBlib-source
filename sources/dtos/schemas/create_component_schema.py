@@ -39,7 +39,7 @@ def shape_schema_serialization_disambiguation(base_object, parent_obj):
 
 
 def shape_schema_deserialization_disambiguation(object_dict, parent_object_dict):
-    schema_type = schema_mapper.get_schema_for_dto_name(parent_object_dict.get("component_type"))
+    schema_type = schema_mapper.get_schema_for_component_name(parent_object_dict.get("component_type"))
     if not schema_type:
         raise TypeError("Could not detect type. "
                         "Did not have a base or a length. "

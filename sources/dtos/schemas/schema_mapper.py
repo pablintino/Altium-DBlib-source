@@ -24,24 +24,51 @@
 
 
 from dtos.components_dtos import ResistorDto, CapacitorDto, DiodeTVSDto, DiodeZenerDto, DiodeRectifierDto, \
-    FerriteBeadDto, MosfetTransistorDto, PowerInductorDto, BjtTransistorDto, CrystalOscillatorDto
+    FerriteBeadDto, MosfetTransistorDto, PowerInductorDto, BjtTransistorDto, CrystalOscillatorDto, \
+    LinearVoltageRegulatorDto, DCDCVoltageRegulatorDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, \
+    OptocouplerDigitalDto, OptocouplerLinearDto, LedIndicatorDto, SwitchSwitchDto, SwitchPushButtonDto, ConnectorPcbDto, \
+    TransceiverDto
 from dtos.schemas.component_schemas import BjtTransistorSchema, CapacitorSchema, CrystalOscillatorSchema, \
     DiodeRectifierSchema, DiodeTVSSchema, DiodeZenerSchema, FerriteBeadSchema, MosfetTransistorSchema, \
-    PowerInductorSchema, ResistorSchema
+    PowerInductorSchema, ResistorSchema, DCDCVoltageRegulatorSchema, LinearVoltageRegulatorSchema, \
+    MicrocontrollerSchema, OpAmpSchema, PotentiometerSchema, MemorySchema, OptocouplerDigitalSchema, \
+    OptocouplerLinearSchema, LedIndicatorSchema, SwitchPushButtonSchema, SwitchSwitchSchema, ConnectorPcbSchema, \
+    TransceiverSchema
+from models import ResistorModel, DiodeTVSModel, CapacitorModel, DiodeZenerModel, DiodeRectifierModel, FerriteBeadModel, \
+    PowerInductorModel, CrystalOscillatorModel, BjtTransistorModel, MosfetTransistorModel, DCDCVoltageRegulatorModel, \
+    LinearVoltageRegulatorModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, MemoryModel, \
+    OptocouplerDigitalModel, OptocouplerLinearModel, LedIndicatorModel
+from models.connector_pcb_model import ConnectorPcbModel
+from models.switch_pushbutton_model import SwitchPushButtonModel
+from models.switch_switch_model import SwitchSwitchModel
+from models.transceiver_model import TransceiverModel
 
 
-def get_schema_for_dto_name(component_type):
+def get_schema_for_component_name(component_type):
     schema_map = {
-        "resistor": ResistorSchema,
-        "capacitor": CapacitorSchema,
-        "diode_tvs": DiodeTVSSchema,
-        "diode_zener": DiodeZenerSchema,
-        "diode_rectifier": DiodeRectifierSchema,
-        "ferrite_bead": FerriteBeadSchema,
-        "crystal_oscillator": CrystalOscillatorSchema,
-        "bjt_transistor": BjtTransistorSchema,
-        "mosfet_transistor": MosfetTransistorSchema,
-        "power_inductor": PowerInductorSchema
+        ResistorModel.__tablename__: ResistorSchema,
+        CapacitorModel.__tablename__: CapacitorSchema,
+        DiodeTVSModel.__tablename__: DiodeTVSSchema,
+        DiodeZenerModel.__tablename__: DiodeZenerSchema,
+        DiodeRectifierModel.__tablename__: DiodeRectifierSchema,
+        FerriteBeadModel.__tablename__: FerriteBeadSchema,
+        CrystalOscillatorModel.__tablename__: CrystalOscillatorSchema,
+        BjtTransistorModel.__tablename__: BjtTransistorSchema,
+        MosfetTransistorModel.__tablename__: MosfetTransistorSchema,
+        PowerInductorModel.__tablename__: PowerInductorSchema,
+        DCDCVoltageRegulatorModel.__tablename__: DCDCVoltageRegulatorSchema,
+        LinearVoltageRegulatorModel.__tablename__: LinearVoltageRegulatorSchema,
+        MicrocontrollerModel.__tablename__: MicrocontrollerSchema,
+        OpAmpModel.__tablename__: OpAmpSchema,
+        PotentiometerModel.__tablename__: PotentiometerSchema,
+        MemoryModel.__tablename__: MemorySchema,
+        OptocouplerDigitalModel.__tablename__: OptocouplerDigitalSchema,
+        OptocouplerLinearModel.__tablename__: OptocouplerLinearSchema,
+        LedIndicatorModel.__tablename__: LedIndicatorSchema,
+        SwitchPushButtonModel.__tablename__: SwitchPushButtonSchema,
+        SwitchSwitchModel.__tablename__: SwitchSwitchSchema,
+        TransceiverModel.__tablename__: TransceiverSchema,
+        ConnectorPcbModel.__tablename__: ConnectorPcbSchema
     }
     return schema_map.get(component_type)
 
@@ -58,5 +85,18 @@ def get_schema_for_dto_class_name(schema):
         BjtTransistorDto.__name__: BjtTransistorSchema,
         MosfetTransistorDto.__name__: MosfetTransistorSchema,
         PowerInductorDto.__name__: PowerInductorSchema,
+        DCDCVoltageRegulatorDto.__name__: DCDCVoltageRegulatorSchema,
+        LinearVoltageRegulatorDto.__name__: LinearVoltageRegulatorSchema,
+        MicrocontrollerDto.__name__: MicrocontrollerSchema,
+        OpAmpDto.__name__: OpAmpSchema,
+        PotentiometerDto.__name__: PotentiometerSchema,
+        MemoryDto.__name__: MemorySchema,
+        OptocouplerDigitalDto.__name__: OptocouplerDigitalSchema,
+        OptocouplerLinearDto.__name__: OptocouplerLinearSchema,
+        LedIndicatorDto.__name__: LedIndicatorSchema,
+        SwitchPushButtonDto.__name__: SwitchPushButtonSchema,
+        SwitchSwitchDto.__name__: SwitchSwitchSchema,
+        TransceiverDto.__name__: TransceiverSchema,
+        ConnectorPcbDto.__name__: ConnectorPcbSchema,
     }
     return schema_map.get(schema)

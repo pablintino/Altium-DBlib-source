@@ -23,8 +23,24 @@
 #
 
 
-from app import create_app
+from sqlalchemy import Column, String, ForeignKey
+from .component_model import ComponentModel
 
 
-if __name__ == '__main__':
-    create_app().run(debug=True, use_debugger=False, use_reloader=False)
+class SwitchPushButtonModel(ComponentModel):
+    __tablename__ = 'switch_push_button'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a pushbutton
+    function = Column(String(50))
+    dc_voltage_rating = Column(String(30))
+    ac_voltage_rating = Column(String(30))
+    current_rating = Column(String(30))
+    circuit_type = Column(String(50))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

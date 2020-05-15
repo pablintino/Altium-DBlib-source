@@ -23,8 +23,24 @@
 #
 
 
-from app import create_app
+from sqlalchemy import Column, String, ForeignKey
+from .component_model import ComponentModel
 
 
-if __name__ == '__main__':
-    create_app().run(debug=True, use_debugger=False, use_reloader=False)
+class MemoryModel(ComponentModel):
+    __tablename__ = 'memory'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a memory
+    technology = Column(String(50))
+    memory_type = Column(String(50))
+    size = Column(String(30))
+    interface = Column(String(50))
+    clock_frequency = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

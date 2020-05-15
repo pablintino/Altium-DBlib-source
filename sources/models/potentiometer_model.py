@@ -23,8 +23,24 @@
 #
 
 
-from app import create_app
+from sqlalchemy import Column, String, ForeignKey
+from .component_model import ComponentModel
 
 
-if __name__ == '__main__':
-    create_app().run(debug=True, use_debugger=False, use_reloader=False)
+class PotentiometerModel(ComponentModel):
+    __tablename__ = 'potentiometer'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a resistor
+    power_max = Column(String(30))
+    tolerance = Column(String(30))
+    resistance_min = Column(String(30))
+    resistance_max = Column(String(30))
+    number_of_turns = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

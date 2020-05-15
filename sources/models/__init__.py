@@ -36,6 +36,15 @@ from .ferrite_bead_model import FerriteBeadModel
 from .moset_transistor_model import MosfetTransistorModel
 from .bjt_transistor_model import BjtTransistorModel
 from .crystal_oscillator_model import CrystalOscillatorModel
+from .opamp_model import OpAmpModel
+from .linear_voltage_regulator_model import LinearVoltageRegulatorModel
+from .dcdc_voltage_regulator_model import DCDCVoltageRegulatorModel
+from .potentiometer_model import PotentiometerModel
+from .microcontroller_model import MicrocontrollerModel
+from .optocoupler_digital_model import OptocouplerDigitalModel
+from .optocoupler_linear_model import OptocouplerLinearModel
+from .led_indicator import LedIndicatorModel
+from .memory_model import MemoryModel
 from .component_model import ComponentModel
 from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
 from .join_tables import component_footprint_asc_table

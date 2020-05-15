@@ -23,13 +23,17 @@
  *
  **/
 
-
-create view [Capacitors 1206] as select                mpn as [Part Number],
+create view [Microcontrollers] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Manufacturer]                              = MAX(manufacturer),
-    [Tolerance]                                 = MAX(tolerance),
-    [Voltage]                                   = MAX(voltage),
-    [Composition]                               = MAX(composition),
+    [Core]                                      = MAX(core),
+    [Core Size]                                 = MAX(core_size),
+    [Speed]                                     = MAX(speed),
+    [Flash Size]                                = MAX(flash_size),
+    [RAM Size]                                  = MAX(ram_size),
+    [Peripherals]                               = MAX(peripherals),
+    [Connectivity]                              = MAX(connectivity),
+    [Voltage Supply]                            = MAX(voltage_supply),
     [Created On]                                = MAX(created_on),
     [Updated On]                                = MAX(updated_on),
     [Type]                                      = MAX(type),
@@ -45,10 +49,16 @@ create view [Capacitors 1206] as select                mpn as [Part Number],
     [Footprint Ref 1]                           = MAX([FootprintRef1]),
     [Footprint Ref 2]                           = MAX([FootprintRef2]),
     [Footprint Ref 3]                           = MAX([FootprintRef3])
+    
 from (
-         select ca.tolerance                                                                                    tolerance,
-                ca.voltage                                                                                      voltage,
-                ca.composition                                                                                  composition,
+         select m.core                                                                                          core,
+                m.core_size                                                                                     core_size,
+                m.speed                                                                                         speed,
+                m.flash_size                                                                                    flash_size,
+                m.ram_size                                                                                      ram_size,
+                m.peripherals                                                                                   peripherals,
+                m.connectivity                                                                                  connectivity,
+                m.voltage_supply                                                                                voltage_supply,
                 c.manufacturer                                                                                  manufacturer,
                 c.mpn                                                                                           mpn,
                 c.value                                                                                         value,
@@ -67,16 +77,15 @@ from (
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from capacitor ca
+         from microcontroller m
                   inner join component c
-                             on ca.id = c.id
+                             on m.id = c.id
                   inner join component_footprint_asc cf
                              on c.id = cf.component_id
                   inner join footprint_ref f
                              on cf.footprint_ref_id = f.id
                   inner join library_ref lf
                              on c.library_ref_id = lf.id
-		where c.package = '1206 (3216 Metric)'
      ) d
          pivot
          (

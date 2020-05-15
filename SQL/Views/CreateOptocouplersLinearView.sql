@@ -23,15 +23,15 @@
  *
  **/
 
-create view [Inductors Power] as select                   mpn as [Part Number],
+create view [Optocouplers Linear] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Manufacturer]                              = MAX(manufacturer),
-    [Resistance DCR]                            = MAX(resistance_dcr),
-    [Test Frequency]                            = MAX(inductance_freq_test),
-    [Current Rating]                            = MAX(current_rating),
-    [Current Saturation]                        = MAX(current_saturation),
-    [Core Material]                             = MAX(core_material),
-    [Tolerance]                                 = MAX(tolerance),
+    [Isolation Voltage]                         = MAX(voltage_isolation),
+    [Transfer Gain]                             = MAX(transfer_gain),
+    [Input FOrward Voltage]                     = MAX(input_forward_voltage),
+    [Servo Gain]                                = MAX(servo_gain),
+    [Forward Gain]                              = MAX(forward_gain),
+    [Non Linearity]                             = MAX(non_linearity),
     [Created On]                                = MAX(created_on),
     [Updated On]                                = MAX(updated_on),
     [Type]                                      = MAX(type),
@@ -47,34 +47,35 @@ create view [Inductors Power] as select                   mpn as [Part Number],
     [Footprint Ref 1]                           = MAX([FootprintRef1]),
     [Footprint Ref 2]                           = MAX([FootprintRef2]),
     [Footprint Ref 3]                           = MAX([FootprintRef3])
+    
 from (
-         select p.resistance_dcr                                                                              resistance_dcr,
-                p.inductance_freq_test                                                                        inductance_freq_test,
-                p.current_rating                                                                              current_rating,
-                p.current_saturation                                                                          current_saturation,
-                p.core_material                                                                               core_material,
-                p.tolerance                                                                                   tolerance,
-                c.manufacturer                                                                                manufacturer,
-                c.mpn                                                                                         mpn,
-                c.value                                                                                       value,
-                c.created_on                                                                                  created_on,
-                c.updated_on                                                                                  updated_on,
-                c.type                                                                                        type,
-                c.package                                                                                     package,
-                c.description                                                                                 description,
-                c.comment                                                                                     comment,
-                c.is_through_hole                                                                             is_through_hole,
-                lf.symbol_path                                                                                symbol_path,
-                lf.symbol_ref                                                                                 symbol_ref,
-                f.footprint_path                                                                              footprint_path,
-                f.footprint_ref                                                                               footprint_ref,
+         select o.voltage_isolation                                                                             voltage_isolation,
+                o.transfer_gain                                                                                 transfer_gain,
+                o.input_forward_voltage                                                                         input_forward_voltage,
+                o.servo_gain                                                                                    servo_gain,
+                o.forward_gain                                                                                  forward_gain,
+                o.non_linearity                                                                                 non_linearity,
+                c.manufacturer                                                                                  manufacturer,
+                c.mpn                                                                                           mpn,
+                c.value                                                                                         value,
+                c.created_on                                                                                    created_on,
+                c.updated_on                                                                                    updated_on,
+                c.type                                                                                          type,
+                c.package                                                                                       package,
+                c.description                                                                                   description,
+                c.comment                                                                                       comment,
+                c.is_through_hole                                                                               is_through_hole,
+                lf.symbol_path                                                                                  symbol_path,
+                lf.symbol_ref                                                                                   symbol_ref,
+                f.footprint_path                                                                                footprint_path,
+                f.footprint_ref                                                                                 footprint_ref,
                 'FootprintPath' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from power_inductor p
+         from optocoupler_linear o
                   inner join component c
-                             on p.id = c.id
+                             on o.id = c.id
                   inner join component_footprint_asc cf
                              on c.id = cf.component_id
                   inner join footprint_ref f

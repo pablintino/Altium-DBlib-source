@@ -23,8 +23,23 @@
 #
 
 
-from app import create_app
+from sqlalchemy import Column, String, ForeignKey
+from .component_model import ComponentModel
 
 
-if __name__ == '__main__':
-    create_app().run(debug=True, use_debugger=False, use_reloader=False)
+class TransceiverModel(ComponentModel):
+    __tablename__ = 'transceiver'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a transceiver
+    duplex = Column(String(30))
+    data_rate = Column(String(30))
+    protocol = Column(String(30))
+    voltage_supply = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

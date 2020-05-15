@@ -23,8 +23,25 @@
 #
 
 
-from app import create_app
+from sqlalchemy import Column, String, ForeignKey
+from .component_model import ComponentModel
 
 
-if __name__ == '__main__':
-    create_app().run(debug=True, use_debugger=False, use_reloader=False)
+class OptocouplerLinearModel(ComponentModel):
+    __tablename__ = 'optocoupler_linear'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a linear optocoupler
+    voltage_isolation = Column(String(30))
+    transfer_gain = Column(String(30))
+    input_forward_voltage = Column(String(30))
+    servo_gain = Column(String(30))
+    forward_gain = Column(String(30))
+    non_linearity = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

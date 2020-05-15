@@ -23,8 +23,26 @@
 #
 
 
-from app import create_app
+from sqlalchemy import Column, String, ForeignKey
+from .component_model import ComponentModel
 
 
-if __name__ == '__main__':
-    create_app().run(debug=True, use_debugger=False, use_reloader=False)
+class LedIndicatorModel(ComponentModel):
+    __tablename__ = 'led_indicator'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a led indicator
+    forward_voltage = Column(String(30))
+    color = Column(String(30))
+    lens_style = Column(String(50))
+    lens_transparency = Column(String(30))
+    dominant_wavelength = Column(String(30))
+    test_current = Column(String(30))
+    lens_size = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }
