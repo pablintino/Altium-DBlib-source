@@ -26,7 +26,7 @@
 create view [Switches Pushbuttons] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Manufacturer]                              = MAX(manufacturer),
-    [Function]                                  = MAX(function),
+    [Function]                                  = MAX(function_t),
     [Maximum DC Voltage Rating]                 = MAX(dc_voltage_rating),
     [Maximum RMS Voltage Rating]                = MAX(ac_voltage_rating),
     [Current Rating]                            = MAX(current_rating),
@@ -48,7 +48,7 @@ create view [Switches Pushbuttons] as select                mpn as [Part Number]
     [Footprint Ref 3]                           = MAX([FootprintRef3])
     
 from (
-         select p.function                                                                                      function,
+         select p.[function]                                                                                    function_t,
                 p.dc_voltage_rating                                                                             dc_voltage_rating,
                 p.ac_voltage_rating                                                                             ac_voltage_rating,
                 p.current_rating                                                                                current_rating,
@@ -71,7 +71,7 @@ from (
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from switch_pushbutton p
+         from switch_push_button p
                   inner join component c
                              on p.id = c.id
                   inner join component_footprint_asc cf
