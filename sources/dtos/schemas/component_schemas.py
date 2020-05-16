@@ -35,7 +35,7 @@ class ComponentSchema(marshmallow.Schema):
     type = fields.String()
     mpn = fields.String(required=True)
     manufacturer = fields.String(required=True)
-    value = fields.String()
+    value = fields.String(allow_none=True)
     package = fields.String()
     description = fields.String()
     is_through_hole = fields.Boolean()

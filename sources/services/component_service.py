@@ -36,6 +36,7 @@ __logger = logging.getLogger(__name__)
 def create_component(dto, component_type):
     mapper = components_models_dto_mappings.get_mapper_for_dto(dto)
     model = mapper.to_model(dto)
+    model.type = component_type
     __logger.debug(f'Creating component with mpn={dto.mpn} and manufacturer={dto.manufacturer}')
     exists = db.session.query(ComponentModel.id).filter_by(mpn=dto.mpn,
                                                            manufacturer=dto.manufacturer).scalar() is not None
