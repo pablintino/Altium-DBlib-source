@@ -26,7 +26,6 @@
 create view [Switches Switch] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Manufacturer]                              = MAX(manufacturer),
-    [Function]                                  = MAX(function),
     [Maximum Voltage Rating]                    = MAX(voltage_rating),
     [Current Rating]                            = MAX(current_rating),
     [Circuit Type]                              = MAX(circuit_type),
@@ -70,7 +69,7 @@ from (
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from switch_switch p
+         from switch_switch s
                   inner join component c
                              on s.id = c.id
                   inner join component_footprint_asc cf
