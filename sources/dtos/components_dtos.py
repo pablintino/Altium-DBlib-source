@@ -30,7 +30,7 @@ class ComponentDto:
         self.type = kwargs.get('type', '')
         self.mpn = kwargs.get('mpn', '')
         self.manufacturer = kwargs.get('manufacturer', '')
-        self.value = kwargs.get('value', '')
+        self.value = kwargs.get('value', None)
         self.package = kwargs.get('package', '')
         self.description = kwargs.get('description', '')
         self.comment = kwargs.get('comment', '')
@@ -43,9 +43,9 @@ class ComponentDto:
         )
 
 
-class BjtTransistorDto(ComponentDto):
+class TransistorBjtDto(ComponentDto):
     def __init__(self, **kwargs):
-        super(BjtTransistorDto, self).__init__(**kwargs)
+        super(TransistorBjtDto, self).__init__(**kwargs)
         self.vce_sat_max = kwargs.get('vce_sat_max', '')
         self.hfe = kwargs.get('hfe', '')
         self.vce_max = kwargs.get('vce_max', '')
@@ -106,9 +106,9 @@ class FerriteBeadDto(ComponentDto):
         self.current_rating = kwargs.get('current_rating', '')
 
 
-class MosfetTransistorDto(ComponentDto):
+class TransistorMosfetDto(ComponentDto):
     def __init__(self, **kwargs):
-        super(MosfetTransistorDto, self).__init__(**kwargs)
+        super(TransistorMosfetDto, self).__init__(**kwargs)
         self.rds_on = kwargs.get('rds_on', '')
         self.vgs_th = kwargs.get('vgs_th', '')
         self.vds_max = kwargs.get('vds_max', '')
@@ -134,9 +134,9 @@ class ResistorDto(ComponentDto):
         self.tolerance = kwargs.get('tolerance', '')
 
 
-class DCDCVoltageRegulatorDto(ComponentDto):
+class VoltageRegulatorDCDCDto(ComponentDto):
     def __init__(self, **kwargs):
-        super(DCDCVoltageRegulatorDto, self).__init__(**kwargs)
+        super(VoltageRegulatorDCDCDto, self).__init__(**kwargs)
         self.voltage_input_min = kwargs.get('voltage_input_min', '')
         self.voltage_output_min_fixed = kwargs.get('voltage_output_min_fixed', '')
         self.voltage_output_max = kwargs.get('voltage_output_max', '')
@@ -147,9 +147,9 @@ class DCDCVoltageRegulatorDto(ComponentDto):
         self.number_of_outputs = kwargs.get('number_of_outputs', '')
 
 
-class LinearVoltageRegulatorDto(ComponentDto):
+class VoltageRegulatorLinearDto(ComponentDto):
     def __init__(self, **kwargs):
-        super(LinearVoltageRegulatorDto, self).__init__(**kwargs)
+        super(VoltageRegulatorLinearDto, self).__init__(**kwargs)
         self.gain_bandwith = kwargs.get('gain_bandwith', '')
         self.output_type = kwargs.get('output_type', '')
         self.voltage_output_min_fixed = kwargs.get('voltage_output_min_fixed', '')

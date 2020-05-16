@@ -23,7 +23,6 @@
 #
 
 
-from marshmallow import fields
 from marshmallow_polyfield import PolyField
 from app import marshmallow
 from dtos.schemas import schema_mapper
@@ -39,7 +38,7 @@ def shape_schema_serialization_disambiguation(base_object, parent_obj):
 
 
 def shape_schema_deserialization_disambiguation(object_dict, parent_object_dict):
-    schema_type = schema_mapper.get_schema_for_component_name(parent_object_dict.get("component_type"))
+    schema_type = schema_mapper.get_schema_for_component_name(object_dict.get('type'))
     if not schema_type:
         raise TypeError("Could not detect type. "
                         "Did not have a base or a length. "
@@ -49,7 +48,6 @@ def shape_schema_deserialization_disambiguation(object_dict, parent_object_dict)
 
 
 class CreateComponentSchema(marshmallow.Schema):
-    component_type = fields.String(required=True)
     specific_dto = PolyField(
         serialization_schema_selector=shape_schema_serialization_disambiguation,
         deserialization_schema_selector=shape_schema_deserialization_disambiguation,

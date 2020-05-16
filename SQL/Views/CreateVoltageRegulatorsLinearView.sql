@@ -23,7 +23,7 @@
  *
  **/
 
-create view [Linear Regulators] as select                mpn as [Part Number],
+create view [Regulators Linear] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Manufacturer]                              = MAX(manufacturer),
     [Gain Bandwith]                             = MAX(gain_bandwith),
@@ -77,7 +77,7 @@ from (
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from linear_voltage_regulator l
+         from voltage_regulator_linear l
                   inner join component c
                              on l.id = c.id
                   inner join component_footprint_asc cf

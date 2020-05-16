@@ -23,7 +23,7 @@
  *
  **/
 
-create view [DCDC Regulators] as select                mpn as [Part Number],
+create view [Regulators DCDC] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Manufacturer]                              = MAX(manufacturer),
     [Minimum Input Voltage]                     = MAX(voltage_input_min),
@@ -77,7 +77,7 @@ from (
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from dcdc_voltage_regulator d
+         from voltage_regulator_dcdc d
                   inner join component c
                              on d.id = c.id
                   inner join component_footprint_asc cf

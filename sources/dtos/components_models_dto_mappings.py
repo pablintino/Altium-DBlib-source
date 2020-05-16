@@ -26,18 +26,14 @@
 from abc import abstractmethod, ABC
 
 from dtos.components_dtos import ResistorDto, CapacitorDto, CrystalOscillatorDto, DiodeRectifierDto, DiodeTVSDto, \
-    DiodeZenerDto, FerriteBeadDto, MosfetTransistorDto, BjtTransistorDto, PowerInductorDto, DCDCVoltageRegulatorDto, \
-    LinearVoltageRegulatorDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
+    DiodeZenerDto, FerriteBeadDto, TransistorMosfetDto, TransistorBjtDto, PowerInductorDto, VoltageRegulatorDCDCDto, \
+    VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
     OptocouplerLinearDto, LedIndicatorDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto
 from models import ResistorModel, CapacitorModel, CrystalOscillatorModel, DiodeRectifierModel, DiodeZenerModel, \
-    DiodeTVSModel, FerriteBeadModel, MosfetTransistorModel, BjtTransistorModel, PowerInductorModel, \
-    DCDCVoltageRegulatorModel, LinearVoltageRegulatorModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
-    MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel
-from models.connector_pcb_model import ConnectorPcbModel
-from models.led_indicator import LedIndicatorModel
-from models.switch_pushbutton_model import SwitchPushButtonModel
-from models.switch_switch_model import SwitchSwitchModel
-from models.transceiver_model import TransceiverModel
+    DiodeTVSModel, FerriteBeadModel, TransistorMosfetModel, TransistorBjtModel, PowerInductorModel, \
+    VoltageRegulatorDCDCModel, VoltageRegulatorLinearModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
+    MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel, SwitchPushButtonModel, SwitchSwitchModel, \
+    TransceiverModel, ConnectorPcbModel, LedIndicatorModel
 
 
 class DtoModelMaper(ABC):
@@ -204,13 +200,13 @@ class FerriteBeadModelMapper(DtoModelMaper):
         )
 
 
-class MosfetTransistorModelMapper(DtoModelMaper):
+class TransistorMosfetModelMapper(DtoModelMaper):
 
     def __init__(self):
-        super(MosfetTransistorModelMapper, self).__init__(MosfetTransistorModel, MosfetTransistorDto)
+        super(TransistorMosfetModelMapper, self).__init__(TransistorMosfetModel, TransistorMosfetDto)
 
     def to_model(self, dto):
-        return MosfetTransistorModel(
+        return TransistorMosfetModel(
             rds_on=dto.rds_on,
             vgs_max=dto.vgs_max,
             vgs_th=dto.vgs_th,
@@ -229,13 +225,13 @@ class MosfetTransistorModelMapper(DtoModelMaper):
         )
 
 
-class BjtTransistorModelMapper(DtoModelMaper):
+class TransistorBjtModelMapper(DtoModelMaper):
 
     def __init__(self):
-        super(BjtTransistorModelMapper, self).__init__(BjtTransistorModel, BjtTransistorDto)
+        super(TransistorBjtModelMapper, self).__init__(TransistorBjtModel, TransistorBjtDto)
 
     def to_model(self, dto):
-        return BjtTransistorModel(
+        return TransistorBjtModel(
             vce_sat_max=dto.vce_sat_max,
             hfe=dto.hfe,
             vce_max=dto.vce_max,
@@ -277,13 +273,13 @@ class PowerInductorModelMapper(DtoModelMaper):
         )
 
 
-class DCDCVoltageRegulatorModelMapper(DtoModelMaper):
+class VoltageRegulatorDCDCModelMapper(DtoModelMaper):
 
     def __init__(self):
-        super(DCDCVoltageRegulatorModelMapper, self).__init__(DCDCVoltageRegulatorModel, DCDCVoltageRegulatorDto)
+        super(VoltageRegulatorDCDCModelMapper, self).__init__(VoltageRegulatorDCDCModel, VoltageRegulatorDCDCDto)
 
     def to_model(self, dto):
-        return DCDCVoltageRegulatorModel(
+        return VoltageRegulatorDCDCModel(
             voltage_input_min=dto.voltage_input_min,
             voltage_output_min_fixed=dto.voltage_output_min_fixed,
             voltage_output_max=dto.voltage_output_max,
@@ -303,13 +299,13 @@ class DCDCVoltageRegulatorModelMapper(DtoModelMaper):
         )
 
 
-class LinearVoltageRegulatorModelMapper(DtoModelMaper):
+class VoltageRegulatorLinearModelMapper(DtoModelMaper):
 
     def __init__(self):
-        super(LinearVoltageRegulatorModelMapper, self).__init__(LinearVoltageRegulatorModel, LinearVoltageRegulatorDto)
+        super(VoltageRegulatorLinearModelMapper, self).__init__(VoltageRegulatorLinearModel, VoltageRegulatorLinearDto)
 
     def to_model(self, dto):
-        return LinearVoltageRegulatorModel(
+        return VoltageRegulatorLinearModel(
             gain_bandwith=dto.gain_bandwith,
             output_type=dto.output_type,
             voltage_output_min_fixed=dto.voltage_output_min_fixed,
@@ -600,11 +596,11 @@ mapper_instances = [
     DiodeTVSModelMapper(),
     DiodeZenerModelMapper(),
     FerriteBeadModelMapper(),
-    MosfetTransistorModelMapper(),
-    BjtTransistorModelMapper(),
+    TransistorMosfetModelMapper(),
+    TransistorBjtModelMapper(),
     PowerInductorModelMapper(),
-    DCDCVoltageRegulatorModelMapper(),
-    LinearVoltageRegulatorModelMapper(),
+    VoltageRegulatorDCDCModelMapper(),
+    VoltageRegulatorLinearModelMapper(),
     MicrocontrollerModelMapper(),
     OpAmpModelMapper(),
     PotentiometerModelMapper(),

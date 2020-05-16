@@ -33,10 +33,9 @@ from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError
 __logger = logging.getLogger(__name__)
 
 
-def create_component(dto, component_type):
+def create_component(dto):
     mapper = components_models_dto_mappings.get_mapper_for_dto(dto)
     model = mapper.to_model(dto)
-    model.type = component_type
     __logger.debug(f'Creating component with mpn={dto.mpn} and manufacturer={dto.manufacturer}')
     exists = db.session.query(ComponentModel.id).filter_by(mpn=dto.mpn,
                                                            manufacturer=dto.manufacturer).scalar() is not None
@@ -103,3 +102,12 @@ def get_component(component_id):
         raise ResourceNotFoundError(f'Component with ID {component_id} does not exist')
     else:
         return metadata_service.get_polymorphic_identity(component.type).query.get(component_id)
+
+
+def delete_component(component_id):
+    __logger.debug(f'Deleting component with id={component_id}')
+    component = ComponentModel.query.get(component_id)
+    if component is not None:
+        db.session.delete(component)
+        db.session.commit()
+        __logger.debug(f'Deleted component with id={component_id}')

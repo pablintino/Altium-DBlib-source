@@ -73,7 +73,7 @@ from (
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from bjt_transistor b
+         from transistor_bjt b
                   inner join component c
                              on b.id = c.id
                   inner join component_footprint_asc cf

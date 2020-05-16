@@ -24,8 +24,8 @@
 
 from app import marshmallow
 from dtos.components_dtos import CrystalOscillatorDto, DiodeRectifierDto, DiodeTVSDto, FerriteBeadDto, ResistorDto, \
-    MosfetTransistorDto, CapacitorDto, DiodeZenerDto, PowerInductorDto, BjtTransistorDto, DCDCVoltageRegulatorDto, \
-    LinearVoltageRegulatorDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
+    TransistorMosfetDto, CapacitorDto, DiodeZenerDto, PowerInductorDto, TransistorBjtDto, VoltageRegulatorDCDCDto, \
+    VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
     OptocouplerLinearDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto
 from marshmallow import fields, post_load
 
@@ -115,7 +115,7 @@ class CapacitorSchema(ComponentSchema):
         return CapacitorDto(**data)
 
 
-class MosfetTransistorSchema(ComponentSchema):
+class TransistorMosfetSchema(ComponentSchema):
     rds_on = fields.String()
     vgs_th = fields.String()
     vds_max = fields.String()
@@ -124,8 +124,8 @@ class MosfetTransistorSchema(ComponentSchema):
     channel_type = fields.String()
 
     @post_load
-    def make_mosfet_transistor_dto(self, data, **kwargs):
-        return MosfetTransistorDto(**data)
+    def make_transistor_mosfet_dto(self, data, **kwargs):
+        return TransistorMosfetDto(**data)
 
 
 class PowerInductorSchema(ComponentSchema):
@@ -137,7 +137,7 @@ class PowerInductorSchema(ComponentSchema):
         return PowerInductorDto(**data)
 
 
-class BjtTransistorSchema(ComponentSchema):
+class TransistorBjtSchema(ComponentSchema):
     forward_voltage = fields.String()
     reverse_current_leakage = fields.String()
     max_forward_average_current = fields.String()
@@ -145,11 +145,11 @@ class BjtTransistorSchema(ComponentSchema):
     diode_type = fields.String()
 
     @post_load
-    def make_bjt_transistor_dto(self, data, **kwargs):
-        return BjtTransistorDto(**data)
+    def make_transistor_bjt_dto(self, data, **kwargs):
+        return TransistorBjtDto(**data)
 
 
-class DCDCVoltageRegulatorSchema(ComponentSchema):
+class VoltageRegulatorDCDCSchema(ComponentSchema):
     voltage_input_min = fields.String()
     voltage_output_min_fixed = fields.String()
     voltage_output_max = fields.String()
@@ -160,11 +160,11 @@ class DCDCVoltageRegulatorSchema(ComponentSchema):
     number_of_outputs = fields.String()
 
     @post_load
-    def make_dcdc_voltage_regulator_dto(self, data, **kwargs):
-        return DCDCVoltageRegulatorDto(**data)
+    def make_voltage_regulator_dcdc_dto(self, data, **kwargs):
+        return VoltageRegulatorDCDCDto(**data)
 
 
-class LinearVoltageRegulatorSchema(ComponentSchema):
+class VoltageRegulatorLinearSchema(ComponentSchema):
     gain_bandwith = fields.String()
     output_type = fields.String()
     voltage_output_min_fixed = fields.String()
@@ -175,8 +175,8 @@ class LinearVoltageRegulatorSchema(ComponentSchema):
     pssr = fields.String()
 
     @post_load
-    def make_linear_voltage_regulator_dto(self, data, **kwargs):
-        return LinearVoltageRegulatorDto(**data)
+    def make_voltage_regulator_linear_dto(self, data, **kwargs):
+        return VoltageRegulatorLinearDto(**data)
 
 
 class MicrocontrollerSchema(ComponentSchema):

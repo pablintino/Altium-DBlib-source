@@ -37,7 +37,7 @@ class ComponentResource(Resource):
     def post(self):
         try:
             creation_dto = CreateComponentSchema().load(data=request.json)
-            model = component_service.create_component(creation_dto['specific_dto'], creation_dto['component_type'])
+            model = component_service.create_component(creation_dto['specific_dto'])
             creation_dto['specific_dto'] = components_models_dto_mappings.get_mapper_for_model(model).to_dto(model)
             return CreateComponentSchema().dump(creation_dto), 201
         except ValidationError as error:
@@ -54,3 +54,7 @@ class ComponentResource(Resource):
                 resulting_dto), 200
         except ResourceNotFoundError as error:
             return {"errors": error.msg}, 404
+
+    def delete(self, id):
+        component_service.delete_component(id)
+        return {}, 204

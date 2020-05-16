@@ -27,21 +27,20 @@ from sqlalchemy import Column, String, ForeignKey
 from .component_model import ComponentModel
 
 
-class DCDCVoltageRegulatorModel(ComponentModel):
-    __tablename__ = 'dcdc_voltage_regulator'
+class TransistorMosfetModel(ComponentModel):
+    __tablename__ = 'transistor_mosfet'
 
     # Primary key
     id = Column(ForeignKey("component.id"), primary_key=True)
 
-    # Specific properties of a resistor
-    voltage_input_min = Column(String(30))
-    voltage_output_min_fixed = Column(String(30))
-    voltage_output_max = Column(String(30))
-    current_output = Column(String(30))
-    frequency_switching = Column(String(30))
-    topology = Column(String(50))
-    output_type = Column(String(50))
-    number_of_outputs = Column(String(30))
+    # Specific properties of a MOSFET
+    rds_on = Column(String(30))
+    vgs_max = Column(String(30))
+    vgs_th = Column(String(30))
+    vds_max = Column(String(30))
+    ids_max = Column(String(30))
+    power_max = Column(String(30))
+    channel_type = Column(String(30))
 
     # Tells the ORM the type of a specific component by the distinguish column
     __mapper_args__ = {

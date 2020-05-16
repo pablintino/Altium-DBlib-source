@@ -33,18 +33,23 @@ from .diode_zener_model import DiodeZenerModel
 from .diode_rectifier_model import DiodeRectifierModel
 from .power_inductor_model import PowerInductorModel
 from .ferrite_bead_model import FerriteBeadModel
-from .moset_transistor_model import MosfetTransistorModel
-from .bjt_transistor_model import BjtTransistorModel
+from .transistor_mosfet_model import TransistorMosfetModel
+from .transistor_bjt_model import TransistorBjtModel
 from .crystal_oscillator_model import CrystalOscillatorModel
 from .opamp_model import OpAmpModel
-from .linear_voltage_regulator_model import LinearVoltageRegulatorModel
-from .dcdc_voltage_regulator_model import DCDCVoltageRegulatorModel
+from .voltage_regulator_linear_model import VoltageRegulatorLinearModel
+from .voltage_regulator_dcdc_model import VoltageRegulatorDCDCModel
 from .potentiometer_model import PotentiometerModel
 from .microcontroller_model import MicrocontrollerModel
 from .optocoupler_digital_model import OptocouplerDigitalModel
 from .optocoupler_linear_model import OptocouplerLinearModel
 from .led_indicator import LedIndicatorModel
 from .memory_model import MemoryModel
+from .connector_pcb_model import ConnectorPcbModel
+from .led_indicator import LedIndicatorModel
+from .switch_pushbutton_model import SwitchPushButtonModel
+from .switch_switch_model import SwitchSwitchModel
+from .transceiver_model import TransceiverModel
 from .component_model import ComponentModel
 from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
 from .join_tables import component_footprint_asc_table
