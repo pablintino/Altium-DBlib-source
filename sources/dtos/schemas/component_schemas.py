@@ -138,11 +138,12 @@ class PowerInductorSchema(ComponentSchema):
 
 
 class TransistorBjtSchema(ComponentSchema):
-    forward_voltage = fields.String()
-    reverse_current_leakage = fields.String()
-    max_forward_average_current = fields.String()
-    max_reverse_vrrm = fields.String()
-    diode_type = fields.String()
+    vce_sat_max = fields.String()
+    hfe = fields.String()
+    vce_max = fields.String()
+    ic_max = fields.String()
+    power_max = fields.String()
+    bjt_type = fields.String()
 
     @post_load
     def make_transistor_bjt_dto(self, data, **kwargs):
