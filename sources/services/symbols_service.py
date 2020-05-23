@@ -23,20 +23,60 @@
 #
 
 
+import base64
+import binascii
 import logging
 from app import db
-from dtos.symbols_dtos import SymbolDto
 from models import LibraryReference
-from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError
+from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError, InvalidSymbolError
+from utils import parse_olefile_library, LibType
 
 __logger = logging.getLogger(__name__)
 
 
 def create_symbol(symbol_dto):
-    model = SymbolDto.to_model(symbol_dto)
-    __logger.debug(f'Creating symbol with path={symbol_dto.path} and reference={symbol_dto.reference}')
+    reference_name = symbol_dto.reference
+    symbol_description = symbol_dto.description
+
+    # If binary is provided try to parse it
+    if symbol_dto.encoded_data:
+        try:
+            # Parse the given data
+            decoded_data = base64.b64decode(symbol_dto.encoded_data)
+            lib = parse_olefile_library(decoded_data)
+        except binascii.Error:
+            raise InvalidSymbolError(f'Invalid base64 encoded data. Incorrect padding')
+        except IOError as err:
+            raise InvalidSymbolError(f'The given Altium file is corrupt', err.args[0] if len(err.args) > 0 else None)
+
+        # Be sure that a Schematic library has been provided
+        if lib.lib_type != LibType.SCH:
+            raise InvalidSymbolError(f'The given encoded data is not a of {LibType.SCH} type')
+
+    # Verify that the body contains enough information
+    if not reference_name and not lib:
+        raise InvalidSymbolError('Neither reference name nor encoded data provided')
+    elif lib:
+        # Try to obtain the reference from the library data
+        if lib.count != 1:
+            raise InvalidSymbolError(f'More than one part in the given {lib.lib_type} Library. Provide a reference')
+        else:
+            reference_name = lib.parts[next(iter(lib.parts.keys()))].name
+
+    # If reference name and lib are provided check that the reference exists
+    if lib and symbol_dto.reference:
+        if not lib.part_exists(symbol_dto.reference):
+            raise InvalidSymbolError(f'The given reference {symbol_dto.reference} does not exist in the given library')
+
+    # If library is provided but no description is given try to populate it from library
+    if lib and not symbol_description:
+        symbol_description = lib.parts[reference_name].description
+
+    model = LibraryReference(symbol_path=symbol_dto.path, symbol_ref=reference_name, description=symbol_description)
+
+    __logger.debug(f'Creating symbol with path={symbol_dto.path} and reference={reference_name}')
     exists = db.session.query(LibraryReference.id).filter_by(symbol_path=symbol_dto.path,
-                                                             symbol_ref=symbol_dto.reference).scalar() is not None
+                                                             symbol_ref=reference_name).scalar() is not None
     if not exists:
         db.session.add(model)
         db.session.commit()
@@ -44,7 +84,7 @@ def create_symbol(symbol_dto):
         return model
     else:
         __logger.warning(
-            f'Cannot create the given symbol cause already exists path={symbol_dto.path} and reference={symbol_dto.reference}')
+            f'Cannot create the given symbol cause already exists path={symbol_dto.path} and reference={reference_name}')
         raise ResourceAlreadyExists(msg='The given symbol already exists')
 
 

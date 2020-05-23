@@ -20,6 +20,16 @@ def get_component_metadata():
     return components
 
 
+def get_common_component_metadata():
+    mapper = inspect(ComponentModel)
+    common_descriptor = ModelDescriptor(ComponentModel.__name__)
+    for attr in mapper.attrs:
+        if type(attr) is ColumnProperty:
+            common_descriptor.add_field(attr.key, attr.expression.unique or attr.expression.primary_key,
+                                          attr.expression.nullable)
+    return common_descriptor
+
+
 def get_poymorphic_component_models():
     models = {}
     mapper = inspect(ComponentModel)

@@ -24,7 +24,7 @@
 
 
 from models.metadata import metadata_utils
-from services.exceptions import ResourceNotFoundError
+from services.exceptions import ResourceInvalidQuery
 import logging
 
 __logger = logging.getLogger(__name__)
@@ -32,6 +32,7 @@ __logger = logging.getLogger(__name__)
 # Stores components metadata to present it to api consumers
 __component_metadata = {}
 __polymorphic_identities = {}
+__common_component_metadata = {}
 
 
 def get_component_metadata():
@@ -39,6 +40,25 @@ def get_component_metadata():
     for comp_name, comp_type in __component_metadata.items():
         items.append(comp_type)
     return items
+
+
+def are_fields_valid(fields):
+    global __common_component_metadata
+    global __component_metadata
+
+    type_filter = fields.get('type', None)
+    model_metadata = __common_component_metadata
+    if type_filter:
+        component_descriptor = __component_metadata.get(type_filter, None)
+        if not component_descriptor:
+            return False, 'Invalid query component type'
+        else:
+            model_metadata = component_descriptor
+
+    for field in fields:
+        if not model_metadata.get_field(field):
+            return False, field
+    return True, ''
 
 
 def get_polymorphic_identity(identity):
@@ -50,8 +70,10 @@ def get_polymorphic_identity(identity):
 def __init():
     global __component_metadata
     global __polymorphic_identities
+    global __common_component_metadata
     __component_metadata = metadata_utils.get_component_metadata()
     __polymorphic_identities = metadata_utils.get_poymorphic_component_models()
+    __common_component_metadata = metadata_utils.get_common_component_metadata()
 
 
 # Initialize service instance

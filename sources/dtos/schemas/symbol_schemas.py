@@ -32,9 +32,9 @@ from dtos.symbols_dtos import SymbolDto, SymbolComponentReferenceDto
 class SymbolSchema(marshmallow.Schema):
     id = fields.Integer(missing=None, default=None)
     path = fields.String()
-    reference = fields.String()
-    encoded_data = fields.String()
-    description = fields.String()
+    reference = fields.String(required=None, missing=None)
+    encoded_data = fields.String(required=False, missing=None)
+    description = fields.String(required=None, missing=None)
 
     @post_load
     def make_symbol_dto(self, data, **kwargs):

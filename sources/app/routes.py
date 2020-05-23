@@ -21,8 +21,7 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 #
-
-
+from rest_layer.component_list_resource import ComponentListResource
 from rest_layer.component_resource import ComponentResource
 from rest_layer.footprint_component_reference_resource import FootprintComponentReferenceResource
 from rest_layer.footprint_resource import FootprintResource
@@ -32,7 +31,8 @@ from rest_layer.symbol_component_reference_resource import SymbolComponentRefere
 from rest_layer.symbol_resource import SymbolResource
 
 api.add_resource(MetadataResource, '/metadata')
-api.add_resource(ComponentResource, '/components', '/components/<string:id>')
+api.add_resource(ComponentListResource, '/components')
+api.add_resource(ComponentResource, '/components/<string:id>')
 api.add_resource(SymbolComponentReferenceResource, '/components/<string:id>/symbol')
 api.add_resource(FootprintComponentReferenceResource, '/components/<string:id>/footprints')
 api.add_resource(SymbolResource, '/symbols', '/symbols/<string:id>')

@@ -28,23 +28,11 @@ from marshmallow import ValidationError
 
 from dtos import components_models_dto_mappings
 from dtos.schemas import schema_mapper
-from dtos.schemas.create_component_schema import CreateComponentSchema
 from services import component_service
-from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError
+from services.exceptions import ResourceNotFoundError
 
 
 class ComponentResource(Resource):
-    def post(self):
-        try:
-            creation_dto = CreateComponentSchema().load(data=request.json)
-            model = component_service.create_component(creation_dto['specific_dto'])
-            creation_dto['specific_dto'] = components_models_dto_mappings.get_mapper_for_model(model).to_dto(model)
-            return CreateComponentSchema().dump(creation_dto), 201
-        except ValidationError as error:
-            print(error.messages)
-            return {"errors": error.messages}, 400
-        except ResourceAlreadyExists as error:
-            return {"errors": error.msg}, 400
 
     def get(self, id):
         try:

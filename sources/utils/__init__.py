@@ -23,30 +23,4 @@
 #
 
 
-# base app exception
-class Error(Exception):
-    def __init__(self, msg=None, details=None):
-        self.msg = msg
-        self.details = details
-
-    pass
-
-
-class ResourceNotFoundError(Error):
-    pass
-
-
-class ResourceAlreadyExists(Error):
-    pass
-
-
-class ResourceInvalidQuery(Error):
-    pass
-
-
-class InvalidSymbolError(Error):
-    pass
-
-
-class InvalidFootprintError(Error):
-    pass
+from .altium_olefile_parser import parse_olefile_library, Library, LibType, SchComponent, PcbComponent

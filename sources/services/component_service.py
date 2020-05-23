@@ -28,7 +28,7 @@ from app import db
 from dtos import components_models_dto_mappings
 from models import ComponentModel, LibraryReference, FootprintReference
 from services import metadata_service
-from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError
+from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError, ResourceInvalidQuery
 
 __logger = logging.getLogger(__name__)
 
@@ -102,6 +102,18 @@ def get_component(component_id):
         raise ResourceNotFoundError(f'Component with ID {component_id} does not exist')
     else:
         return metadata_service.get_polymorphic_identity(component.type).query.get(component_id)
+
+
+def get_component_search(page_number, page_size, filters):
+    __logger.debug(f'Querying components with page number {page_number} and page size {page_size}')
+
+    res, msg = metadata_service.are_fields_valid(filters)
+    if not res:
+        raise ResourceInvalidQuery(msg)
+
+    components_page = ComponentModel.query.filter_by(**filters)\
+        .order_by(ComponentModel.id.desc()).paginate(page_number, per_page=page_size)
+    return components_page
 
 
 def delete_component(component_id):

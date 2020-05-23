@@ -21,6 +21,9 @@ class ModelDescriptor:
         if name not in self.fields:
             self.fields[name] = FieldModelDescriptor(name, is_mandatory, nullable)
 
+    def get_field(self, name):
+        return self.fields.get(name, None)
+
     def __repr__(self):
         return '%s(%s)' % (
             type(self).__name__,

@@ -30,7 +30,7 @@ from marshmallow import ValidationError
 from dtos.schemas.symbol_schemas import SymbolSchema
 from dtos.symbols_dtos import SymbolDto
 from services import symbols_service
-from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError
+from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError, InvalidSymbolError
 
 
 class SymbolResource(Resource):
@@ -39,11 +39,12 @@ class SymbolResource(Resource):
             symbol_dto = SymbolSchema().load(data=request.json)
             symbol_model = symbols_service.create_symbol(symbol_dto)
             return SymbolSchema().dump(SymbolDto.from_model(symbol_model, '')), 201
+        except InvalidSymbolError as error:
+            return {"errors": error.msg, "details": error.details}, 400
         except ValidationError as error:
-            print(error.messages)
             return {"errors": error.messages}, 400
         except ResourceAlreadyExists as error:
-            return {"errors": error.msg}, 400
+            return {"errors": error.msg, "details": error.details}, 400
 
     def get(self, id):
         try:

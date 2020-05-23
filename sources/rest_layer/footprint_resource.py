@@ -30,7 +30,7 @@ from marshmallow import ValidationError
 from dtos.footprints_dtos import FootprintDto
 from dtos.schemas.footprint_schemas import FootprintSchema
 from services import footprints_service
-from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError
+from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError, InvalidFootprintError
 
 
 class FootprintResource(Resource):
@@ -43,7 +43,9 @@ class FootprintResource(Resource):
             print(error.messages)
             return {"errors": error.messages}, 400
         except ResourceAlreadyExists as error:
-            return {"errors": error.msg}, 400
+            return {"errors": error.msg, "details": error.details}, 400
+        except InvalidFootprintError as error:
+            return {"errors": error.msg, "details": error.details}, 400
 
     def get(self, id):
         try:

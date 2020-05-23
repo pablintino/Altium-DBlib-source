@@ -21,23 +21,64 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 #
-
-
+import base64
+import binascii
 import logging
 from app import db
 from dtos.footprints_dtos import FootprintDto
-from dtos.symbols_dtos import SymbolDto
-from models import LibraryReference, FootprintReference
-from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError
+from models import FootprintReference
+from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError, InvalidFootprintError
+from utils import parse_olefile_library, LibType
 
 __logger = logging.getLogger(__name__)
 
 
 def create_footprint(footprint_dto):
-    model = FootprintDto.to_model(footprint_dto)
-    __logger.debug(f'Creating footprint with path={footprint_dto.path} and reference={footprint_dto.reference}')
-    exists = db.session.query(FootprintReference.id).filter_by(footprint_path=footprint_dto.path,
-                                                               footprint_ref=footprint_dto.reference).scalar() is not None
+    reference_name = footprint_dto.reference
+    footprint_description = footprint_dto.description
+
+    # If binary is provided try to parse it
+    if footprint_dto.encoded_data:
+        try:
+            # Parse the given data
+            decoded_data = base64.b64decode(footprint_dto.encoded_data)
+            lib = parse_olefile_library(decoded_data)
+        except binascii.Error:
+            raise InvalidFootprintError(f'Invalid base64 encoded data. Incorrect padding')
+        except IOError as err:
+            raise InvalidFootprintError(f'The given Altium file is corrupt', err.args[0] if len(err.args) > 0 else None)
+
+        # Be sure that a PCB Library has been provided
+        if lib.lib_type != LibType.PCB:
+            raise InvalidFootprintError(f'The given encoded data is not a of {LibType.PCB} type')
+
+    # Verify that the body contains enough information
+    if not reference_name and not lib:
+        raise InvalidFootprintError('Neither reference name nor encoded data provided')
+    elif lib:
+        # Try to obtain the reference from the library data
+        if lib.count != 1:
+            raise InvalidFootprintError(f'More than one part in the given {lib.lib_type} Library. Provide a reference')
+        else:
+            reference_name = lib.parts[next(iter(lib.parts.keys()))].name
+
+    # If reference name and lib are provided check that the reference exists
+    if lib and footprint_dto.reference:
+        if not lib.part_exists(footprint_dto.reference):
+            raise InvalidFootprintError(
+                f'The given reference {footprint_dto.reference} does not exist in the given library')
+
+    # If library is provided but no description is given try to populate it from library
+    if lib and not footprint_description:
+        footprint_description = lib.parts[reference_name].description
+
+    model = FootprintReference(footprint_path=footprint_dto.path, footprint_ref=reference_name,
+                               description=footprint_description)
+
+    __logger.debug(f'Creating footprint with path={footprint_dto.footprint_path} and reference={reference_name}')
+
+    exists = db.session.query(FootprintReference.id).filter_by(footprint_path=model.footprint_path,
+                                                               footprint_ref=reference_name).scalar() is not None
     if not exists:
         db.session.add(model)
         db.session.commit()
@@ -45,7 +86,7 @@ def create_footprint(footprint_dto):
         return model
     else:
         __logger.warning(
-            f'Cannot create the given footprint cause already exists path={footprint_dto.path} and reference={footprint_dto.reference}')
+            f'Cannot create the given footprint cause already exists path={model.footprint_path} and reference={reference_name}')
         raise ResourceAlreadyExists(msg='The given footprint already exists')
 
 
