@@ -25,7 +25,6 @@ import base64
 import binascii
 import logging
 from app import db
-from dtos.footprints_dtos import FootprintDto
 from models import FootprintReference
 from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError, InvalidFootprintError
 from utils import parse_olefile_library, LibType
@@ -33,24 +32,31 @@ from utils import parse_olefile_library, LibType
 __logger = logging.getLogger(__name__)
 
 
-def create_footprint(footprint_dto):
-    reference_name = footprint_dto.reference
-    footprint_description = footprint_dto.description
-
+def __try_get_library(footprint_dto):
     # If binary is provided try to parse it
     if footprint_dto.encoded_data:
         try:
             # Parse the given data
             decoded_data = base64.b64decode(footprint_dto.encoded_data)
             lib = parse_olefile_library(decoded_data)
+
+            # Be sure that a PCB Library has been provided
+            if lib.lib_type != LibType.PCB:
+                raise InvalidFootprintError(f'The given encoded data is not a of {LibType.PCB} type')
+
+            return lib
         except binascii.Error:
             raise InvalidFootprintError(f'Invalid base64 encoded data. Incorrect padding')
         except IOError as err:
             raise InvalidFootprintError(f'The given Altium file is corrupt', err.args[0] if len(err.args) > 0 else None)
 
-        # Be sure that a PCB Library has been provided
-        if lib.lib_type != LibType.PCB:
-            raise InvalidFootprintError(f'The given encoded data is not a of {LibType.PCB} type')
+
+def create_footprint(footprint_dto):
+    reference_name = footprint_dto.reference
+    footprint_description = footprint_dto.description
+
+    # Parse symbol library from encoded data
+    lib = __try_get_library(footprint_dto)
 
     # Verify that the body contains enough information
     if not reference_name and not lib:

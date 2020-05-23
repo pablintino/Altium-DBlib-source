@@ -34,24 +34,31 @@ from utils import parse_olefile_library, LibType
 __logger = logging.getLogger(__name__)
 
 
-def create_symbol(symbol_dto):
-    reference_name = symbol_dto.reference
-    symbol_description = symbol_dto.description
-
+def __try_get_library(symbol_dto):
     # If binary is provided try to parse it
     if symbol_dto.encoded_data:
         try:
             # Parse the given data
             decoded_data = base64.b64decode(symbol_dto.encoded_data)
             lib = parse_olefile_library(decoded_data)
+
+            # Be sure that a Schematic library has been provided
+            if lib.lib_type != LibType.SCH:
+                raise InvalidSymbolError(f'The given encoded data is not a of {LibType.SCH} type')
+
+            return lib
         except binascii.Error:
             raise InvalidSymbolError(f'Invalid base64 encoded data. Incorrect padding')
         except IOError as err:
             raise InvalidSymbolError(f'The given Altium file is corrupt', err.args[0] if len(err.args) > 0 else None)
 
-        # Be sure that a Schematic library has been provided
-        if lib.lib_type != LibType.SCH:
-            raise InvalidSymbolError(f'The given encoded data is not a of {LibType.SCH} type')
+
+def create_symbol(symbol_dto):
+    reference_name = symbol_dto.reference
+    symbol_description = symbol_dto.description
+
+    # Parse symbol library from encoded data
+    lib = __try_get_library(symbol_dto)
 
     # Verify that the body contains enough information
     if not reference_name and not lib:
