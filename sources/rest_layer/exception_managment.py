@@ -21,32 +21,19 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 #
+from datetime import datetime
 
-
-from flask_restful import Resource
-from flask import request
-from marshmallow import ValidationError
-from dtos.schemas.symbol_schemas import SymbolSchema
-from dtos.symbols_dtos import SymbolDto
-from services import symbols_service
 from services.exceptions import ApiError
-from rest_layer import handle_exception
 
 
-class SymbolResource(Resource):
-    def post(self):
-        try:
-            symbol_dto = SymbolSchema().load(data=request.json)
-            symbol_model = symbols_service.create_symbol(symbol_dto)
-            return SymbolSchema().dump(SymbolDto.from_model(symbol_model, '')), 201
-        except ApiError as error:
-            return handle_exception(error)
-        except ValidationError as error:
-            return {"errors": error.messages}, 400
+def handle_exception(err):
+    data = {}
+    if issubclass(type(err), ApiError):
+        data['message'] = err.msg
+        data['timestamp'] = datetime.now().isoformat()
+        if err.details:
+            data['details'] = err.details
+        return data, err.http_code
 
-    def get(self, id):
-        try:
-            symbol_model = symbols_service.get_symbol(id)
-            return SymbolSchema().dump(SymbolDto.from_model(symbol_model, '')), 201
-        except ApiError as error:
-            return handle_exception(error)
+    else:
+        raise err

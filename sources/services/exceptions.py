@@ -24,29 +24,37 @@
 
 
 # base app exception
-class Error(Exception):
-    def __init__(self, msg=None, details=None):
+class ApiError(Exception):
+    def __init__(self, msg=None, details=None, http_code=500):
+        super(ApiError, self).__init__(msg)
         self.msg = msg
         self.details = details
+        self.http_code = http_code
+
+
+class ResourceNotFoundApiError(ApiError):
+
+    def __init__(self, msg=None, details=None):
+        super(ResourceNotFoundApiError, self).__init__(msg, details, 404)
 
     pass
 
 
-class ResourceNotFoundError(Error):
-    pass
+class ResourceAlreadyExistsApiError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(ResourceAlreadyExistsApiError, self).__init__(msg, details, 400)
 
 
-class ResourceAlreadyExists(Error):
-    pass
+class ResourceInvalidQuery(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(ResourceInvalidQuery, self).__init__(msg, details, 400)
 
 
-class ResourceInvalidQuery(Error):
-    pass
+class InvalidSymbolApiError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(InvalidSymbolApiError, self).__init__(msg, details, 400)
 
 
-class InvalidSymbolError(Error):
-    pass
-
-
-class InvalidFootprintError(Error):
-    pass
+class InvalidFootprintApiError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(InvalidFootprintApiError, self).__init__(msg, details, 400)

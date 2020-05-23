@@ -30,8 +30,9 @@ from dtos import components_models_dto_mappings
 from dtos.components_search_dtos import SearchPageResultDto
 from dtos.schemas.components_search_schemas import SearchPageResultSchema
 from dtos.schemas.create_component_schema import CreateComponentSchema
+from rest_layer import handle_exception
 from services import component_service
-from services.exceptions import ResourceAlreadyExists, ResourceInvalidQuery
+from services.exceptions import ApiError
 
 
 class ComponentListResource(Resource):
@@ -44,8 +45,8 @@ class ComponentListResource(Resource):
         except ValidationError as error:
             print(error.messages)
             return {"errors": error.messages}, 400
-        except ResourceAlreadyExists as error:
-            return {"errors": error.msg}, 400
+        except ApiError as error:
+            return handle_exception(error)
 
     def get(self):
         page_n = request.args.get('page_n', default=1, type=int)
@@ -61,5 +62,5 @@ class ComponentListResource(Resource):
             page_dto = SearchPageResultDto(page_size=page.per_page, page_number=page.page, total_elements=page.total,
                                            elements=dtos)
             return SearchPageResultSchema().dump(page_dto), 200
-        except ResourceInvalidQuery as err:
-            return {"errors": err.msg}, 400
+        except ApiError as error:
+            return handle_exception(error)

@@ -23,13 +23,11 @@
 #
 
 from flask_restful import Resource
-from flask import request
-from marshmallow import ValidationError
-
 from dtos import components_models_dto_mappings
 from dtos.schemas import schema_mapper
+from rest_layer import handle_exception
 from services import component_service
-from services.exceptions import ResourceNotFoundError
+from services.exceptions import ApiError
 
 
 class ComponentResource(Resource):
@@ -40,8 +38,8 @@ class ComponentResource(Resource):
             resulting_dto = components_models_dto_mappings.get_mapper_for_model(model).to_dto(model)
             return schema_mapper.get_schema_for_dto_class_name(resulting_dto.__class__.__name__)().dump(
                 resulting_dto), 200
-        except ResourceNotFoundError as error:
-            return {"errors": error.msg}, 404
+        except ApiError as error:
+            return handle_exception(error)
 
     def delete(self, id):
         component_service.delete_component(id)

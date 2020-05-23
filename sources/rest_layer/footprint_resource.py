@@ -29,8 +29,9 @@ from marshmallow import ValidationError
 
 from dtos.footprints_dtos import FootprintDto
 from dtos.schemas.footprint_schemas import FootprintSchema
+from rest_layer import handle_exception
 from services import footprints_service
-from services.exceptions import ResourceAlreadyExists, ResourceNotFoundError, InvalidFootprintError
+from services.exceptions import ApiError
 
 
 class FootprintResource(Resource):
@@ -40,16 +41,13 @@ class FootprintResource(Resource):
             footprint_model = footprints_service.create_footprint(footprint_dto)
             return FootprintSchema().dump(FootprintDto.from_model(footprint_model, '')), 201
         except ValidationError as error:
-            print(error.messages)
             return {"errors": error.messages}, 400
-        except ResourceAlreadyExists as error:
-            return {"errors": error.msg, "details": error.details}, 400
-        except InvalidFootprintError as error:
-            return {"errors": error.msg, "details": error.details}, 400
+        except ApiError as error:
+            return handle_exception(error)
 
     def get(self, id):
         try:
             footprints_model = footprints_service.get_footprint(id)
             return FootprintSchema().dump(FootprintDto.from_model(footprints_model, '')), 201
-        except ResourceNotFoundError as error:
-            return {"errors": error.msg}, 404
+        except ApiError as error:
+            return handle_exception(error)

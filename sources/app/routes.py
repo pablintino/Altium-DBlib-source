@@ -32,8 +32,8 @@ from rest_layer.symbol_resource import SymbolResource
 
 api.add_resource(MetadataResource, '/metadata')
 api.add_resource(ComponentListResource, '/components')
-api.add_resource(ComponentResource, '/components/<string:id>')
-api.add_resource(SymbolComponentReferenceResource, '/components/<string:id>/symbol')
-api.add_resource(FootprintComponentReferenceResource, '/components/<string:id>/footprints')
-api.add_resource(SymbolResource, '/symbols', '/symbols/<string:id>')
-api.add_resource(FootprintResource, '/footprints', '/footprints/<string:id>')
+api.add_resource(ComponentResource, '/components/<int:id>')
+api.add_resource(SymbolComponentReferenceResource, '/components/<int:id>/symbol')
+api.add_resource(FootprintComponentReferenceResource, '/components/<int:id>/footprints')
+api.add_resource(SymbolResource, '/symbols', '/symbols/<int:id>')
+api.add_resource(FootprintResource, '/footprints', '/footprints/<int:id>')

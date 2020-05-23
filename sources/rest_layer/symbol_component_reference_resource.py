@@ -29,8 +29,9 @@ from marshmallow import ValidationError
 
 from dtos.schemas.symbol_schemas import SymbolComponentReferenceSchema
 from dtos.symbols_dtos import SymbolComponentReferenceDto
+from rest_layer import handle_exception
 from services import component_service
-from services.exceptions import ResourceNotFoundError
+from services.exceptions import ApiError
 
 
 class SymbolComponentReferenceResource(Resource):
@@ -42,13 +43,13 @@ class SymbolComponentReferenceResource(Resource):
         except ValidationError as error:
             print(error.messages)
             return {"errors": error.messages}, 400
-        except ResourceNotFoundError as error:
-            return {"errors": error.msg}, 400
+        except ApiError as error:
+            return handle_exception(error)
 
     def get(self, id):
         try:
             symbol_id = component_service.get_component_symbol_relation(id)
             dto = SymbolComponentReferenceDto(symbol_id=symbol_id)
             return SymbolComponentReferenceSchema().dump(dto), 200
-        except ResourceNotFoundError as error:
-            return {"errors": error.msg}, 404
+        except ApiError as error:
+            return handle_exception(error)
