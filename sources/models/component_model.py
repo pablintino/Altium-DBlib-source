@@ -58,7 +58,8 @@ class ComponentModel(db.Model):
 
     __mapper_args__ = {
         'polymorphic_identity': 'component',
-        'polymorphic_on': type
+        'polymorphic_on': type,
+        'with_polymorphic': '*'
     }
 
     # Set a constraint that enforces Part Number - Manufacturer uniqueness
