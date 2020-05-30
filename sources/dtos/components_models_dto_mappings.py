@@ -478,7 +478,7 @@ class LedIndicatorModelMapper(DtoModelMaper):
         super(LedIndicatorModelMapper, self).__init__(LedIndicatorModel, LedIndicatorDto)
 
     def to_model(self, dto):
-        return LedIndicatorModelMapper(
+        return LedIndicatorModel(
             forward_voltage=dto.forward_voltage,
             color=dto.color,
             lens_style=dto.lens_style,

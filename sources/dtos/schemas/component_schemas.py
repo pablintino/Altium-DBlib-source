@@ -26,7 +26,7 @@ from app import marshmallow
 from dtos.components_dtos import CrystalOscillatorDto, DiodeRectifierDto, DiodeTVSDto, FerriteBeadDto, ResistorDto, \
     TransistorMosfetDto, CapacitorDto, DiodeZenerDto, PowerInductorDto, TransistorBjtDto, VoltageRegulatorDCDCDto, \
     VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
-    OptocouplerLinearDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto
+    OptocouplerLinearDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, LedIndicatorDto
 from marshmallow import fields, post_load
 
 
@@ -269,11 +269,11 @@ class LedIndicatorSchema(ComponentSchema):
     lens_transparency = fields.String()
     dominant_wavelength = fields.String()
     test_current = fields.String()
-    size = fields.String()
+    lens_size = fields.String()
 
     @post_load
     def make_led_indicator_dto(self, data, **kwargs):
-        return OptocouplerLinearDto(**data)
+        return LedIndicatorDto(**data)
 
 
 class SwitchPushButtonSchema(ComponentSchema):
@@ -305,7 +305,6 @@ class TransceiverSchema(ComponentSchema):
     protocol = fields.String()
     voltage_supply = fields.String()
 
-
     @post_load
     def make_transceiver_dto(self, data, **kwargs):
         return TransceiverDto(**data)
@@ -318,7 +317,6 @@ class ConnectorPcbSchema(ComponentSchema):
     current_rating = fields.String()
     number_of_rows = fields.String()
     number_of_contacts = fields.String()
-
 
     @post_load
     def make_connector_pcb_dto(self, data, **kwargs):

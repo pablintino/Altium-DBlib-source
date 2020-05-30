@@ -46,7 +46,6 @@ from .optocoupler_linear_model import OptocouplerLinearModel
 from .led_indicator import LedIndicatorModel
 from .memory_model import MemoryModel
 from .connector_pcb_model import ConnectorPcbModel
-from .led_indicator import LedIndicatorModel
 from .switch_pushbutton_model import SwitchPushButtonModel
 from .switch_switch_model import SwitchSwitchModel
 from .transceiver_model import TransceiverModel
