@@ -26,13 +26,15 @@ import binascii
 import logging
 from app import db
 from models import FootprintReference
+from models.internal.internal_models import StorageResourceType, StorageStatus
 from services.exceptions import ResourceAlreadyExistsApiError, ResourceNotFoundApiError, InvalidFootprintApiError
 from utils import parse_olefile_library, LibType
+from tasks import rq_helpers
 
 __logger = logging.getLogger(__name__)
 
 
-def __try_get_library(footprint_dto):
+def __get_library(footprint_dto):
     # If binary is provided try to parse it
     if footprint_dto.encoded_data:
         try:
@@ -50,6 +52,17 @@ def __try_get_library(footprint_dto):
         except IOError as err:
             raise InvalidFootprintApiError(f'The given Altium file is corrupt',
                                            err.args[0] if len(err.args) > 0 else None)
+    else:
+        raise InvalidFootprintApiError('Encoded library data not provided')
+
+
+def store_footprint_data(footprint_id, encoded_data):
+    footprint = FootprintReference.query.get(footprint_id)
+    if footprint is None:
+        __logger.debug(f'Footprint with id={footprint_id} not found')
+        raise ResourceNotFoundApiError(f'Footprint with ID {footprint_id} does not exist')
+    else:
+        rq_helpers.launch_storage_task(StorageResourceType.FOOTPRINT, footprint_id, encoded_data)
 
 
 def create_footprint(footprint_dto):
@@ -57,12 +70,10 @@ def create_footprint(footprint_dto):
     footprint_description = footprint_dto.description
 
     # Parse symbol library from encoded data
-    lib = __try_get_library(footprint_dto)
+    lib = __get_library(footprint_dto)
 
     # Verify that the body contains enough information
-    if not reference_name and not lib:
-        raise InvalidFootprintApiError('Neither reference name nor encoded data provided')
-    elif lib:
+    if not reference_name:
         # Try to obtain the reference from the library data
         if lib.count != 1:
             raise InvalidFootprintApiError(
@@ -70,14 +81,13 @@ def create_footprint(footprint_dto):
         else:
             reference_name = lib.parts[next(iter(lib.parts.keys()))].name
 
-    # If reference name and lib are provided check that the reference exists
-    if lib and footprint_dto.reference:
-        if not lib.part_exists(footprint_dto.reference):
-            raise InvalidFootprintApiError(
-                f'The given reference {footprint_dto.reference} does not exist in the given library')
+    # If check that the given reference exists
+    if not lib.part_exists(footprint_dto.reference):
+        raise InvalidFootprintApiError(
+            f'The given reference {footprint_dto.reference} does not exist in the given library')
 
-    # If library is provided but no description is given try to populate it from library
-    if lib and not footprint_description:
+    # If no description is provided try to populate it from library data
+    if not footprint_description:
         footprint_description = lib.parts[reference_name].description
 
     model = FootprintReference(footprint_path=footprint_dto.path, footprint_ref=reference_name,
@@ -88,9 +98,17 @@ def create_footprint(footprint_dto):
     exists = db.session.query(FootprintReference.id).filter_by(footprint_path=model.footprint_path,
                                                                footprint_ref=reference_name).scalar() is not None
     if not exists:
+
+        # Ensure that storage status at creation time is set to NOT_STORED
+        model.storage_status = StorageStatus.NOT_STORED
+
         db.session.add(model)
         db.session.commit()
         __logger.debug(f'Footprint created with ID {model.id}')
+
+        # Signal background process to store the footprint
+        rq_helpers.launch_storage_task(StorageResourceType.FOOTPRINT, model.id, footprint_dto.encoded_data)
+
         return model
     else:
         __logger.warning(
@@ -100,9 +118,14 @@ def create_footprint(footprint_dto):
 
 def get_footprint(footprint_id):
     __logger.debug(f'Querying footprint with id={footprint_id}')
-    symbol = FootprintReference.query.get(footprint_id)
-    if symbol is None:
+    footprint = FootprintReference.query.get(footprint_id)
+    if footprint is None:
         __logger.debug(f'Footprint with id={footprint_id} not found')
         raise ResourceNotFoundApiError(f'Footprint with ID {footprint_id} does not exist')
     else:
-        return symbol
+        return footprint
+
+
+def get_footprint_data_file(footprint_id):
+    footprint = get_footprint(footprint_id)
+    return footprint.footprint_path

@@ -28,6 +28,8 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
+from redis import Redis
+import rq
 from .config import Config
 from .logs import config_logs
 
@@ -45,6 +47,9 @@ def create_app():
     app.config.from_object(Config)
 
     db.init_app(app)
+
+    app.redis = Redis.from_url(app.config['REDIS_URL'])
+    app.storage_queue = rq.Queue('high', connection=app.redis)
 
     with app.app_context():
         from . import routes  # Import routes

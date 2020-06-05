@@ -40,9 +40,22 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     APP_LOG_LEVEL = environ.get('APP_LOG_LEVEL', 'DEBUG')
 
+    # Redis
+    REDIS_URL = environ.get('REDIS_URL') or 'redis://'
+
+    # Repo path and identity file
+    REPO_PATH = environ.get('REPO_PATH')
+    if not REPO_PATH:
+        raise EnvironmentError('REPO_PATH environment var not provided')
+
+    SSH_IDENTITY = environ.get('SSH_IDENTITY')
+    if not SSH_IDENTITY:
+        raise EnvironmentError('SSH_IDENTITY environment var not provided')
+
     @staticmethod
     def log_config():
         __logger__.info(
             f'APP Configuration:\n\tFLASK_ENV={Config.FLASK_ENV}\n\tFLASK_APP={Config.FLASK_APP}\n\tFLASK_DEBUG='
             f'{Config.FLASK_DEBUG}\n\tSQLALCHEMY_ECHO={Config.SQLALCHEMY_ECHO}\n\tSQLALCHEMY_TRACK_MODIFICATIONS='
-            f'{Config.SQLALCHEMY_TRACK_MODIFICATIONS}\n\tAPP_LOG_LEVEL={Config.APP_LOG_LEVEL}')
+            f'{Config.SQLALCHEMY_TRACK_MODIFICATIONS}\n\tAPP_LOG_LEVEL={Config.APP_LOG_LEVEL}\n\tREDIS_URL'
+            f'={Config.REDIS_URL}\t\nREPO_PATH={Config.REPO_PATH}\t\nSSH_IDENTITY={Config.SSH_IDENTITY}')

@@ -28,13 +28,15 @@ import binascii
 import logging
 from app import db
 from models import LibraryReference
+from models.internal.internal_models import StorageResourceType, StorageStatus
 from services.exceptions import ResourceAlreadyExistsApiError, ResourceNotFoundApiError, InvalidSymbolApiError
+from tasks import rq_helpers
 from utils import parse_olefile_library, LibType
 
 __logger = logging.getLogger(__name__)
 
 
-def __try_get_library(symbol_dto):
+def __get_library(symbol_dto):
     # If binary is provided try to parse it
     if symbol_dto.encoded_data:
         try:
@@ -51,6 +53,17 @@ def __try_get_library(symbol_dto):
             raise InvalidSymbolApiError(f'Invalid base64 encoded data. Incorrect padding')
         except IOError as err:
             raise InvalidSymbolApiError(f'The given Altium file is corrupt', err.args[0] if len(err.args) > 0 else None)
+    else:
+        raise InvalidSymbolApiError('Encoded library data not provided')
+
+
+def store_symbol_data(symbol_id, encoded_data):
+    footprint = LibraryReference.query.get(symbol_id)
+    if footprint is None:
+        __logger.debug(f'Symbol with id={symbol_id} not found')
+        raise ResourceNotFoundApiError(f'Symbol with ID {symbol_id} does not exist')
+    else:
+        rq_helpers.launch_storage_task(StorageResourceType.SYMBOL, symbol_id, encoded_data)
 
 
 def create_symbol(symbol_dto):
@@ -58,25 +71,22 @@ def create_symbol(symbol_dto):
     symbol_description = symbol_dto.description
 
     # Parse symbol library from encoded data
-    lib = __try_get_library(symbol_dto)
+    lib = __get_library(symbol_dto)
 
     # Verify that the body contains enough information
-    if not reference_name and not lib:
-        raise InvalidSymbolApiError('Neither reference name nor encoded data provided')
-    elif lib:
+    if not reference_name:
         # Try to obtain the reference from the library data
         if lib.count != 1:
             raise InvalidSymbolApiError(f'More than one part in the given {lib.lib_type} Library. Provide a reference')
         else:
             reference_name = lib.parts[next(iter(lib.parts.keys()))].name
 
-    # If reference name and lib are provided check that the reference exists
-    if lib and symbol_dto.reference:
-        if not lib.part_exists(symbol_dto.reference):
-            raise InvalidSymbolApiError(f'The given reference {symbol_dto.reference} does not exist in the given library')
+    # If check that the given reference exists
+    if not lib.part_exists(symbol_dto.reference):
+        raise InvalidSymbolApiError(f'The given reference {symbol_dto.reference} does not exist in the given library')
 
-    # If library is provided but no description is given try to populate it from library
-    if lib and not symbol_description:
+    # If no description is provided try to populate it from library data
+    if not symbol_description:
         symbol_description = lib.parts[reference_name].description
 
     model = LibraryReference(symbol_path=symbol_dto.path, symbol_ref=reference_name, description=symbol_description)
@@ -85,9 +95,17 @@ def create_symbol(symbol_dto):
     exists = db.session.query(LibraryReference.id).filter_by(symbol_path=symbol_dto.path,
                                                              symbol_ref=reference_name).scalar() is not None
     if not exists:
+
+        # Ensure that storage status at creation time is set to NOT_STORED
+        model.storage_status = StorageStatus.NOT_STORED
+
         db.session.add(model)
         db.session.commit()
         __logger.debug(f'Symbol created with ID {model.id}')
+
+        # Signal background process to store the symbol
+        rq_helpers.launch_storage_task(StorageResourceType.SYMBOL, model.id, symbol_dto.encoded_data)
+
         return model
     else:
         __logger.warning(
@@ -103,3 +121,9 @@ def get_symbol(symbol_id):
         raise ResourceNotFoundApiError(f'Symbol with ID {symbol_id} does not exist')
     else:
         return symbol
+
+
+def get_symbol_data_file(symbol_id):
+    symbol = get_symbol(symbol_id)
+    return symbol.symbol_path
+

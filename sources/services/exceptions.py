@@ -58,3 +58,8 @@ class InvalidSymbolApiError(ApiError):
 class InvalidFootprintApiError(ApiError):
     def __init__(self, msg=None, details=None):
         super(InvalidFootprintApiError, self).__init__(msg, details, 400)
+
+
+class InvalidMultipartFileDataError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(InvalidMultipartFileDataError, self).__init__(msg, details, 400)

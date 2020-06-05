@@ -23,7 +23,9 @@
 #
 
 
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, Enum
+
+from .internal.internal_models import StorageStatus
 from .join_tables import component_footprint_asc_table
 from sqlalchemy.orm import relationship
 from app import db
@@ -35,6 +37,7 @@ class FootprintReference(db.Model):
     footprint_path = Column(String(300))
     footprint_ref = Column(String(150))
     description = Column(String(200))
+    storage_status = Column(Enum(StorageStatus))
 
     # relationships
     components_f = relationship("ComponentModel",

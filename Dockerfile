@@ -22,10 +22,10 @@
 #  SOFTWARE.
 #
 
-FROM tiangolo/uwsgi-nginx-flask:python3.7
+FROM tiangolo/uwsgi-nginx-flask:python3.8
 
 RUN apt-get update && apt-get install -y gcc libc-dev unixodbc-dev curl apt-utils apt-transport-https debconf-utils \
- build-essential libssl1.1 libssl-dev && rm -rf /var/lib/apt/lists/*
+ build-essential libssl1.1 libssl-dev ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # adding custom MS repository
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
@@ -38,10 +38,19 @@ COPY requirements.txt /tmp/
 
 # Set FLASK APP used mainly for migrations
 ENV FLASK_APP='app/wsgi.py'
+ENV REDIS_URL='redis://'
+ENV NODE_TYPE='web'
+
+# Move the base supervisor config to reuse it
+RUN mv /etc/supervisor/conf.d/supervisord.conf /etc/supervisor/conf.d/supervisord-web-node.conf
+COPY sources/supervisord-worker-node.conf /etc/supervisor/conf.d/supervisord-worker-node.conf
 
 # upgrade pip and install required python packages
 RUN pip install -U pip
 RUN pip install -r /tmp/requirements.txt
+
+COPY sources/start.sh /start.sh
+RUN chmod +x /start.sh
 
 WORKDIR /app
 

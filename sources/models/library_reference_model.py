@@ -23,9 +23,10 @@
 #
 
 
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, Enum
 from sqlalchemy.orm import relationship
 from app import db
+from models.internal.internal_models import StorageStatus
 
 
 class LibraryReference(db.Model):
@@ -34,6 +35,7 @@ class LibraryReference(db.Model):
     symbol_path = Column(String(300))
     symbol_ref = Column(String(150))
     description = Column(String(200))
+    storage_status = Column(Enum(StorageStatus))
 
     # relationships
     library_components = relationship("ComponentModel", back_populates='library_ref', lazy=True)

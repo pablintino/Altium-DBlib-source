@@ -23,17 +23,37 @@
 #
 
 
-import logging
-import sys
+import base64
+
+from flask_restful import Resource, abort
+from flask import send_from_directory
+from flask import request
+
 from app import Config
+from rest_layer import handle_exception
+from services import symbols_service
+from services.exceptions import ApiError, InvalidMultipartFileDataError
 
 
-def config_logs():
+class SymbolDataResource(Resource):
+    def post(self, id):
+        try:
+            # Verify that the uploaded file is provided using 'data' as name
+            if 'data' not in request.files:
+                raise InvalidMultipartFileDataError(msg="'data' multipart element not found in request")
 
-    log_formatter = logging.Formatter('%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s')
-    root_logger = logging.getLogger()
+            with request.files['data'].stream as file:
+                encoded_data = base64.b64encode(file.read())
+                symbols_service.store_symbol_data(id, encoded_data)
+            return {}, 201
+        except ApiError as error:
+            return handle_exception(error)
 
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setFormatter(log_formatter)
-    root_logger.addHandler(console_handler)
-    root_logger.setLevel(Config.APP_LOG_LEVEL)
+    def get(self, id):
+        try:
+            file = symbols_service.get_symbol_data_file(id)
+            return send_from_directory(Config.REPO_PATH, file, as_attachment=True)
+        except FileNotFoundError:
+            abort(404)
+        except ApiError as error:
+            return handle_exception(error)
