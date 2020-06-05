@@ -253,7 +253,6 @@ class OptocouplerLinearSchema(ComponentSchema):
     transfer_gain = fields.String()
     input_forward_voltage = fields.String()
     servo_gain = fields.String()
-    transfer_gain = fields.String()
     forward_gain = fields.String()
     non_linearity = fields.String()
 

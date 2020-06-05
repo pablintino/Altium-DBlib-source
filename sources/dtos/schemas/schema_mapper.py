@@ -26,18 +26,18 @@
 from dtos.components_dtos import ResistorDto, CapacitorDto, DiodeTVSDto, DiodeZenerDto, DiodeRectifierDto, \
     FerriteBeadDto, TransistorMosfetDto, PowerInductorDto, TransistorBjtDto, CrystalOscillatorDto, \
     VoltageRegulatorLinearDto, VoltageRegulatorDCDCDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, \
-    OptocouplerDigitalDto, OptocouplerLinearDto, LedIndicatorDto, SwitchSwitchDto, SwitchPushButtonDto, ConnectorPcbDto, \
-    TransceiverDto
+    OptocouplerDigitalDto, OptocouplerLinearDto, LedIndicatorDto, SwitchSwitchDto, SwitchPushButtonDto, \
+    ConnectorPcbDto, TransceiverDto
 from dtos.schemas.component_schemas import TransistorBjtSchema, CapacitorSchema, CrystalOscillatorSchema, \
     DiodeRectifierSchema, DiodeTVSSchema, DiodeZenerSchema, FerriteBeadSchema, TransistorMosfetSchema, \
     PowerInductorSchema, ResistorSchema, VoltageRegulatorDCDCSchema, VoltageRegulatorLinearSchema, \
     MicrocontrollerSchema, OpAmpSchema, PotentiometerSchema, MemorySchema, OptocouplerDigitalSchema, \
     OptocouplerLinearSchema, LedIndicatorSchema, SwitchPushButtonSchema, SwitchSwitchSchema, ConnectorPcbSchema, \
     TransceiverSchema
-from models import ResistorModel, DiodeTVSModel, CapacitorModel, DiodeZenerModel, DiodeRectifierModel, FerriteBeadModel, \
-    PowerInductorModel, CrystalOscillatorModel, TransistorBjtModel, TransistorMosfetModel, VoltageRegulatorDCDCModel, \
-    VoltageRegulatorLinearModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, MemoryModel, \
-    OptocouplerDigitalModel, OptocouplerLinearModel, LedIndicatorModel
+from models import ResistorModel, DiodeTVSModel, CapacitorModel, DiodeZenerModel, DiodeRectifierModel, \
+    FerriteBeadModel, PowerInductorModel, CrystalOscillatorModel, TransistorBjtModel, TransistorMosfetModel, \
+    VoltageRegulatorDCDCModel, VoltageRegulatorLinearModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
+    MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel, LedIndicatorModel
 from models.connector_pcb_model import ConnectorPcbModel
 from models.switch_pushbutton_model import SwitchPushButtonModel
 from models.switch_switch_model import SwitchSwitchModel

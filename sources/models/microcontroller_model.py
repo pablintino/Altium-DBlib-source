@@ -43,7 +43,6 @@ class MicrocontrollerModel(ComponentModel):
     connectivity = Column(String(250))
     voltage_supply = Column(String(50))
 
-
     # Tells the ORM the type of a specific component by the distinguish column
     __mapper_args__ = {
         'polymorphic_identity': __tablename__,
