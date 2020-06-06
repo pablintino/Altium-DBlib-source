@@ -44,18 +44,17 @@ class Config:
     REDIS_URL = environ.get('REDIS_URL') or 'redis://'
 
     # Repo path and identity file
-    REPO_PATH = environ.get('REPO_PATH')
-    if not REPO_PATH:
-        raise EnvironmentError('REPO_PATH environment var not provided')
-
+    REPO_PATH = environ.get('REPO_PATH') or '/altium-repo'
     SSH_IDENTITY = environ.get('SSH_IDENTITY')
+    SSH_HOSTS_FILE = environ.get('SSH_HOSTS_FILE')
     if not SSH_IDENTITY:
         raise EnvironmentError('SSH_IDENTITY environment var not provided')
 
     @staticmethod
     def log_config():
         __logger__.info(
-            f'APP Configuration:\n\tFLASK_ENV={Config.FLASK_ENV}\n\tFLASK_APP={Config.FLASK_APP}\n\tFLASK_DEBUG='
-            f'{Config.FLASK_DEBUG}\n\tSQLALCHEMY_ECHO={Config.SQLALCHEMY_ECHO}\n\tSQLALCHEMY_TRACK_MODIFICATIONS='
-            f'{Config.SQLALCHEMY_TRACK_MODIFICATIONS}\n\tAPP_LOG_LEVEL={Config.APP_LOG_LEVEL}\n\tREDIS_URL'
-            f'={Config.REDIS_URL}\t\nREPO_PATH={Config.REPO_PATH}\t\nSSH_IDENTITY={Config.SSH_IDENTITY}')
+            f'APP Configuration:\n\tFLASK_ENV={Config.FLASK_ENV}\n\tFLASK_APP={Config.FLASK_APP}'
+            f'\n\tFLASK_DEBUG={Config.FLASK_DEBUG}\n\tSQLALCHEMY_ECHO={Config.SQLALCHEMY_ECHO}'
+            f'\n\tSQLALCHEMY_TRACK_MODIFICATIONS={Config.SQLALCHEMY_TRACK_MODIFICATIONS}'
+            f'\n\tAPP_LOG_LEVEL={Config.APP_LOG_LEVEL}\n\tREDIS_URL={Config.REDIS_URL}'
+            f'\t\nREPO_PATH={Config.REPO_PATH}\t\nSSH_IDENTITY={Config.SSH_IDENTITY}')

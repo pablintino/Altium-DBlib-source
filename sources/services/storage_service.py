@@ -30,6 +30,13 @@ import base64
 from app import Config
 
 
+def get_ssh_command():
+    git_ssh_cmd = '/usr/bin/ssh -i %s' % Config.SSH_IDENTITY if Config.SSH_IDENTITY else '/usr/bin/ssh'
+    git_ssh_cmd = f'{git_ssh_cmd} -o "StrictHostKeyChecking=no"' if not Config.SSH_HOSTS_FILE else\
+        f'{git_ssh_cmd} -o "UserKnownHostsFile={Config.SSH_HOSTS_FILE}"'
+    return git_ssh_cmd
+
+
 def create_file_in_repo(repo, file_name, encoded_data):
     file_content = base64.b64decode(encoded_data)
     abs_file_path = os.path.join(repo.working_dir, file_name)
@@ -40,7 +47,7 @@ def create_file_in_repo(repo, file_name, encoded_data):
 
 def add_file_to_repo(file_name, encoded_data):
     repo = git.Repo(Config.REPO_PATH)
-    git_ssh_cmd = '/usr/bin/ssh -i %s' % Config.SSH_IDENTITY if Config.SSH_IDENTITY else '/usr/bin/ssh'
+    git_ssh_cmd = get_ssh_command()
     with repo.git.custom_environment(GIT_SSH_COMMAND=git_ssh_cmd):
         repo.remotes.origin.fetch()
         repo.remotes.origin.pull()
@@ -54,7 +61,7 @@ def add_file_to_repo(file_name, encoded_data):
         repo.remotes.origin.push(force=True)
 
 
-def get_encoded_file_from_repo(repo_path, file_name):
-    abs_file_path = os.path.join(repo_path, file_name)
+def get_encoded_file_from_repo(file_name):
+    abs_file_path = os.path.join(Config.REPO_PATH, file_name)
     with open(abs_file_path, "rb") as file:
         return base64.b64encode(file.read())
