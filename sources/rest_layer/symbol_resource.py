@@ -23,30 +23,39 @@
 #
 
 
-from flask_restful import Resource
 from flask import request
+from flask_restful import Resource
 from marshmallow import ValidationError
+
 from dtos.schemas.symbol_schemas import SymbolSchema
 from dtos.symbols_dtos import SymbolDto
-from services import symbols_service
+from models.internal.internal_models import StorableLibraryResourceType
+from services import storage_service, storable_objects_service
 from services.exceptions import ApiError
-from rest_layer import handle_exception
 
 
 class SymbolResource(Resource):
     def post(self):
         try:
             symbol_dto = SymbolSchema().load(data=request.json)
-            symbol_model = symbols_service.create_symbol(symbol_dto)
-            return SymbolSchema().dump(SymbolDto.from_model(symbol_model, '')), 201
+            symbol_model = storable_objects_service.create_storable_library_object(
+                                storable_type=StorableLibraryResourceType.SYMBOL,
+                                reference_name=symbol_dto.reference,
+                                storable_path=symbol_dto.path,
+                                description=symbol_dto.description,
+                                encoded_data=symbol_dto.encoded_data)
+            return SymbolSchema().dump(SymbolDto.from_model(symbol_model, None)), 201
         except ApiError as error:
-            return handle_exception(error)
+            return error.format_api_data()
         except ValidationError as error:
             return {"errors": error.messages}, 400
 
     def get(self, id):
         try:
-            symbol_model = symbols_service.get_symbol(id)
-            return SymbolSchema().dump(SymbolDto.from_model(symbol_model, '')), 201
+            encoded_data = None
+            model = storable_objects_service.get_storable_model(StorableLibraryResourceType.SYMBOL, id)
+            if request.args.get('encoded_data', default=False, type=bool):
+                encoded_data = storage_service.get_encoded_file_from_repo(model)
+            return SymbolSchema().dump(SymbolDto.from_model(model, encoded_data)), 201
         except ApiError as error:
-            return handle_exception(error)
+            return error.format_api_data()

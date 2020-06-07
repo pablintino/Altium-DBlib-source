@@ -21,19 +21,20 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 #
-from datetime import datetime
-
-from services.exceptions import ApiError
 
 
-def handle_exception(err):
-    data = {}
-    if issubclass(type(err), ApiError):
-        data['message'] = err.msg
-        data['timestamp'] = datetime.now().isoformat()
-        if err.details:
-            data['details'] = err.details
-        return data, err.http_code
+from sqlalchemy import Column, Enum
+from app import db
+from models.internal.internal_models import StorageStatus
 
-    else:
-        raise err
+
+class StorableLibraryModel(db.Model):
+    __abstract__ = True
+
+    storage_status = Column(Enum(StorageStatus))
+
+    def get_file_path(self):
+        return None
+
+    def get_reference(self):
+        return None

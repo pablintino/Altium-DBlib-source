@@ -30,7 +30,6 @@ from dtos import components_models_dto_mappings
 from dtos.components_search_dtos import SearchPageResultDto
 from dtos.schemas.components_search_schemas import SearchPageResultSchema
 from dtos.schemas.create_component_schema import CreateComponentSchema
-from rest_layer import handle_exception
 from services import component_service
 from services.exceptions import ApiError
 
@@ -46,7 +45,7 @@ class ComponentListResource(Resource):
             print(error.messages)
             return {"errors": error.messages}, 400
         except ApiError as error:
-            return handle_exception(error)
+            return error.format_api_data()
 
     def get(self):
         page_n = request.args.get('page_n', default=1, type=int)
@@ -63,4 +62,4 @@ class ComponentListResource(Resource):
                                            elements=dtos)
             return SearchPageResultSchema().dump(page_dto), 200
         except ApiError as error:
-            return handle_exception(error)
+            return error.format_api_data()

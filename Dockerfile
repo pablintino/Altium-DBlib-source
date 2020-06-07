@@ -30,6 +30,7 @@ ENV REDIS_URL='redis://'
 ENV NODE_TYPE='web'
 
 VOLUME repo-vol:/altium-repo
+VOLUME ssh-vol:/ssh-dir
 
 COPY requirements.txt /tmp/
 

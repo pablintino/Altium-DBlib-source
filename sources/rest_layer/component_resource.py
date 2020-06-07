@@ -25,7 +25,6 @@
 from flask_restful import Resource
 from dtos import components_models_dto_mappings
 from dtos.schemas import schema_mapper
-from rest_layer import handle_exception
 from services import component_service
 from services.exceptions import ApiError
 
@@ -39,7 +38,7 @@ class ComponentResource(Resource):
             return schema_mapper.get_schema_for_dto_class_name(resulting_dto.__class__.__name__)().dump(
                 resulting_dto), 200
         except ApiError as error:
-            return handle_exception(error)
+            return error.format_api_data()
 
     def delete(self, id):
         component_service.delete_component(id)

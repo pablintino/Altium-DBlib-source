@@ -43,12 +43,12 @@ class Config:
     # Redis
     REDIS_URL = environ.get('REDIS_URL') or 'redis://'
 
-    # Repo path and identity file
+    # Git repo and identity settings
     REPO_PATH = environ.get('REPO_PATH') or '/altium-repo'
-    SSH_IDENTITY = environ.get('SSH_IDENTITY')
-    SSH_HOSTS_FILE = environ.get('SSH_HOSTS_FILE')
-    if not SSH_IDENTITY:
-        raise EnvironmentError('SSH_IDENTITY environment var not provided')
+    REPO_URL = environ.get('REPO_URL')
+    REPO_BRANCH = environ.get('REPO_BRANCH') or 'master'
+    SSH_IDENTITY = environ.get('SSH_IDENTITY') or '/ssh-dir/id_rsa'
+    SSH_HOSTS_FILE = environ.get('SSH_HOSTS_FILE') or '/ssh-dir/known_hosts'
 
     @staticmethod
     def log_config():
@@ -57,4 +57,5 @@ class Config:
             f'\n\tFLASK_DEBUG={Config.FLASK_DEBUG}\n\tSQLALCHEMY_ECHO={Config.SQLALCHEMY_ECHO}'
             f'\n\tSQLALCHEMY_TRACK_MODIFICATIONS={Config.SQLALCHEMY_TRACK_MODIFICATIONS}'
             f'\n\tAPP_LOG_LEVEL={Config.APP_LOG_LEVEL}\n\tREDIS_URL={Config.REDIS_URL}'
-            f'\t\nREPO_PATH={Config.REPO_PATH}\t\nSSH_IDENTITY={Config.SSH_IDENTITY}')
+            f'\n\tREPO_PATH={Config.REPO_PATH}\n\tREPO_URL={Config.REPO_URL}\n\tREPO_BRANCH={Config.REPO_BRANCH}'
+            f'\n\tSSH_IDENTITY={Config.SSH_IDENTITY}\n\tSSH_HOSTS_FILE={Config.SSH_HOSTS_FILE}')

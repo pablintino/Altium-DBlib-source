@@ -29,8 +29,8 @@ from marshmallow import ValidationError
 
 from dtos.footprints_dtos import FootprintDto
 from dtos.schemas.footprint_schemas import FootprintSchema
-from rest_layer import handle_exception
-from services import footprints_service
+from models.internal.internal_models import StorableLibraryResourceType
+from services import storage_service, storable_objects_service
 from services.exceptions import ApiError
 
 
@@ -38,16 +38,24 @@ class FootprintResource(Resource):
     def post(self):
         try:
             footprint_dto = FootprintSchema().load(data=request.json)
-            footprint_model = footprints_service.create_footprint(footprint_dto)
-            return FootprintSchema().dump(FootprintDto.from_model(footprint_model, '')), 201
+            footprint_model = storable_objects_service.create_storable_library_object(
+                                storable_type=StorableLibraryResourceType.FOOTPRINT,
+                                reference_name=footprint_dto.reference,
+                                storable_path=footprint_dto.path,
+                                description=footprint_dto.description,
+                                encoded_data=footprint_dto.encoded_data)
+            return FootprintSchema().dump(FootprintDto.from_model(footprint_model, None)), 201
         except ValidationError as error:
             return {"errors": error.messages}, 400
         except ApiError as error:
-            return handle_exception(error)
+            return error.format_api_data()
 
     def get(self, id):
         try:
-            footprints_model = footprints_service.get_footprint(id)
-            return FootprintSchema().dump(FootprintDto.from_model(footprints_model, '')), 201
+            encoded_data = None
+            model = storable_objects_service.get_storable_model(StorableLibraryResourceType.FOOTPRINT, id)
+            if request.args.get('encoded_data', default=False, type=bool):
+                encoded_data = storage_service.get_encoded_file_from_repo(model)
+            return FootprintSchema().dump(FootprintDto.from_model(model, encoded_data)), 201
         except ApiError as error:
-            return handle_exception(error)
+            return error.format_api_data()

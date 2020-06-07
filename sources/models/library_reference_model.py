@@ -23,19 +23,29 @@
 #
 
 
-from sqlalchemy import Column, String, Integer, Enum
+from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
-from app import db
-from models.internal.internal_models import StorageStatus
+from models.storable_library_model import StorableLibraryModel
 
 
-class LibraryReference(db.Model):
+class LibraryReference(StorableLibraryModel):
     __tablename__ = "library_ref"
     id = Column(Integer, primary_key=True)
     symbol_path = Column(String(300))
     symbol_ref = Column(String(150))
     description = Column(String(200))
-    storage_status = Column(Enum(StorageStatus))
+
+    def get_file_path(self):
+        return self.symbol_path
+
+    def get_reference(self):
+        return self.symbol_ref
+
+    def set_file_path(self, path):
+        self.symbol_path = path
+
+    def set_reference(self, reference):
+        self.symbol_ref = reference
 
     # relationships
     library_components = relationship("ComponentModel", back_populates='library_ref', lazy=True)

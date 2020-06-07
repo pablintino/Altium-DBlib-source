@@ -55,7 +55,7 @@ class SchComponent:
 
 
 class LibType(Enum):
-    SCH = "Schematic",
+    SCH = "Schematic"
     PCB = "PCB"
 
 

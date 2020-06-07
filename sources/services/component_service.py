@@ -24,6 +24,7 @@
 
 
 import logging
+
 from app import db
 from dtos import components_models_dto_mappings
 from models import ComponentModel, LibraryReference, FootprintReference
@@ -37,17 +38,18 @@ def create_component(dto):
     mapper = components_models_dto_mappings.get_mapper_for_dto(dto)
     model = mapper.to_model(dto)
     __logger.debug(f'Creating component with mpn={dto.mpn} and manufacturer={dto.manufacturer}')
-    exists = db.session.query(ComponentModel.id).filter_by(mpn=dto.mpn,
-                                                           manufacturer=dto.manufacturer).scalar() is not None
-    if not exists:
+    exists_id = db.session.query(ComponentModel.id).filter_by(mpn=dto.mpn,
+                                                              manufacturer=dto.manufacturer).scalar()
+    if not exists_id:
         db.session.add(model)
         db.session.commit()
-        __logger.debug(f'Component created with ID {model.id}')
+        __logger.debug('Component created. {id=' + str(model.id) + '}')
         return model
     else:
-        __logger.warning(
-            f'Cannot create the given component cause already exists mpn={dto.mpn}, manufacturer={dto.manufacturer}')
-        raise ResourceAlreadyExistsApiError(msg='The given component already exists')
+        msg = 'Cannot create the requested component cause it already exists. {mpn=' + dto.mpn +\
+              ', manufacturer=' + dto.manufacturer + '}'
+        __logger.debug(msg)
+        raise ResourceAlreadyExistsApiError(msg=msg, conflicting_id=exists_id)
 
 
 def create_symbol_relation(component_id, symbol_id):
@@ -112,7 +114,7 @@ def get_component_search(page_number, page_size, filters):
     if not res:
         raise ResourceInvalidQuery(msg)
 
-    components_page = ComponentModel.query.filter_by(**filters)\
+    components_page = ComponentModel.query.filter_by(**filters) \
         .order_by(ComponentModel.id.desc()).paginate(page_number, per_page=page_size)
     return components_page
 

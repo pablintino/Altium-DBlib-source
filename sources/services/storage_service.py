@@ -23,18 +23,43 @@
 #
 
 
-import os
-import git
 import base64
+import logging
+import os
+import subprocess
+
+import git
 
 from app import Config
+from models.internal.internal_models import StorageStatus
+from services.exceptions import FileNotFoundStorageError, InvalidStorageStateError
+
+__logger = logging.getLogger(__name__)
 
 
-def get_ssh_command():
-    git_ssh_cmd = '/usr/bin/ssh -i %s' % Config.SSH_IDENTITY if Config.SSH_IDENTITY else '/usr/bin/ssh'
-    git_ssh_cmd = f'{git_ssh_cmd} -o "StrictHostKeyChecking=no"' if not Config.SSH_HOSTS_FILE else\
+def __get_ssh_command():
+    git_ssh_cmd = '/usr/bin/ssh -i %s' % Config.SSH_IDENTITY if ((Config.SSH_IDENTITY is not None)
+                                                                 and os.path.isfile(Config.SSH_IDENTITY)) \
+        else '/usr/bin/ssh'
+    git_ssh_cmd = f'{git_ssh_cmd} -o "StrictHostKeyChecking=no"' if ((Config.SSH_HOSTS_FILE is None)
+                                                                     or not os.path.isfile(Config.SSH_HOSTS_FILE)) else \
         f'{git_ssh_cmd} -o "UserKnownHostsFile={Config.SSH_HOSTS_FILE}"'
     return git_ssh_cmd
+
+
+def __is_git_repo():
+    return subprocess.call(["git", "branch"], cwd=Config.REPO_PATH, stderr=subprocess.STDOUT,
+                           stdout=open(os.devnull, 'w')) == 0
+
+
+def __get_repo(git_ssh_cmd):
+    if __is_git_repo():
+        return git.Repo(Config.REPO_PATH)
+    else:
+        if Config.REPO_URL is None:
+            raise IOError('REPO_PATH point to a non initialized repository and REPO_URL was not given')
+        return git.Repo.clone_from(Config.REPO_URL, Config.REPO_PATH, branch=Config.REPO_BRANCH,
+                                   env=dict(GIT_SSH_COMMAND=git_ssh_cmd))
 
 
 def create_file_in_repo(repo, file_name, encoded_data):
@@ -46,8 +71,9 @@ def create_file_in_repo(repo, file_name, encoded_data):
 
 
 def add_file_to_repo(file_name, encoded_data):
-    repo = git.Repo(Config.REPO_PATH)
-    git_ssh_cmd = get_ssh_command()
+    git_ssh_cmd = __get_ssh_command()
+    __logger.debug(f'Using git ssh command {git_ssh_cmd}')
+    repo = __get_repo(git_ssh_cmd)
     with repo.git.custom_environment(GIT_SSH_COMMAND=git_ssh_cmd):
         repo.remotes.origin.fetch()
         repo.remotes.origin.pull()
@@ -61,7 +87,22 @@ def add_file_to_repo(file_name, encoded_data):
         repo.remotes.origin.push(force=True)
 
 
-def get_encoded_file_from_repo(file_name):
+def get_file_from_repo(model):
+    if model.storage_status != StorageStatus.STORED:
+        msg = f'The given model {model.id} is not in STORED state. Current status: {model.storage_status.name}'
+        __logger.debug(msg)
+        raise InvalidStorageStateError(msg)
+    file_name = model.get_file_path()
     abs_file_path = os.path.join(Config.REPO_PATH, file_name)
+    if not os.path.isfile(abs_file_path):
+        msg = f'{file_name} does not exist'
+        __logger.debug(msg)
+        raise FileNotFoundStorageError(msg)
+
+    return abs_file_path
+
+
+def get_encoded_file_from_repo(model):
+    abs_file_path = get_file_from_repo(model)
     with open(abs_file_path, "rb") as file:
         return base64.b64encode(file.read())

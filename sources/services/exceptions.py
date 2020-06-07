@@ -24,6 +24,9 @@
 
 
 # base app exception
+from datetime import datetime
+
+
 class ApiError(Exception):
     def __init__(self, msg=None, details=None, http_code=500):
         super(ApiError, self).__init__(msg)
@@ -31,18 +34,28 @@ class ApiError(Exception):
         self.details = details
         self.http_code = http_code
 
+    def format_api_data(self):
+        data = {'message': self.msg, 'timestamp': datetime.now().isoformat()}
+        if self.details:
+            data['details'] = self.details
+        return data, self.http_code
+
 
 class ResourceNotFoundApiError(ApiError):
 
     def __init__(self, msg=None, details=None):
         super(ResourceNotFoundApiError, self).__init__(msg, details, 404)
 
-    pass
-
 
 class ResourceAlreadyExistsApiError(ApiError):
-    def __init__(self, msg=None, details=None):
+    def __init__(self, msg=None, details=None, conflicting_id=None):
         super(ResourceAlreadyExistsApiError, self).__init__(msg, details, 400)
+        self.conflicting_id = conflicting_id
+
+    def format_api_data(self):
+        data, code = super(ResourceAlreadyExistsApiError, self).format_api_data()
+        data['conflicting_id'] = self.conflicting_id
+        return data, code
 
 
 class ResourceInvalidQuery(ApiError):
@@ -63,3 +76,18 @@ class InvalidFootprintApiError(ApiError):
 class InvalidMultipartFileDataError(ApiError):
     def __init__(self, msg=None, details=None):
         super(InvalidMultipartFileDataError, self).__init__(msg, details, 400)
+
+
+class InvalidStorageStateError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(InvalidStorageStateError, self).__init__(msg, details, 400)
+
+
+class FileNotFoundStorageError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(FileNotFoundStorageError, self).__init__(msg, details, 404)
+
+
+class InvalidStorableTypeError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(InvalidStorableTypeError, self).__init__(msg, details, 400)

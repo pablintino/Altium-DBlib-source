@@ -30,7 +30,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app import create_app, db
 from models import FootprintReference, LibraryReference
-from models.internal.internal_models import StorageResourceType, StorageStatus
+from models.internal.internal_models import StorableLibraryResourceType, StorageStatus
 from services import storage_service
 import logging
 
@@ -52,13 +52,13 @@ def __save_storage_status(model, status):
 def __get_model_and_path(storage_resource_type, element_id):
     file_path = None
     model = None
-    if storage_resource_type == StorageResourceType.FOOTPRINT:
+    if storage_resource_type == StorableLibraryResourceType.FOOTPRINT:
         model = FootprintReference.query.get(element_id)
         if not model:
             __logger.warning(f'Element with ID {element_id} not found. Quiting...')
             return
         file_path = model.footprint_path
-    elif storage_resource_type == StorageResourceType.SYMBOL:
+    elif storage_resource_type == StorableLibraryResourceType.SYMBOL:
         model = LibraryReference.query.get(element_id)
         if not model:
             __logger.warning(f'Element with ID {element_id} not found. Quiting...')

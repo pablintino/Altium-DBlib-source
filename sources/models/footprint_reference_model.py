@@ -28,22 +28,33 @@ from sqlalchemy import Column, String, Integer, Enum
 from .internal.internal_models import StorageStatus
 from .join_tables import component_footprint_asc_table
 from sqlalchemy.orm import relationship
-from app import db
+from .storable_library_model import StorableLibraryModel
 
 
-class FootprintReference(db.Model):
+class FootprintReference(StorableLibraryModel):
     __tablename__ = "footprint_ref"
     id = Column(Integer, primary_key=True)
     footprint_path = Column(String(300))
     footprint_ref = Column(String(150))
     description = Column(String(200))
-    storage_status = Column(Enum(StorageStatus))
 
     # relationships
     components_f = relationship("ComponentModel",
                                 secondary=component_footprint_asc_table,
                                 back_populates="footprint_refs",
                                 lazy=True)
+
+    def get_file_path(self):
+        return self.footprint_path
+
+    def get_reference(self):
+        return self.footprint_ref
+
+    def set_file_path(self, path):
+        self.footprint_path = path
+
+    def set_reference(self, reference):
+        self.footprint_ref = reference
 
     def __repr__(self):
         return "FootprintReference %s %s" % (

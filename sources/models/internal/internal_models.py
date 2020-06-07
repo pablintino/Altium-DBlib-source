@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class StorageResourceType(Enum):
+class StorableLibraryResourceType(Enum):
     FOOTPRINT = 'footprint'
     SYMBOL = 'symbol'
 
