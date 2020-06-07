@@ -27,6 +27,8 @@ import base64
 import logging
 import os
 import subprocess
+from random import randint
+from time import sleep
 
 import git
 
@@ -106,11 +108,3 @@ def get_encoded_file_from_repo(model):
     abs_file_path = get_file_from_repo(model)
     with open(abs_file_path, "rb") as file:
         return base64.b64encode(file.read())
-
-
-try:
-    git_cmd = __get_ssh_command()
-    __get_repo(git_cmd)
-
-except OSError as error:
-    __logger.warning('Failed boot initialization of git repository')
