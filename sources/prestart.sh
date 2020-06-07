@@ -11,18 +11,18 @@ if [ -n "$APP_MIGRATIONS_ENABLED" ]; then
     flask db upgrade -d /app/migrations/
 fi
 
-if [ -z "$(ls -A "$REPO_PATH")" ] && [ "$NODE_TYPE" = "web" ]; then
-  echo "Initialazing Git local repository"
+if [ -z "$(ls -A "$REPO_PATH")" ] && [ "$NODE_TYPE" = "web" ] && [ ! -z "$REPO_URL" ]; then
+  echo "Initializing Git local repository"
   GIT_CMD="/usr/bin/ssh"
 
   if [ ! -z "$SSH_IDENTITY" ]; then
-    GIT_CMD="${GIT_CMD} IdentitiesOnly=yes -i ${SSH_IDENTITY}"
+    GIT_CMD="${GIT_CMD} -i ${SSH_IDENTITY}"
   fi
 
   if [ -z "$SSH_HOSTS_FILE" ]; then
-    GIT_CMD="${GIT_CMD} -o UserKnownHostsFile=${SSH_HOSTS_FILE}"
-  else
     GIT_CMD="${GIT_CMD} -o StrictHostKeyChecking=no"
+  else
+    GIT_CMD="${GIT_CMD} -o UserKnownHostsFile=${SSH_HOSTS_FILE}"
   fi
   if [ -z "$REPO_BRANCH" ]; then
     REPO_BRANCH="master"

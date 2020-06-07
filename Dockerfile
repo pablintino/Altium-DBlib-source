@@ -28,6 +28,9 @@ FROM tiangolo/uwsgi-nginx-flask:python3.8
 ENV FLASK_APP='app/wsgi.py'
 ENV REDIS_URL='redis://'
 ENV NODE_TYPE='web'
+ENV REPO_PATH='/altium-repo'
+ENV SSH_HOSTS_FILE=''
+ENV SSH_IDENTITY='/ssh-dir/id_rsa'
 
 VOLUME repo-vol:/altium-repo
 VOLUME ssh-vol:/ssh-dir
