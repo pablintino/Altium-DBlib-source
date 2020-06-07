@@ -40,24 +40,18 @@ __logger = logging.getLogger(__name__)
 
 
 def __validate_storable_type(storable_type):
-    if storable_type != StorableLibraryResourceType.FOOTPRINT and storable_type == StorableLibraryResourceType.SYMBOL:
-        raise InvalidStorableTypeError(f'The given storable type is not expected. Given type: {storable_type}')
+    if storable_type != StorableLibraryResourceType.FOOTPRINT and storable_type != StorableLibraryResourceType.SYMBOL:
+        raise InvalidStorableTypeError(f'The given storable type is not expected. Given type: {storable_type.value}')
 
 
 def __get_error_for_type(storable_type):
     __validate_storable_type(storable_type)
-    if storable_type == StorableLibraryResourceType.FOOTPRINT:
-        return InvalidFootprintApiError
-    else:
-        return InvalidSymbolApiError
+    return InvalidFootprintApiError if storable_type == StorableLibraryResourceType.FOOTPRINT else InvalidSymbolApiError
 
 
 def __get_model_for_storable_type(storable_type):
     __validate_storable_type(storable_type)
-    if storable_type == StorableLibraryResourceType.FOOTPRINT:
-        return FootprintReference
-    else:
-        return LibraryReference
+    return FootprintReference if storable_type == StorableLibraryResourceType.FOOTPRINT else LibraryReference
 
 
 def __get_library(expected_type, encoded_data):
@@ -71,7 +65,9 @@ def __get_library(expected_type, encoded_data):
             if (expected_type == StorableLibraryResourceType.SYMBOL and lib.lib_type != LibType.SCH) or (
                     expected_type == StorableLibraryResourceType.FOOTPRINT and lib.lib_type != LibType.PCB):
                 raise __get_error_for_type(expected_type)(
-                    f'The given encoded data is not a of {expected_type.value} type')
+                    'The given encoded data is not of the expected type. {expected_type=' +
+                    (LibType.SCH.value if expected_type == StorableLibraryResourceType.SYMBOL else LibType.PCB.value) +
+                    ', actual_type=' + lib.lib_type.value + '}')
 
             return lib
         except binascii.Error:
@@ -102,9 +98,9 @@ def __update_model_reference(storable_type, model, new_reference):
 def update_object_data(storable_type, model_id, encoded_data):
     model = __get_model_for_storable_type(storable_type).query.get(model_id)
     if model is None:
-        msg = f'{storable_type.value} with id={model_id} not found'
+        msg = 'The requested ' + storable_type.value + ' cannot be found. {id=' + str(model_id) + '}'
         __logger.debug(msg)
-        raise ResourceNotFoundApiError(msg)
+        raise ResourceNotFoundApiError(msg, missing_id=model_id)
     else:
 
         current_encoded_data = storage_service.get_encoded_file_from_repo(model)
@@ -116,12 +112,16 @@ def update_object_data(storable_type, model_id, encoded_data):
 
         if lib.part_exists(model.get_reference()):
             # Simple update of the library, no database changes needed
-            __logger.debug(f'Updating {storable_type.value} {model_id} data without updating reference')
+            __logger.debug(
+                'Updating storable object data without reference update. {storable_type=' + storable_type.value +
+                ', reference=' + model.get_reference() + ', model_id=' + str(model_id) + '}')
         elif lib.count == 1:
             # Update reference and if success change data in repo
             new_reference = lib.parts[next(iter(lib.parts.keys()))].name
             __logger.debug(
-                f'Updating {storable_type.value} {model_id} data and reference. New reference: {new_reference}')
+                'Updating storable object data and reference. {storable_type=' + storable_type.value +
+                ', new_reference=' + new_reference + ', old_reference=' + model.get_reference() + ', model_id=' + str(
+                    model_id) + '}')
             __update_model_reference(storable_type, model, new_reference)
         else:
             # Cannot update the library file
@@ -138,7 +138,6 @@ def update_object_data(storable_type, model_id, encoded_data):
 
 
 def create_storable_library_object(storable_type, reference_name, storable_path, description, encoded_data):
-
     __validate_storable_type(storable_type)
 
     # Parse storable object from encoded data and check its content
@@ -167,8 +166,8 @@ def create_storable_library_object(storable_type, reference_name, storable_path,
                    ', description=' + description + '}')
 
     exists_id = db.session.query(LibraryReference.id).filter_by(symbol_path=storable_path,
-                                                              symbol_ref=reference_name).scalar() \
-                  if storable_type == StorableLibraryResourceType.SYMBOL else db.session.query(
+                                                                symbol_ref=reference_name).scalar() \
+        if storable_type == StorableLibraryResourceType.SYMBOL else db.session.query(
         FootprintReference.id).filter_by(
         footprint_path=storable_path, footprint_ref=reference_name).scalar()
 
@@ -199,11 +198,11 @@ def create_storable_library_object(storable_type, reference_name, storable_path,
 
 def get_storable_model(storable_type, model_id):
     __logger.debug(
-        'Retrieving a storable object. {storable_type=' + storable_type.value + ', model_id=' + model_id + '}')
+        'Retrieving a storable object. {storable_type=' + storable_type.value + ', model_id=' + str(model_id) + '}')
     model = __get_model_for_storable_type(storable_type).query.get(model_id)
     if model is None:
-        msg = 'Storable object not found. {storable_type=' + storable_type.value + ', model_id=' + model_id + '}'
+        msg = 'Storable object not found. {storable_type=' + storable_type.value + ', model_id=' + str(model_id) + '}'
         __logger.debug(msg)
-        raise ResourceNotFoundApiError(msg)
+        raise ResourceNotFoundApiError(msg, missing_id=model_id)
     else:
         return model

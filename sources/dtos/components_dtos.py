@@ -282,3 +282,13 @@ class ConnectorPcbDto(ComponentDto):
         self.current_rating = kwargs.get('current_rating', '')
         self.number_of_rows = kwargs.get('number_of_rows', '')
         self.number_of_contacts = kwargs.get('number_of_contacts', '')
+
+
+class TransducerDto(ComponentDto):
+
+    def __init__(self, **kwargs):
+        super(TransducerDto, self).__init__(**kwargs)
+        self.input_magnitude = kwargs.get('input_magnitude', '')
+        self.output_type = kwargs.get('output_type', '')
+        self.proportional_gain = kwargs.get('proportional_gain', '')
+        self.supply_voltage = kwargs.get('supply_voltage', '')

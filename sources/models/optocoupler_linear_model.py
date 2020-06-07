@@ -24,7 +24,7 @@
 
 
 from sqlalchemy import Column, String, ForeignKey
-from .component_model import ComponentModel
+from models.component_model import ComponentModel
 
 
 class OptocouplerLinearModel(ComponentModel):

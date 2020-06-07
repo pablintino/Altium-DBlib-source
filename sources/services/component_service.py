@@ -65,9 +65,9 @@ def create_symbol_relation(component_id, symbol_id):
             __logger.debug(f'Component symbol updated. Component {component_id} symbol {symbol_id}')
             return component
         else:
-            raise ResourceNotFoundApiError(f'Symbol with ID {symbol_id} does not exist')
+            raise ResourceNotFoundApiError(f'Symbol with ID {symbol_id} does not exist', missing_id=symbol_id)
     else:
-        raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist')
+        raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
 
 
 def create_footprint_relation(component_id, footprint_id):
@@ -83,9 +83,9 @@ def create_footprint_relation(component_id, footprint_id):
             __logger.debug(f'Component footprints updated. Component {component_id} symbol {footprint_id}')
             return component
         else:
-            raise ResourceNotFoundApiError(f'Footprint with ID {footprint_id} does not exist')
+            raise ResourceNotFoundApiError(f'Footprint with ID {footprint_id} does not exist', missing_id=footprint_id)
     else:
-        raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist')
+        raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
 
 
 def get_component_symbol_relation(component_id):
@@ -94,7 +94,7 @@ def get_component_symbol_relation(component_id):
     if component is not None:
         return component.library_ref_id
     else:
-        raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist')
+        raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
 
 
 def get_component(component_id):
@@ -102,7 +102,7 @@ def get_component(component_id):
     component = db.session.query(ComponentModel.id, ComponentModel.type).filter_by(id=component_id).first()
     if component is None:
         __logger.debug(f'Component with id={component_id} not found')
-        raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist')
+        raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
     else:
         return metadata_service.get_polymorphic_identity(component.type).query.get(component_id)
 

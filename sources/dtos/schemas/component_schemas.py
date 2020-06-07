@@ -26,7 +26,8 @@ from app import marshmallow
 from dtos.components_dtos import CrystalOscillatorDto, DiodeRectifierDto, DiodeTVSDto, FerriteBeadDto, ResistorDto, \
     TransistorMosfetDto, CapacitorDto, DiodeZenerDto, PowerInductorDto, TransistorBjtDto, VoltageRegulatorDCDCDto, \
     VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
-    OptocouplerLinearDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, LedIndicatorDto
+    OptocouplerLinearDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, LedIndicatorDto, \
+    TransducerDto
 from marshmallow import fields, post_load
 
 
@@ -320,3 +321,14 @@ class ConnectorPcbSchema(ComponentSchema):
     @post_load
     def make_connector_pcb_dto(self, data, **kwargs):
         return ConnectorPcbDto(**data)
+
+
+class TransducerSchema(ComponentSchema):
+    input_magnitude = fields.String()
+    output_type = fields.String()
+    proportional_gain = fields.String()
+    supply_voltage = fields.String()
+
+    @post_load
+    def make_transducer_dto(self, data, **kwargs):
+        return TransducerDto(**data)

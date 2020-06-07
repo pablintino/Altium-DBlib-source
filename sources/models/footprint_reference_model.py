@@ -23,12 +23,11 @@
 #
 
 
-from sqlalchemy import Column, String, Integer, Enum
+from sqlalchemy import Column, String, Integer
 
-from .internal.internal_models import StorageStatus
-from .join_tables import component_footprint_asc_table
+from models.component_model import component_footprint_asc_table
 from sqlalchemy.orm import relationship
-from .storable_library_model import StorableLibraryModel
+from models.storable_library_model import StorableLibraryModel
 
 
 class FootprintReference(StorableLibraryModel):

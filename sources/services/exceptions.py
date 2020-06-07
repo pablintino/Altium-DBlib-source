@@ -43,8 +43,14 @@ class ApiError(Exception):
 
 class ResourceNotFoundApiError(ApiError):
 
-    def __init__(self, msg=None, details=None):
+    def __init__(self, msg=None, details=None, missing_id=None):
         super(ResourceNotFoundApiError, self).__init__(msg, details, 404)
+        self.missing_id = missing_id
+
+    def format_api_data(self):
+        data, code = super(ResourceNotFoundApiError, self).format_api_data()
+        data['missing_id'] = self.missing_id
+        return data, code
 
 
 class ResourceAlreadyExistsApiError(ApiError):

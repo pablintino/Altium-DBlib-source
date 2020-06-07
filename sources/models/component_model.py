@@ -24,7 +24,7 @@
 
 
 from sqlalchemy import Column, String, Integer, DateTime, UniqueConstraint, ForeignKey, Boolean
-from .join_tables import component_footprint_asc_table
+from models.join_tables import component_footprint_asc_table
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app import db

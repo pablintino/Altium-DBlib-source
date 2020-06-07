@@ -30,8 +30,8 @@ from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from redis import Redis
 import rq
-from .config import Config
-from .logs import config_logs
+from app.config import Config
+from app.logs import config_logs
 
 db = SQLAlchemy()
 api = Api()

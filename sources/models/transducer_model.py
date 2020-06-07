@@ -27,21 +27,17 @@ from sqlalchemy import Column, String, ForeignKey
 from models.component_model import ComponentModel
 
 
-class MicrocontrollerModel(ComponentModel):
-    __tablename__ = 'microcontroller'
+class TransducerModel(ComponentModel):
+    __tablename__ = 'transducer'
 
     # Primary key
     id = Column(ForeignKey("component.id"), primary_key=True)
 
-    # Specific properties of a resistor
-    core = Column(String(50))
-    core_size = Column(String(30))
-    speed = Column(String(30))
-    flash_size = Column(String(30))
-    ram_size = Column(String(30))
-    peripherals = Column(String(250))
-    connectivity = Column(String(250))
-    voltage_supply = Column(String(50))
+    # Specific properties of a transducer
+    input_magnitude = Column(String(50))
+    output_type = Column(String(50))
+    proportional_gain = Column(String(50))
+    supply_voltage = Column(String(30))
 
     # Tells the ORM the type of a specific component by the distinguish column
     __mapper_args__ = {
