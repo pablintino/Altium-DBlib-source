@@ -97,3 +97,8 @@ class FileNotFoundStorageError(ApiError):
 class InvalidStorableTypeError(ApiError):
     def __init__(self, msg=None, details=None):
         super(InvalidStorableTypeError, self).__init__(msg, details, 400)
+
+
+class ModelMapperNotAvailable(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(ModelMapperNotAvailable, self).__init__(msg, details, 500)

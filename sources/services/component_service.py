@@ -29,13 +29,19 @@ from app import db
 from dtos import components_models_dto_mappings
 from models import ComponentModel, LibraryReference, FootprintReference
 from services import metadata_service
-from services.exceptions import ResourceAlreadyExistsApiError, ResourceNotFoundApiError, ResourceInvalidQuery
+from services.exceptions import ResourceAlreadyExistsApiError, ResourceNotFoundApiError, ResourceInvalidQuery, \
+    ModelMapperNotAvailable
 
 __logger = logging.getLogger(__name__)
 
 
 def create_component(dto):
     mapper = components_models_dto_mappings.get_mapper_for_dto(dto)
+    if not mapper:
+        msg = 'Cannot create the requested component cause the associated model-mapper is not available. {mpn=' + \
+              dto.mpn + ', manufacturer=' + dto.manufacturer + '}'
+        __logger.debug(msg)
+        raise ModelMapperNotAvailable(msg)
     model = mapper.to_model(dto)
     __logger.debug(f'Creating component with mpn={dto.mpn} and manufacturer={dto.manufacturer}')
     exists_id = db.session.query(ComponentModel.id).filter_by(mpn=dto.mpn,
