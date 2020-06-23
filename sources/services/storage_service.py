@@ -27,9 +27,6 @@ import base64
 import logging
 import os
 import subprocess
-from random import randint
-from time import sleep
-
 import git
 
 from app import Config

@@ -292,3 +292,12 @@ class TransducerDto(ComponentDto):
         self.output_type = kwargs.get('output_type', '')
         self.proportional_gain = kwargs.get('proportional_gain', '')
         self.supply_voltage = kwargs.get('supply_voltage', '')
+
+
+class InductorChokeDto(ComponentDto):
+    def __init__(self, **kwargs):
+        super(InductorChokeDto, self).__init__(**kwargs)
+        self.number_of_lines = kwargs.get('number_of_lines', '')
+        self.dc_resistance = kwargs.get('dc_resistance', '')
+        self.impedance_freq = kwargs.get('impedance_freq', '')
+        self.current_rating = kwargs.get('current_rating', '')

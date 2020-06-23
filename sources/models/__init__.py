@@ -50,6 +50,7 @@ from models.switch_pushbutton_model import SwitchPushButtonModel
 from models.switch_switch_model import SwitchSwitchModel
 from models.transceiver_model import TransceiverModel
 from models.transducer_model import TransducerModel
+from models.inductor_choke_model import InductorChokeModel
 from models.component_model import ComponentModel
 from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
 from models.join_tables import component_footprint_asc_table

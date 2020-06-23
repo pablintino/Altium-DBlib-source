@@ -27,7 +27,7 @@ from dtos.components_dtos import CrystalOscillatorDto, DiodeRectifierDto, DiodeT
     TransistorMosfetDto, CapacitorDto, DiodeZenerDto, PowerInductorDto, TransistorBjtDto, VoltageRegulatorDCDCDto, \
     VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
     OptocouplerLinearDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, LedIndicatorDto, \
-    TransducerDto
+    TransducerDto, InductorChokeDto
 from marshmallow import fields, post_load
 
 
@@ -332,3 +332,14 @@ class TransducerSchema(ComponentSchema):
     @post_load
     def make_transducer_dto(self, data, **kwargs):
         return TransducerDto(**data)
+
+
+class InductorChokeSchema(ComponentSchema):
+    number_of_lines = fields.String()
+    dc_resistance = fields.String()
+    impedance_freq = fields.String()
+    current_rating = fields.String()
+
+    @post_load
+    def make_inductor_choke_dto(self, data, **kwargs):
+        return InductorChokeDto(**data)
