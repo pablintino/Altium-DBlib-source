@@ -611,6 +611,7 @@ class TransducerModelMapper(DtoModelMaper):
             manufacturer=dto.manufacturer
         )
 
+
 class InductorChokeModelMapper(DtoModelMaper):
 
     def __init__(self):
@@ -658,7 +659,7 @@ mapper_instances = [
     TransceiverModelMapper(),
     ConnectorPcbModelMapper(),
     TransducerModelMapper(),
-    InductorChokeModel()
+    InductorChokeModelMapper()
 ]
 
 model_to_dto_quick_dict = {}
