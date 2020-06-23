@@ -29,12 +29,12 @@ from dtos.components_dtos import ResistorDto, CapacitorDto, CrystalOscillatorDto
     DiodeZenerDto, FerriteBeadDto, TransistorMosfetDto, TransistorBjtDto, PowerInductorDto, VoltageRegulatorDCDCDto, \
     VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
     OptocouplerLinearDto, LedIndicatorDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, \
-    TransducerDto
+    TransducerDto, InductorChokeDto
 from models import ResistorModel, CapacitorModel, CrystalOscillatorModel, DiodeRectifierModel, DiodeZenerModel, \
     DiodeTVSModel, FerriteBeadModel, TransistorMosfetModel, TransistorBjtModel, PowerInductorModel, \
     VoltageRegulatorDCDCModel, VoltageRegulatorLinearModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
     MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel, SwitchPushButtonModel, SwitchSwitchModel, \
-    TransceiverModel, ConnectorPcbModel, LedIndicatorModel
+    TransceiverModel, ConnectorPcbModel, LedIndicatorModel, InductorChokeModel
 from models.transducer_model import TransducerModel
 
 
@@ -611,6 +611,27 @@ class TransducerModelMapper(DtoModelMaper):
             manufacturer=dto.manufacturer
         )
 
+class InductorChokeModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(InductorChokeModelMapper, self).__init__(InductorChokeModel, InductorChokeDto)
+
+    def to_model(self, dto):
+        return InductorChokeModel(
+            number_of_lines=dto.number_of_lines,
+            dc_resistance=dto.dc_resistance,
+            impedance_freq=dto.impedance_freq,
+            current_rating=dto.current_rating,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
 
 mapper_instances = [
     ResistorModelMapper(),
@@ -636,7 +657,8 @@ mapper_instances = [
     SwitchSwitchModelMapper(),
     TransceiverModelMapper(),
     ConnectorPcbModelMapper(),
-    TransducerModelMapper()
+    TransducerModelMapper(),
+    InductorChokeModel()
 ]
 
 model_to_dto_quick_dict = {}
