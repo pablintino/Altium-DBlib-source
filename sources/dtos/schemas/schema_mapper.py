@@ -101,6 +101,6 @@ def get_schema_for_dto_class_name(schema):
         ConnectorPcbDto.__name__: ConnectorPcbSchema,
         TransducerDto.__name__: TransducerSchema,
         InductorChokeDto.__name__: InductorChokeSchema,
-        TransformerDto.__name: TransformerSchema
+        TransformerDto.__name__: TransformerSchema
     }
     return schema_map.get(schema)
