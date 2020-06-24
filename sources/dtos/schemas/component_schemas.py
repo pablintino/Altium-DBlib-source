@@ -27,7 +27,7 @@ from dtos.components_dtos import CrystalOscillatorDto, DiodeRectifierDto, DiodeT
     TransistorMosfetDto, CapacitorDto, DiodeZenerDto, PowerInductorDto, TransistorBjtDto, VoltageRegulatorDCDCDto, \
     VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
     OptocouplerLinearDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, LedIndicatorDto, \
-    TransducerDto, InductorChokeDto
+    TransducerDto, InductorChokeDto, TransformerDto
 from marshmallow import fields, post_load
 
 
@@ -343,3 +343,23 @@ class InductorChokeSchema(ComponentSchema):
     @post_load
     def make_inductor_choke_dto(self, data, **kwargs):
         return InductorChokeDto(**data)
+
+
+class TransformerSchema(ComponentSchema):
+    number_of_windings = fields.String()
+    primary_dc_resistance = fields.String()
+    secondary_dc_resistance = fields.String()
+    tertiary_dc_resistance = fields.String(allow_none=True, default=None, missing=None)
+    leakage_inductance = fields.String()
+    primary_inductance = fields.String()
+    secondary_current_rating = fields.String()
+    tertiary_current_rating = fields.String(allow_none=True, default=None, missing=None)
+    primary_voltage_rating = fields.String()
+    secondary_voltage_rating = fields.String()
+    tertiary_voltage_rating = fields.String(allow_none=True, default=None, missing=None)
+    nps_turns_ratio = fields.String()
+    npt_turns_ratio = fields.String(allow_none=True, default=None, missing=None)
+
+    @post_load
+    def make_transformer_dto(self, data, **kwargs):
+        return TransformerDto(**data)

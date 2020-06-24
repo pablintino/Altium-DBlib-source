@@ -27,18 +27,19 @@ from dtos.components_dtos import ResistorDto, CapacitorDto, DiodeTVSDto, DiodeZe
     FerriteBeadDto, TransistorMosfetDto, PowerInductorDto, TransistorBjtDto, CrystalOscillatorDto, \
     VoltageRegulatorLinearDto, VoltageRegulatorDCDCDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, \
     OptocouplerDigitalDto, OptocouplerLinearDto, LedIndicatorDto, SwitchSwitchDto, SwitchPushButtonDto, \
-    ConnectorPcbDto, TransceiverDto, TransducerDto, InductorChokeDto
+    ConnectorPcbDto, TransceiverDto, TransducerDto, InductorChokeDto, TransformerDto
 from dtos.schemas.component_schemas import TransistorBjtSchema, CapacitorSchema, CrystalOscillatorSchema, \
     DiodeRectifierSchema, DiodeTVSSchema, DiodeZenerSchema, FerriteBeadSchema, TransistorMosfetSchema, \
     PowerInductorSchema, ResistorSchema, VoltageRegulatorDCDCSchema, VoltageRegulatorLinearSchema, \
     MicrocontrollerSchema, OpAmpSchema, PotentiometerSchema, MemorySchema, OptocouplerDigitalSchema, \
     OptocouplerLinearSchema, LedIndicatorSchema, SwitchPushButtonSchema, SwitchSwitchSchema, ConnectorPcbSchema, \
-    TransceiverSchema, TransducerSchema, InductorChokeSchema
+    TransceiverSchema, TransducerSchema, InductorChokeSchema, TransformerSchema
 from models import ResistorModel, DiodeTVSModel, CapacitorModel, DiodeZenerModel, DiodeRectifierModel, \
     FerriteBeadModel, PowerInductorModel, CrystalOscillatorModel, TransistorBjtModel, TransistorMosfetModel, \
     VoltageRegulatorDCDCModel, VoltageRegulatorLinearModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
     MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel, LedIndicatorModel, ConnectorPcbModel, \
     SwitchPushButtonModel, SwitchSwitchModel, TransceiverModel, TransducerModel, InductorChokeModel
+from models.transformer_model import TransformerModel
 
 
 def get_schema_for_component_name(component_type):
@@ -67,7 +68,8 @@ def get_schema_for_component_name(component_type):
         TransceiverModel.__tablename__: TransceiverSchema,
         ConnectorPcbModel.__tablename__: ConnectorPcbSchema,
         TransducerModel.__tablename__: TransducerSchema,
-        InductorChokeModel.__tablename__: InductorChokeSchema
+        InductorChokeModel.__tablename__: InductorChokeSchema,
+        TransformerModel.__tablename__: TransformerSchema
     }
     return schema_map.get(component_type)
 
@@ -98,6 +100,7 @@ def get_schema_for_dto_class_name(schema):
         TransceiverDto.__name__: TransceiverSchema,
         ConnectorPcbDto.__name__: ConnectorPcbSchema,
         TransducerDto.__name__: TransducerSchema,
-        InductorChokeDto.__name__: InductorChokeSchema
+        InductorChokeDto.__name__: InductorChokeSchema,
+        TransformerDto.__name: TransformerSchema
     }
     return schema_map.get(schema)

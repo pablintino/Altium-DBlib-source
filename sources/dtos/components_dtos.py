@@ -301,3 +301,21 @@ class InductorChokeDto(ComponentDto):
         self.dc_resistance = kwargs.get('dc_resistance', '')
         self.impedance_freq = kwargs.get('impedance_freq', '')
         self.current_rating = kwargs.get('current_rating', '')
+
+
+class TransformerDto(ComponentDto):
+    def __init__(self, **kwargs):
+        super(TransformerDto, self).__init__(**kwargs)
+        self.number_of_windings = kwargs.get('number_of_windings', '')
+        self.primary_dc_resistance = kwargs.get('primary_dc_resistance', '')
+        self.secondary_dc_resistance = kwargs.get('secondary_dc_resistance', '')
+        self.tertiary_dc_resistance = kwargs.get('tertiary_dc_resistance', '')
+        self.leakage_inductance = kwargs.get('leakage_inductance', '')
+        self.primary_inductance = kwargs.get('primary_inductance', '')
+        self.secondary_current_rating = kwargs.get('secondary_current_rating', '')
+        self.tertiary_current_rating = kwargs.get('tertiary_current_rating', '')
+        self.primary_voltage_rating = kwargs.get('primary_voltage_rating', '')
+        self.secondary_voltage_rating = kwargs.get('secondary_voltage_rating', '')
+        self.tertiary_voltage_rating = kwargs.get('tertiary_voltage_rating', '')
+        self.nps_turns_ratio = kwargs.get('nps_turns_ratio', '')
+        self.npt_turns_ratio = kwargs.get('npt_turns_ratio', '')

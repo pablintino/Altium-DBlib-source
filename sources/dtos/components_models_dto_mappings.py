@@ -29,13 +29,14 @@ from dtos.components_dtos import ResistorDto, CapacitorDto, CrystalOscillatorDto
     DiodeZenerDto, FerriteBeadDto, TransistorMosfetDto, TransistorBjtDto, PowerInductorDto, VoltageRegulatorDCDCDto, \
     VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
     OptocouplerLinearDto, LedIndicatorDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, \
-    TransducerDto, InductorChokeDto
+    TransducerDto, InductorChokeDto, TransformerDto
 from models import ResistorModel, CapacitorModel, CrystalOscillatorModel, DiodeRectifierModel, DiodeZenerModel, \
     DiodeTVSModel, FerriteBeadModel, TransistorMosfetModel, TransistorBjtModel, PowerInductorModel, \
     VoltageRegulatorDCDCModel, VoltageRegulatorLinearModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
     MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel, SwitchPushButtonModel, SwitchSwitchModel, \
     TransceiverModel, ConnectorPcbModel, LedIndicatorModel, InductorChokeModel
 from models.transducer_model import TransducerModel
+from models.transformer_model import TransformerModel
 
 
 class DtoModelMaper(ABC):
@@ -634,6 +635,37 @@ class InductorChokeModelMapper(DtoModelMaper):
         )
 
 
+class TransformerModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(TransformerModelMapper, self).__init__(TransformerModel, TransformerDto)
+
+    def to_model(self, dto):
+        return TransformerModel(
+            number_of_windings=dto.number_of_windings,
+            primary_dc_resistance=dto.primary_dc_resistance,
+            secondary_dc_resistance=dto.secondary_dc_resistance,
+            tertiary_dc_resistance=dto.tertiary_dc_resistance,
+            leakage_inductance=dto.leakage_inductance,
+            primary_inductance=dto.primary_inductance,
+            secondary_current_rating=dto.secondary_current_rating,
+            tertiary_current_rating=dto.tertiary_current_rating,
+            primary_voltage_rating=dto.primary_voltage_rating,
+            secondary_voltage_rating=dto.secondary_voltage_rating,
+            tertiary_voltage_rating=dto.tertiary_voltage_rating,
+            nps_turns_ratio=dto.nps_turns_ratio,
+            npt_turns_ratio=dto.npt_turns_ratio,
+            value=dto.value,
+            package=dto.package,
+            description=dto.description,
+            comment=dto.comment,
+            is_through_hole=dto.is_through_hole,
+            type=dto.type,
+            mpn=dto.mpn,
+            manufacturer=dto.manufacturer
+        )
+
+
 mapper_instances = [
     ResistorModelMapper(),
     CapactitorModelMapper(),
@@ -659,7 +691,8 @@ mapper_instances = [
     TransceiverModelMapper(),
     ConnectorPcbModelMapper(),
     TransducerModelMapper(),
-    InductorChokeModelMapper()
+    InductorChokeModelMapper(),
+    TransformerModelMapper()
 ]
 
 model_to_dto_quick_dict = {}
