@@ -40,7 +40,7 @@ __logger = logging.getLogger(__name__)
 
 
 def __validate_storable_type(storable_type):
-    if storable_type != StorableLibraryResourceType.FOOTPRINT and storable_type != StorableLibraryResourceType.SYMBOL:
+    if storable_type not in (StorableLibraryResourceType.FOOTPRINT, StorableLibraryResourceType.SYMBOL):
         raise InvalidStorableTypeError(f'The given storable type is not expected. Given type: {storable_type.value}')
 
 
@@ -150,8 +150,8 @@ def create_storable_library_object(storable_type, reference_name, storable_path,
         if lib.count != 1:
             raise __get_error_for_type(storable_type)(
                 f'More than one part in the given {lib.lib_type.value} library. Provide a reference')
-        else:
-            reference_name = lib.parts[next(iter(lib.parts.keys()))].name
+
+        reference_name = lib.parts[next(iter(lib.parts.keys()))].name
 
     # If check that the given reference exists
     if not lib.part_exists(reference_name):
@@ -172,29 +172,28 @@ def create_storable_library_object(storable_type, reference_name, storable_path,
         FootprintReference.id).filter_by(
         footprint_path=storable_path, footprint_ref=reference_name).scalar()
 
-    if not exists_id:
-
-        # Create a model based on the storable object type
-        model = FootprintReference(footprint_path=storable_path, footprint_ref=reference_name,
-                                   description=description) if storable_type == StorableLibraryResourceType.FOOTPRINT \
-            else LibraryReference(symbol_path=storable_path, symbol_ref=reference_name, description=description)
-
-        # Ensure that storage status at creation time is set to NOT_STORED
-        model.storage_status = StorageStatus.NOT_STORED
-
-        db.session.add(model)
-        db.session.commit()
-        __logger.debug('Storable object created. {id=' + str(model.id) + '}')
-
-        # Signal background process to store the object
-        rq_helpers.launch_storage_task(storable_type, model.id, encoded_data)
-
-        return model
-    else:
+    if exists_id:
         msg = 'Cannot create the requested storable object cause it already exists. {storable_type=' + \
               storable_type.value + ', reference_name=' + reference_name + ', storable_path=' + storable_path + '}'
         __logger.warning(msg)
         raise ResourceAlreadyExistsApiError(msg=msg, conflicting_id=exists_id)
+
+    # Create a model based on the storable object type
+    model = FootprintReference(footprint_path=storable_path, footprint_ref=reference_name,
+                                description=description) if storable_type == StorableLibraryResourceType.FOOTPRINT \
+        else LibraryReference(symbol_path=storable_path, symbol_ref=reference_name, description=description)
+
+    # Ensure that storage status at creation time is set to NOT_STORED
+    model.storage_status = StorageStatus.NOT_STORED
+
+    db.session.add(model)
+    db.session.commit()
+    __logger.debug('Storable object created. {id=' + str(model.id) + '}')
+
+    # Signal background process to store the object
+    rq_helpers.launch_storage_task(storable_type, model.id, encoded_data)
+
+    return model
 
 
 def get_storable_model(storable_type, model_id):
@@ -205,8 +204,8 @@ def get_storable_model(storable_type, model_id):
         msg = 'Storable object not found. {storable_type=' + storable_type.value + ', model_id=' + str(model_id) + '}'
         __logger.debug(msg)
         raise ResourceNotFoundApiError(msg, missing_id=model_id)
-    else:
-        return model
+
+    return model
 
 
 def get_storable_objects(storable_type, page_number, page_size):

@@ -112,3 +112,8 @@ class RelationAlreadyExistsError(ApiError):
 class ModelMapperNotAvailable(ApiError):
     def __init__(self, msg=None, details=None):
         super(ModelMapperNotAvailable, self).__init__(msg, details, 500)
+
+
+class SchemaNotAvailableError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(SchemaNotAvailableError, self).__init__(msg, details, 500)
