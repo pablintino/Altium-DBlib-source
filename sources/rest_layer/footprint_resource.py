@@ -25,7 +25,6 @@
 
 from flask_restful import Resource
 from flask import request
-from marshmallow import ValidationError
 
 from dtos.footprints_dtos import FootprintDto
 from dtos.schemas.footprint_schemas import FootprintSchema
@@ -35,20 +34,6 @@ from services.exceptions import ApiError
 
 
 class FootprintResource(Resource):
-    def post(self):
-        try:
-            footprint_dto = FootprintSchema().load(data=request.json)
-            footprint_model = storable_objects_service.create_storable_library_object(
-                                storable_type=StorableLibraryResourceType.FOOTPRINT,
-                                reference_name=footprint_dto.reference,
-                                storable_path=footprint_dto.path,
-                                description=footprint_dto.description,
-                                encoded_data=footprint_dto.encoded_data)
-            return FootprintSchema().dump(FootprintDto.from_model(footprint_model, None)), 201
-        except ValidationError as error:
-            return {"errors": error.messages}, 400
-        except ApiError as error:
-            return error.format_api_data()
 
     def get(self, id):
         try:

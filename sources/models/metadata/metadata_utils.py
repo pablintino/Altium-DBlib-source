@@ -1,6 +1,6 @@
 from models import ComponentModel
 from sqlalchemy import inspect
-from models import ModelDescriptor, FieldModelDescriptor
+from models import ModelDescriptor
 from sqlalchemy.orm.properties import ColumnProperty
 
 
@@ -25,8 +25,9 @@ def get_common_component_metadata():
     common_descriptor = ModelDescriptor(ComponentModel.__name__)
     for attr in mapper.attrs:
         if type(attr) is ColumnProperty:
-            common_descriptor.add_field(attr.key, attr.expression.unique or attr.expression.primary_key,
-                                          attr.expression.nullable)
+            common_descriptor.add_field(attr.key,
+                                        attr.expression.unique or attr.expression.primary_key,
+                                        attr.expression.nullable)
     return common_descriptor
 
 

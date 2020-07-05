@@ -99,6 +99,16 @@ class InvalidStorableTypeError(ApiError):
         super(InvalidStorableTypeError, self).__init__(msg, details, 400)
 
 
+class InvalidRequestError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(InvalidRequestError, self).__init__(msg, details, 400)
+
+
+class RelationAlreadyExistsError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(RelationAlreadyExistsError, self).__init__(msg, details, 400)
+
+
 class ModelMapperNotAvailable(ApiError):
     def __init__(self, msg=None, details=None):
         super(ModelMapperNotAvailable, self).__init__(msg, details, 500)

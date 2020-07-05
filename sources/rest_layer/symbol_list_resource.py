@@ -22,44 +22,46 @@
 #  SOFTWARE.
 #
 
-from flask_restful import Resource
+
 from flask import request
+from flask_restful import Resource
 from marshmallow import ValidationError
 
-from dtos import components_models_dto_mappings
 from dtos.generic_objects_search_dtos import SearchPageResultDto
-from dtos.schemas.generic_objects_search_schemas import ComponentsSearchPageResultSchema
-from dtos.schemas.create_component_schema import CreateComponentSchema
-from services import component_service
+from dtos.schemas.generic_objects_search_schemas import SymbolsSearchPageResultSchema
+from dtos.schemas.symbol_schemas import SymbolSchema
+from dtos.symbols_dtos import SymbolDto
+from models.internal.internal_models import StorableLibraryResourceType
+from services import storable_objects_service
 from services.exceptions import ApiError
 
 
-class ComponentListResource(Resource):
+class SymbolListResource(Resource):
     def post(self):
         try:
-            creation_dto = CreateComponentSchema().load(data=request.json)
-            model = component_service.create_component(creation_dto['specific_dto'])
-            creation_dto['specific_dto'] = components_models_dto_mappings.get_mapper_for_model(model).to_dto(model)
-            return CreateComponentSchema().dump(creation_dto), 201
-        except ValidationError as error:
-            print(error.messages)
-            return {"errors": error.messages}, 400
+            symbol_dto = SymbolSchema().load(data=request.json)
+            symbol_model = storable_objects_service.create_storable_library_object(
+                                storable_type=StorableLibraryResourceType.SYMBOL,
+                                reference_name=symbol_dto.reference,
+                                storable_path=symbol_dto.path,
+                                description=symbol_dto.description,
+                                encoded_data=symbol_dto.encoded_data)
+            return SymbolSchema().dump(SymbolDto.from_model(symbol_model, None)), 201
         except ApiError as error:
             return error.format_api_data()
+        except ValidationError as error:
+            return {"errors": error.messages}, 400
 
     def get(self):
         page_n = request.args.get('page_n', default=1, type=int)
         page_size = request.args.get('page_size', default=20, type=int)
-        filters = request.args.to_dict(flat=True)
-        filters.pop('page_n', None)
-        filters.pop('page_size', None)
         try:
-            page = component_service.get_component_search(page_n, page_size, filters)
+            page = storable_objects_service.get_storable_objects(StorableLibraryResourceType.SYMBOL, page_n, page_size)
             dtos = []
-            for model in page.items:
-                dtos.append(components_models_dto_mappings.get_mapper_for_model(model).to_dto(model))
+            for object in page.items:
+                dtos.append(SymbolDto.from_model(object, None))
             page_dto = SearchPageResultDto(page_size=page.per_page, page_number=page.page, total_elements=page.total,
                                            elements=dtos)
-            return ComponentsSearchPageResultSchema().dump(page_dto), 200
+            return SymbolsSearchPageResultSchema().dump(page_dto), 200
         except ApiError as error:
             return error.format_api_data()

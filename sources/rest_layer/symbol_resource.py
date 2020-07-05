@@ -25,7 +25,6 @@
 
 from flask import request
 from flask_restful import Resource
-from marshmallow import ValidationError
 
 from dtos.schemas.symbol_schemas import SymbolSchema
 from dtos.symbols_dtos import SymbolDto
@@ -35,20 +34,6 @@ from services.exceptions import ApiError
 
 
 class SymbolResource(Resource):
-    def post(self):
-        try:
-            symbol_dto = SymbolSchema().load(data=request.json)
-            symbol_model = storable_objects_service.create_storable_library_object(
-                                storable_type=StorableLibraryResourceType.SYMBOL,
-                                reference_name=symbol_dto.reference,
-                                storable_path=symbol_dto.path,
-                                description=symbol_dto.description,
-                                encoded_data=symbol_dto.encoded_data)
-            return SymbolSchema().dump(SymbolDto.from_model(symbol_model, None)), 201
-        except ApiError as error:
-            return error.format_api_data()
-        except ValidationError as error:
-            return {"errors": error.messages}, 400
 
     def get(self, id):
         try:

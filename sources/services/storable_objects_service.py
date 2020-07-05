@@ -126,7 +126,8 @@ def update_object_data(storable_type, model_id, encoded_data):
         else:
             # Cannot update the library file
             raise __get_error_for_type(storable_type)(
-                f'The given {storable_type.value} file cannot be updated without {storable_type.value} reference changes')
+                f'The given {storable_type.value} file cannot be updated without' 
+                f' {storable_type.value} reference changes')
 
         # Reset storage status
         model.storage_status = StorageStatus.NOT_STORED
@@ -206,3 +207,14 @@ def get_storable_model(storable_type, model_id):
         raise ResourceNotFoundApiError(msg, missing_id=model_id)
     else:
         return model
+
+
+def get_storable_objects(storable_type, page_number, page_size):
+    __logger.debug(
+        'Querying all storable objects. {storable_type=' + storable_type.value + ', page_number=' + str(page_number) +
+        ', page_size=' + str(page_size) + '}')
+
+    model_type = __get_model_for_storable_type(storable_type)
+    objects_page = model_type.query.order_by(model_type.id.desc()).paginate(page_number, per_page=page_size)
+
+    return objects_page

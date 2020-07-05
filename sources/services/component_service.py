@@ -30,7 +30,7 @@ from dtos import components_models_dto_mappings
 from models import ComponentModel, LibraryReference, FootprintReference
 from services import metadata_service
 from services.exceptions import ResourceAlreadyExistsApiError, ResourceNotFoundApiError, ResourceInvalidQuery, \
-    ModelMapperNotAvailable
+    ModelMapperNotAvailable, RelationAlreadyExistsError
 
 __logger = logging.getLogger(__name__)
 
@@ -52,23 +52,30 @@ def create_component(dto):
         __logger.debug('Component created. {id=' + str(model.id) + '}')
         return model
     else:
-        msg = 'Cannot create the requested component cause it already exists. {mpn=' + dto.mpn +\
+        msg = 'Cannot create the requested component cause it already exists. {mpn=' + dto.mpn + \
               ', manufacturer=' + dto.manufacturer + '}'
         __logger.debug(msg)
         raise ResourceAlreadyExistsApiError(msg=msg, conflicting_id=exists_id)
 
 
-def create_symbol_relation(component_id, symbol_id):
+def update_create_symbol_relation(component_id, symbol_id, is_update=False):
     __logger.debug(f'Creating new symbol relation for component {component_id} and symbol {symbol_id}')
     component = ComponentModel.query.get(component_id)
     if component is not None:
         library_ref = LibraryReference.query.get(symbol_id)
         if library_ref is not None:
+            #  Just protect against false updates from bad POST usage
+            if not is_update and component.library_ref_id:
+                msg = f'Cannot create relation cause component {component_id} has already a relation. Current ' \
+                      f'symbol {str(component.library_ref_id)} '
+                raise RelationAlreadyExistsError(msg)
+
             component.library_ref = library_ref
             component.library_ref_id = symbol_id
             db.session.add(component)
             db.session.commit()
-            __logger.debug(f'Component symbol updated. Component {component_id} symbol {symbol_id}')
+            __logger.debug(f'Component symbol {"updated" if is_update else "created"}.' 
+                           f' Component {component_id} symbol {symbol_id}')
             return component
         else:
             raise ResourceNotFoundApiError(f'Symbol with ID {symbol_id} does not exist', missing_id=symbol_id)
@@ -76,29 +83,57 @@ def create_symbol_relation(component_id, symbol_id):
         raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
 
 
-def create_footprint_relation(component_id, footprint_id):
-    __logger.debug(f'Creating new footprint relation for component {component_id} and footprint {footprint_id}')
+def create_footprints_relation(component_id, footprint_ids):
+    __logger.debug(f'Creating new footprint relation for component {component_id} and footprint {str(footprint_ids)}')
     component = ComponentModel.query.get(component_id)
+    footprint_refs = []
     if component is not None:
-        footprint_ref = FootprintReference.query.get(footprint_id)
-        if footprint_ref is not None:
-            component.footprint_refs.append(footprint_ref)
-            db.session.add(component)
-            db.session.add(footprint_ref)
-            db.session.commit()
-            __logger.debug(f'Component footprints updated. Component {component_id} symbol {footprint_id}')
-            return component
-        else:
-            raise ResourceNotFoundApiError(f'Footprint with ID {footprint_id} does not exist', missing_id=footprint_id)
+
+        for footprint_id in footprint_ids:
+            footprint_ref = FootprintReference.query.get(footprint_id)
+            if footprint_ref:
+                exists = False
+                for actual_ref in component.footprint_refs:
+                    if actual_ref.id == footprint_id:
+                        exists = True
+                        break
+                if not exists:
+                    footprint_refs.append(footprint_ref)
+                    db.session.add(footprint_ref)
+            else:
+                raise ResourceNotFoundApiError(f'Footprint with ID {footprint_id} does not exist',
+                                               missing_id=footprint_id)
+
+        component.footprint_refs.extend(footprint_refs)
+        db.session.add(component)
+        db.session.commit()
+        __logger.debug(f'Component footprints updated. Component {component_id} footprints {str(footprint_ids)}')
+        return [ref.id for ref in component.footprint_refs]
+
     else:
         raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
 
 
-def get_component_symbol_relation(component_id):
+def get_component_symbol_relation(component_id, complete_symbol=False):
     __logger.debug(f'Querying symbol relation for component {component_id}')
     component = ComponentModel.query.get(component_id)
     if component is not None:
-        return component.library_ref_id
+        return component.library_ref_id if not complete_symbol else component.library_ref
+    else:
+        raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
+
+
+def get_component_footprint_relations(component_id, complete_footprints=False):
+    __logger.debug(f'Querying footprint relations for component {component_id}')
+    component = ComponentModel.query.get(component_id)
+    if component is not None:
+        result_list = []
+        if complete_footprints:
+            result_list = list(component.footprint_refs)
+        else:
+            for footprint in component.footprint_refs:
+                result_list.append(footprint.id)
+        return result_list
     else:
         raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
 

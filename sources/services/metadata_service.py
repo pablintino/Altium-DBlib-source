@@ -24,7 +24,6 @@
 
 
 from models.metadata import metadata_utils
-from services.exceptions import ResourceInvalidQuery
 import logging
 
 __logger = logging.getLogger(__name__)

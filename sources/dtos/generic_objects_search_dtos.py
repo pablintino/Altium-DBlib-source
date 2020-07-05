@@ -23,8 +23,9 @@
 #
 
 
-from app import create_app
-
-
-if __name__ == '__main__':
-    create_app().run(debug=True, use_debugger=False, use_reloader=False, port=4495)
+class SearchPageResultDto:
+    def __init__(self, **kwargs):
+        self.page_size = kwargs.get('page_size', 0)
+        self.page_number = kwargs.get('page_number', 0)
+        self.total_elements = kwargs.get('total_elements', 0)
+        self.elements = kwargs.get('elements', [])

@@ -68,3 +68,35 @@ class FootprintComponentReferenceDto:
             type(self).__name__,
             ', '.join('%s=%s' % item for item in vars(self).items())
         )
+
+
+class FootprintIdsComponentReferencesDto:
+
+    def __init__(self, footprint_ids):
+        self.footprint_ids = footprint_ids
+
+    def __repr__(self):
+        return '%s(%s)' % (
+            type(self).__name__,
+            ', '.join('%s=%s' % item for item in vars(self).items())
+        )
+
+    @staticmethod
+    def from_model(footprint_ids):
+        return FootprintIdsComponentReferencesDto(footprint_ids=footprint_ids)
+
+
+class FootprintComponentReferencesDto:
+
+    def __init__(self, footprints):
+        self.footprints = footprints
+
+    def __repr__(self):
+        return '%s(%s)' % (
+            type(self).__name__,
+            ', '.join('%s=%s' % item for item in vars(self).items())
+        )
+
+    @staticmethod
+    def from_model(footprints):
+        return FootprintComponentReferencesDto(footprints=footprints)
