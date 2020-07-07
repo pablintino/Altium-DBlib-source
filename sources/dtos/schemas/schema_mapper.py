@@ -41,9 +41,7 @@ from models import ResistorModel, DiodeTVSModel, CapacitorCeramicModel, DiodeZen
     VoltageRegulatorDCDCModel, VoltageRegulatorLinearModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
     MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel, LedIndicatorModel, ConnectorPcbModel, \
     SwitchPushButtonModel, SwitchSwitchModel, TransceiverModel, TransducerModel, InductorChokeModel, \
-    CapacitorElectrolyticModel
-from models.capacitor_tantalum_model import CapacitorTantalumModel
-from models.transformer_model import TransformerModel
+    CapacitorElectrolyticModel, CapacitorTantalumModel, TransformerModel
 
 
 def get_schema_for_component_name(component_type):

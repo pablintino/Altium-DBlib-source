@@ -33,8 +33,7 @@ from models import ResistorModel, CrystalOscillatorModel, DiodeRectifierModel, D
     VoltageRegulatorDCDCModel, VoltageRegulatorLinearModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
     MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel, SwitchPushButtonModel, SwitchSwitchModel, \
     TransceiverModel, ConnectorPcbModel, LedIndicatorModel, InductorChokeModel, TransducerModel, TransformerModel, \
-    CapacitorCeramicModel, CapacitorElectrolyticModel
-from models.capacitor_tantalum_model import CapacitorTantalumModel
+    CapacitorCeramicModel, CapacitorElectrolyticModel, CapacitorTantalumModel
 
 
 class DtoModelMaper:
