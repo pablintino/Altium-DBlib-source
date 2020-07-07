@@ -23,16 +23,18 @@
 #
 
 
-from dtos.components_dtos import ResistorDto, CapacitorDto, CrystalOscillatorDto, DiodeRectifierDto, DiodeTVSDto, \
+from dtos.components_dtos import ResistorDto, CapacitorCeramicDto, CrystalOscillatorDto, DiodeRectifierDto, DiodeTVSDto, \
     DiodeZenerDto, FerriteBeadDto, TransistorMosfetDto, TransistorBjtDto, PowerInductorDto, VoltageRegulatorDCDCDto, \
     VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
     OptocouplerLinearDto, LedIndicatorDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, \
-    TransducerDto, InductorChokeDto, TransformerDto
-from models import ResistorModel, CapacitorModel, CrystalOscillatorModel, DiodeRectifierModel, DiodeZenerModel, \
+    TransducerDto, InductorChokeDto, TransformerDto, CapacitorElectrolyticDto, CapacitorTantalumDto
+from models import ResistorModel, CrystalOscillatorModel, DiodeRectifierModel, DiodeZenerModel, \
     DiodeTVSModel, FerriteBeadModel, TransistorMosfetModel, TransistorBjtModel, PowerInductorModel, \
     VoltageRegulatorDCDCModel, VoltageRegulatorLinearModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
     MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel, SwitchPushButtonModel, SwitchSwitchModel, \
-    TransceiverModel, ConnectorPcbModel, LedIndicatorModel, InductorChokeModel, TransducerModel, TransformerModel
+    TransceiverModel, ConnectorPcbModel, LedIndicatorModel, InductorChokeModel, TransducerModel, TransformerModel, \
+    CapacitorCeramicModel, CapacitorElectrolyticModel
+from models.capacitor_tantalum_model import CapacitorTantalumModel
 
 
 class DtoModelMaper:
@@ -53,12 +55,6 @@ class ResistorModelMapper(DtoModelMaper):
 
     def __init__(self):
         super(ResistorModelMapper, self).__init__(ResistorModel, ResistorDto)
-
-
-class CapactitorModelMapper(DtoModelMaper):
-
-    def __init__(self):
-        super(CapactitorModelMapper, self).__init__(CapacitorModel, CapacitorDto)
 
 
 class CrystalOscillatorModelMapper(DtoModelMaper):
@@ -205,9 +201,25 @@ class TransformerModelMapper(DtoModelMaper):
         super(TransformerModelMapper, self).__init__(TransformerModel, TransformerDto)
 
 
+class CapacitorCeramicModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(CapacitorCeramicModelMapper, self).__init__(CapacitorCeramicModel, CapacitorCeramicDto)
+
+
+class CapacitorElectrolyticModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(CapacitorElectrolyticModelMapper, self).__init__(CapacitorElectrolyticModel, CapacitorElectrolyticDto)
+
+
+class CapacitorTantalumModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(CapacitorTantalumModelMapper, self).__init__(CapacitorTantalumModel, CapacitorTantalumDto)
+
 mapper_instances = [
     ResistorModelMapper(),
-    CapactitorModelMapper(),
     CrystalOscillatorModelMapper(),
     DiodeRectifierModelMapper(),
     DiodeTVSModelMapper(),
@@ -231,7 +243,10 @@ mapper_instances = [
     ConnectorPcbModelMapper(),
     TransducerModelMapper(),
     InductorChokeModelMapper(),
-    TransformerModelMapper()
+    TransformerModelMapper(),
+    CapacitorCeramicModelMapper(),
+    CapacitorElectrolyticModelMapper(),
+    CapacitorTantalumModelMapper()
 ]
 
 model_to_dto_quick_dict = {}

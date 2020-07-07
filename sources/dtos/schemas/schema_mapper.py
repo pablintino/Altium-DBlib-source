@@ -23,29 +23,32 @@
 #
 
 
-from dtos.components_dtos import ResistorDto, CapacitorDto, DiodeTVSDto, DiodeZenerDto, DiodeRectifierDto, \
+from dtos.components_dtos import ResistorDto, CapacitorCeramicDto, DiodeTVSDto, DiodeZenerDto, DiodeRectifierDto, \
     FerriteBeadDto, TransistorMosfetDto, PowerInductorDto, TransistorBjtDto, CrystalOscillatorDto, \
     VoltageRegulatorLinearDto, VoltageRegulatorDCDCDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, \
     OptocouplerDigitalDto, OptocouplerLinearDto, LedIndicatorDto, SwitchSwitchDto, SwitchPushButtonDto, \
-    ConnectorPcbDto, TransceiverDto, TransducerDto, InductorChokeDto, TransformerDto
-from dtos.schemas.component_schemas import TransistorBjtSchema, CapacitorSchema, CrystalOscillatorSchema, \
+    ConnectorPcbDto, TransceiverDto, TransducerDto, InductorChokeDto, TransformerDto, CapacitorElectrolyticDto, \
+    CapacitorTantalumDto
+from dtos.schemas.component_schemas import TransistorBjtSchema, CapacitorCeramicSchema, CrystalOscillatorSchema, \
     DiodeRectifierSchema, DiodeTVSSchema, DiodeZenerSchema, FerriteBeadSchema, TransistorMosfetSchema, \
     PowerInductorSchema, ResistorSchema, VoltageRegulatorDCDCSchema, VoltageRegulatorLinearSchema, \
     MicrocontrollerSchema, OpAmpSchema, PotentiometerSchema, MemorySchema, OptocouplerDigitalSchema, \
     OptocouplerLinearSchema, LedIndicatorSchema, SwitchPushButtonSchema, SwitchSwitchSchema, ConnectorPcbSchema, \
-    TransceiverSchema, TransducerSchema, InductorChokeSchema, TransformerSchema
-from models import ResistorModel, DiodeTVSModel, CapacitorModel, DiodeZenerModel, DiodeRectifierModel, \
+    TransceiverSchema, TransducerSchema, InductorChokeSchema, TransformerSchema, CapacitorElectrolyticSchema, \
+    CapacitorTantalumSchema
+from models import ResistorModel, DiodeTVSModel, CapacitorCeramicModel, DiodeZenerModel, DiodeRectifierModel, \
     FerriteBeadModel, PowerInductorModel, CrystalOscillatorModel, TransistorBjtModel, TransistorMosfetModel, \
     VoltageRegulatorDCDCModel, VoltageRegulatorLinearModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
     MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel, LedIndicatorModel, ConnectorPcbModel, \
-    SwitchPushButtonModel, SwitchSwitchModel, TransceiverModel, TransducerModel, InductorChokeModel
+    SwitchPushButtonModel, SwitchSwitchModel, TransceiverModel, TransducerModel, InductorChokeModel, \
+    CapacitorElectrolyticModel
+from models.capacitor_tantalum_model import CapacitorTantalumModel
 from models.transformer_model import TransformerModel
 
 
 def get_schema_for_component_name(component_type):
     schema_map = {
         ResistorModel.__tablename__: ResistorSchema,
-        CapacitorModel.__tablename__: CapacitorSchema,
         DiodeTVSModel.__tablename__: DiodeTVSSchema,
         DiodeZenerModel.__tablename__: DiodeZenerSchema,
         DiodeRectifierModel.__tablename__: DiodeRectifierSchema,
@@ -69,7 +72,10 @@ def get_schema_for_component_name(component_type):
         ConnectorPcbModel.__tablename__: ConnectorPcbSchema,
         TransducerModel.__tablename__: TransducerSchema,
         InductorChokeModel.__tablename__: InductorChokeSchema,
-        TransformerModel.__tablename__: TransformerSchema
+        TransformerModel.__tablename__: TransformerSchema,
+        CapacitorElectrolyticModel.__tablename__: CapacitorElectrolyticSchema,
+        CapacitorCeramicModel.__tablename__: CapacitorCeramicSchema,
+        CapacitorTantalumModel.__tablename__: CapacitorTantalumSchema
     }
     return schema_map.get(component_type)
 
@@ -77,7 +83,7 @@ def get_schema_for_component_name(component_type):
 def get_schema_for_dto_class_name(schema):
     schema_map = {
         ResistorDto.__name__: ResistorSchema,
-        CapacitorDto.__name__: CapacitorSchema,
+        CapacitorCeramicDto.__name__: CapacitorCeramicSchema,
         DiodeTVSDto.__name__: DiodeTVSSchema,
         DiodeZenerDto.__name__: DiodeZenerSchema,
         DiodeRectifierDto.__name__: DiodeRectifierSchema,
@@ -101,6 +107,9 @@ def get_schema_for_dto_class_name(schema):
         ConnectorPcbDto.__name__: ConnectorPcbSchema,
         TransducerDto.__name__: TransducerSchema,
         InductorChokeDto.__name__: InductorChokeSchema,
-        TransformerDto.__name__: TransformerSchema
+        TransformerDto.__name__: TransformerSchema,
+        CapacitorElectrolyticDto.__name__: CapacitorElectrolyticSchema,
+        CapacitorCeramicDto.__name__: CapacitorCeramicSchema,
+        CapacitorTantalumDto.__name__: CapacitorTantalumSchema
     }
     return schema_map.get(schema)

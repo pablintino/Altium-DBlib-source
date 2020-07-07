@@ -103,8 +103,9 @@ def update_object_data(storable_type, model_id, encoded_data):
         raise ResourceNotFoundApiError(msg, missing_id=model_id)
     else:
 
-        current_encoded_data = storage_service.get_encoded_file_from_repo(model)
-        if encoded_data == current_encoded_data:
+        # If the model has already been stored and its content is the same just skip updating
+        if model.storage_status is StorageStatus.STORED and \
+                encoded_data == storage_service.get_encoded_file_from_repo(model):
             __logger.debug('Given new storable object data has the same content as the current one. Skipping...')
             return
 
@@ -126,7 +127,7 @@ def update_object_data(storable_type, model_id, encoded_data):
         else:
             # Cannot update the library file
             raise __get_error_for_type(storable_type)(
-                f'The given {storable_type.value} file cannot be updated without' 
+                f'The given {storable_type.value} file cannot be updated without'
                 f' {storable_type.value} reference changes')
 
         # Reset storage status
@@ -180,7 +181,7 @@ def create_storable_library_object(storable_type, reference_name, storable_path,
 
     # Create a model based on the storable object type
     model = FootprintReference(footprint_path=storable_path, footprint_ref=reference_name,
-                                description=description) if storable_type == StorableLibraryResourceType.FOOTPRINT \
+                               description=description) if storable_type == StorableLibraryResourceType.FOOTPRINT \
         else LibraryReference(symbol_path=storable_path, symbol_ref=reference_name, description=description)
 
     # Ensure that storage status at creation time is set to NOT_STORED

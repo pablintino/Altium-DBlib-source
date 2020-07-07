@@ -23,13 +23,14 @@
  *
  **/
 
-
-create view [Capacitors 1206] as select                mpn as [Part Number],
+create view [Capacitors Ceramic 0805] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Manufacturer]                              = MAX(manufacturer),
     [Tolerance]                                 = MAX(tolerance),
     [Voltage]                                   = MAX(voltage),
     [Composition]                               = MAX(composition),
+    [Minimum Temperature]                       = MAX(temperature_min),
+    [Maximum Temperature]                       = MAX(temperature_max),
     [Created On]                                = MAX(created_on),
     [Updated On]                                = MAX(updated_on),
     [Type]                                      = MAX(type),
@@ -49,6 +50,8 @@ from (
          select ca.tolerance                                                                                    tolerance,
                 ca.voltage                                                                                      voltage,
                 ca.composition                                                                                  composition,
+                ca.temperature_min                                                                              temperature_min,
+                ca.temperature_max                                                                              temperature_max,
                 c.manufacturer                                                                                  manufacturer,
                 c.mpn                                                                                           mpn,
                 c.value                                                                                         value,
@@ -67,7 +70,7 @@ from (
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from capacitor ca
+         from capacitor_ceramic ca
                   inner join component c
                              on ca.id = c.id
                   inner join component_footprint_asc cf
@@ -76,7 +79,7 @@ from (
                              on cf.footprint_ref_id = f.id
                   inner join library_ref lf
                              on c.library_ref_id = lf.id
-		where c.package = '1206 (3216 Metric)'
+		where c.package = '0805 (2012 Metric)'
      ) d
          pivot
          (

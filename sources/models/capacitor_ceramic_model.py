@@ -27,16 +27,18 @@ from sqlalchemy import Column, String, ForeignKey
 from models.component_model import ComponentModel
 
 
-class CapacitorModel(ComponentModel):
-    __tablename__ = 'capacitor'
+class CapacitorCeramicModel(ComponentModel):
+    __tablename__ = 'capacitor_ceramic'
 
     # Primary key
     id = Column(ForeignKey("component.id"), primary_key=True)
 
-    # Specific properties of a capacitor
+    # Specific properties of a ceramic capacitor
     tolerance = Column(String(30))
     voltage = Column(String(30))
     composition = Column(String(30))
+    temperature_min = Column(String(30))
+    temperature_max = Column(String(30))
 
     # Tells the ORM the type of a specific component by the distinguish column
     __mapper_args__ = {

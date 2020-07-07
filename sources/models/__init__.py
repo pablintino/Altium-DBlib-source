@@ -27,7 +27,6 @@ from models.join_tables import component_footprint_asc_table
 from models.library_reference_model import LibraryReference
 from models.footprint_reference_model import FootprintReference
 from models.resistor_model import ResistorModel
-from models.capacitor_model import CapacitorModel
 from models.diode_tvs_model import DiodeTVSModel
 from models.diode_zener_model import DiodeZenerModel
 from models.diode_rectifier_model import DiodeRectifierModel
@@ -52,6 +51,8 @@ from models.transceiver_model import TransceiverModel
 from models.transducer_model import TransducerModel
 from models.transformer_model import TransformerModel
 from models.inductor_choke_model import InductorChokeModel
+from models.capacitor_electrolytic_model import CapacitorElectrolyticModel
+from models.capacitor_ceramic_model import CapacitorCeramicModel
 from models.component_model import ComponentModel
 from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
 from models.join_tables import component_footprint_asc_table

@@ -24,16 +24,16 @@
 
 from app import marshmallow
 from dtos.components_dtos import CrystalOscillatorDto, DiodeRectifierDto, DiodeTVSDto, FerriteBeadDto, ResistorDto, \
-    TransistorMosfetDto, CapacitorDto, DiodeZenerDto, PowerInductorDto, TransistorBjtDto, VoltageRegulatorDCDCDto, \
-    VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
-    OptocouplerLinearDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, LedIndicatorDto, \
-    TransducerDto, InductorChokeDto, TransformerDto
+    TransistorMosfetDto, CapacitorCeramicDto, DiodeZenerDto, PowerInductorDto, TransistorBjtDto, \
+    VoltageRegulatorDCDCDto, VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, \
+    OptocouplerDigitalDto, OptocouplerLinearDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto,\
+    LedIndicatorDto, TransducerDto, InductorChokeDto, TransformerDto, CapacitorElectrolyticDto, CapacitorTantalumDto
 from marshmallow import fields, post_load
 
 
 class ComponentSchema(marshmallow.Schema):
     id = fields.Integer(missing=None, default=None)
-    type = fields.String()
+    type = fields.String(required=True)
     mpn = fields.String(required=True)
     manufacturer = fields.String(required=True)
     value = fields.String(allow_none=True)
@@ -106,14 +106,16 @@ class DiodeZenerSchema(ComponentSchema):
         return DiodeZenerDto(**data)
 
 
-class CapacitorSchema(ComponentSchema):
+class CapacitorCeramicSchema(ComponentSchema):
     voltage = fields.String()
     composition = fields.String()
     tolerance = fields.String()
+    temperature_min = fields.String()
+    temperature_max = fields.String()
 
     @post_load
-    def make_capacitor_dto(self, data, **kwargs):
-        return CapacitorDto(**data)
+    def make_capacitor_ceramic_dto(self, data, **kwargs):
+        return CapacitorCeramicDto(**data)
 
 
 class TransistorMosfetSchema(ComponentSchema):
@@ -349,17 +351,45 @@ class TransformerSchema(ComponentSchema):
     number_of_windings = fields.String()
     primary_dc_resistance = fields.String()
     secondary_dc_resistance = fields.String()
-    tertiary_dc_resistance = fields.String(allow_none=True, default=None, missing=None)
+    tertiary_dc_resistance = fields.String()
     leakage_inductance = fields.String()
     primary_inductance = fields.String()
     secondary_current_rating = fields.String()
-    tertiary_current_rating = fields.String(allow_none=True, default=None, missing=None)
+    tertiary_current_rating = fields.String()
     primary_voltage_rating = fields.String()
     secondary_voltage_rating = fields.String()
-    tertiary_voltage_rating = fields.String(allow_none=True, default=None, missing=None)
+    tertiary_voltage_rating = fields.String()
     nps_turns_ratio = fields.String()
-    npt_turns_ratio = fields.String(allow_none=True, default=None, missing=None)
+    npt_turns_ratio = fields.String()
 
     @post_load
     def make_transformer_dto(self, data, **kwargs):
         return TransformerDto(**data)
+
+
+class CapacitorElectrolyticSchema(ComponentSchema):
+    voltage = fields.String()
+    material = fields.String()
+    polarised = fields.Boolean()
+    tolerance = fields.String()
+    esr = fields.String()
+    lifetime_temperature = fields.String()
+    temperature_min = fields.String()
+    temperature_max = fields.String()
+
+    @post_load
+    def make_capacitor_electrolytic_dto(self, data, **kwargs):
+        return CapacitorElectrolyticDto(**data)
+
+
+class CapacitorTantalumSchema(ComponentSchema):
+    voltage = fields.String()
+    tolerance = fields.String()
+    esr = fields.String()
+    lifetime_temperature = fields.String()
+    temperature_min = fields.String()
+    temperature_max = fields.String()
+
+    @post_load
+    def make_capacitor_tantalum_dto(self, data, **kwargs):
+        return CapacitorTantalumDto(**data)
