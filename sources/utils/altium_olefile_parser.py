@@ -28,6 +28,8 @@ from enum import Enum
 import olefile
 import logging
 
+from utils.helpers import CaseInsensitiveDict
+
 __logger = logging.getLogger(__name__)
 
 
@@ -78,7 +80,7 @@ class Library:
 
 def parse_key_value_string(s):
     properties = s.decode('utf-8').strip('|').split('|')
-    result = {}
+    result = CaseInsensitiveDict()
 
     for prop in properties:
         x = prop.split('=')
