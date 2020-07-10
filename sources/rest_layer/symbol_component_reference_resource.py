@@ -64,7 +64,7 @@ class SymbolComponentReferenceResource(Resource):
 
             symbol_data = component_service.get_component_symbol_relation(id, retrieve_all)
             if retrieve_encoded_data:
-                encoded_data = storage_service.get_file_from_repo(symbol_data)
+                encoded_data = storage_service.get_encoded_file_from_repo(symbol_data)
             if not retrieve_all:
                 resp_data = SymbolComponentReferenceSchema().dump(SymbolComponentReferenceDto(symbol_id=symbol_data))
             else:
