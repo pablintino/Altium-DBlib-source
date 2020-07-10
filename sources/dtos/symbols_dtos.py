@@ -58,6 +58,12 @@ class SymbolDto:
             encoded_data=encoded_symbol)
 
 
+class SymbolComponentReferenceWrapperDto:
+
+    def __init__(self, data):
+        self.data = data
+
+
 class SymbolComponentReferenceDto:
 
     def __init__(self, **kwargs):

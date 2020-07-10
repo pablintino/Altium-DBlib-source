@@ -27,7 +27,7 @@ from dtos.schemas import schema_mapper
 from services.exceptions import SchemaNotAvailableError
 
 
-def shape_schema_serialization_disambiguation(base_object, parent_obj):
+def component_schema_serialization_disambiguation(base_object, parent_obj):
     schema_type = schema_mapper.get_schema_for_dto_class_name(base_object.__class__.__name__)
     if not schema_type:
         raise SchemaNotAvailableError(f'Cannot obtain a schema for {base_object.__class__.__name__} type')
@@ -35,7 +35,7 @@ def shape_schema_serialization_disambiguation(base_object, parent_obj):
     return schema_type()
 
 
-def shape_schema_deserialization_disambiguation(object_dict, parent_object_dict):
+def component_schema_deserialization_disambiguation(object_dict, parent_object_dict):
     component_type = object_dict.get('type')
     schema_type = schema_mapper.get_schema_for_component_name(component_type)
     if not schema_type:

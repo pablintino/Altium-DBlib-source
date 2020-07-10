@@ -23,15 +23,12 @@
 #
 
 
-from marshmallow_polyfield import PolyField
-from app import marshmallow
-from dtos.schemas.polymorphic_definitions import component_schema_deserialization_disambiguation, \
-    component_schema_serialization_disambiguation
+from flask import request
 
 
-class CreateComponentSchema(marshmallow.Schema):
-    specific_dto = PolyField(
-        serialization_schema_selector=component_schema_serialization_disambiguation,
-        deserialization_schema_selector=component_schema_deserialization_disambiguation,
-        required=True
-    )
+def parse_request_all_data_flag():
+    return request.args.get('all', default='false', type=str).lower() == 'true'
+
+
+def parse_request_encoded_data_flag():
+    return request.args.get('encoded_data', default='false', type=str).lower() == 'true'

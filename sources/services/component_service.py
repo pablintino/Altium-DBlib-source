@@ -114,11 +114,11 @@ def create_footprints_relation(component_id, footprint_ids):
         raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
 
 
-def get_component_symbol_relation(component_id, complete_symbol=False):
+def get_component_symbol_relation(component_id):
     __logger.debug(f'Querying symbol relation for component {component_id}')
     component = ComponentModel.query.get(component_id)
     if component is not None:
-        return component.library_ref_id if not complete_symbol else component.library_ref
+        return component.library_ref
     else:
         raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
 

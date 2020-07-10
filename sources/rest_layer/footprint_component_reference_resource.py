@@ -30,6 +30,7 @@ from marshmallow import ValidationError
 from dtos.footprints_dtos import FootprintIdsComponentReferencesDto, FootprintDto, FootprintComponentReferencesDto
 from dtos.schemas.footprint_schemas import FootprintSchema, FootprintsComponentReferencesSchema, \
     FootprintIdsComponentReferencesSchema
+from rest_layer import rest_layer_utils
 from services import component_service, storage_service
 from services.exceptions import ApiError, InvalidRequestError
 
@@ -49,8 +50,8 @@ class FootprintComponentReferenceResource(Resource):
 
     def get(self, id):
         try:
-            retrieve_all = request.args.get('all', default=False, type=bool)
-            retrieve_encoded_data = request.args.get('encoded_data', default=False, type=bool)
+            retrieve_all = rest_layer_utils.parse_request_all_data_flag()
+            retrieve_encoded_data = rest_layer_utils.parse_request_encoded_data_flag()
 
             # Protection against full requests requested as an "id only" request
             if retrieve_encoded_data and not retrieve_all:
