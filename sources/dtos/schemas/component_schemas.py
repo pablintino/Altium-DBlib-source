@@ -132,8 +132,12 @@ class TransistorMosfetSchema(ComponentSchema):
 
 
 class PowerInductorSchema(ComponentSchema):
-    power_max = fields.String()
     tolerance = fields.String()
+    resistance_dcr = fields.String()
+    inductance_freq_test = fields.String()
+    current_rating = fields.String()
+    current_saturation = fields.String()
+    core_material = fields.String()
 
     @post_load
     def make_power_inductor_dto(self, data, **kwargs):

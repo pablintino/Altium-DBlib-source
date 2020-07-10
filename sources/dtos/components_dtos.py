@@ -122,6 +122,7 @@ class TransistorMosfetDto(ComponentDto):
 class PowerInductorDto(ComponentDto):
     def __init__(self, **kwargs):
         super(PowerInductorDto, self).__init__(**kwargs)
+        self.tolerance = kwargs.get('tolerance')
         self.resistance_dcr = kwargs.get('resistance_dcr')
         self.inductance_freq_test = kwargs.get('inductance_freq_test')
         self.current_rating = kwargs.get('current_rating')
