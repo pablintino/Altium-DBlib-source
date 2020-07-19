@@ -120,6 +120,7 @@ class CapacitorCeramicSchema(ComponentSchema):
 
 class TransistorMosfetSchema(ComponentSchema):
     rds_on = fields.String()
+    vgs_max = fields.String()
     vgs_th = fields.String()
     vds_max = fields.String()
     ids_max = fields.String()

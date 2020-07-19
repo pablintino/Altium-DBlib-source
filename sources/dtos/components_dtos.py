@@ -112,6 +112,7 @@ class TransistorMosfetDto(ComponentDto):
     def __init__(self, **kwargs):
         super(TransistorMosfetDto, self).__init__(**kwargs)
         self.rds_on = kwargs.get('rds_on')
+        self.vgs_max = kwargs.get('vgs_max')
         self.vgs_th = kwargs.get('vgs_th')
         self.vds_max = kwargs.get('vds_max')
         self.ids_max = kwargs.get('ids_max')
