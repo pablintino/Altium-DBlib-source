@@ -51,7 +51,7 @@ create view [Transistor Arrays Mosfet] as select                   mpn as [Part 
     [Footprint Ref 2]                           = MAX([FootprintRef2]),
     [Footprint Ref 3]                           = MAX([FootprintRef3])
 from (
-         select m.number_of_channels                                                        number_of_channels
+         select m.number_of_channels                                                        number_of_channels,
                 m.rds_on                                                                    rds_on,
                 m.vgs_max                                                                   vgs_max,
                 m.vgs_th                                                                    vgs_th,
@@ -78,7 +78,7 @@ from (
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from transistor_mosfet m
+         from transistor_array_mosfet m
                   inner join component c
                              on m.id = c.id
                   inner join component_footprint_asc cf
