@@ -351,7 +351,7 @@ class CapacitorTantalumDto(ComponentDto):
 
 class TransistorArrayMosfetDto(ComponentDto):
     def __init__(self, **kwargs):
-        super(TransistorMosfetDto, self).__init__(**kwargs)
+        super(TransistorArrayMosfetDto, self).__init__(**kwargs)
         self.number_of_channels = kwargs.get('number_of_channels')
         self.rds_on = kwargs.get('rds_on')
         self.vgs_max = kwargs.get('vgs_max')
