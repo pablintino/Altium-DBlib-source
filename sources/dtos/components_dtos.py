@@ -347,3 +347,17 @@ class CapacitorTantalumDto(ComponentDto):
         self.lifetime_temperature = kwargs.get('lifetime_temperature')
         self.temperature_min = kwargs.get('temperature_min')
         self.temperature_max = kwargs.get('temperature_max')
+
+
+class TransistorArrayMosfetDto(ComponentDto):
+    def __init__(self, **kwargs):
+        super(TransistorMosfetDto, self).__init__(**kwargs)
+        self.number_of_channels = kwargs.get('number_of_channels')
+        self.rds_on = kwargs.get('rds_on')
+        self.vgs_max = kwargs.get('vgs_max')
+        self.vgs_th = kwargs.get('vgs_th')
+        self.vds_max = kwargs.get('vds_max')
+        self.ids_max = kwargs.get('ids_max')
+        self.current_total_max = kwargs.get('current_total_max')
+        self.power_max = kwargs.get('power_max')
+        self.channel_type = kwargs.get('channel_type')

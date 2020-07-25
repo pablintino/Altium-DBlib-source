@@ -26,8 +26,9 @@ from app import marshmallow
 from dtos.components_dtos import CrystalOscillatorDto, DiodeRectifierDto, DiodeTVSDto, FerriteBeadDto, ResistorDto, \
     TransistorMosfetDto, CapacitorCeramicDto, DiodeZenerDto, PowerInductorDto, TransistorBjtDto, \
     VoltageRegulatorDCDCDto, VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, \
-    OptocouplerDigitalDto, OptocouplerLinearDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto,\
-    LedIndicatorDto, TransducerDto, InductorChokeDto, TransformerDto, CapacitorElectrolyticDto, CapacitorTantalumDto
+    OptocouplerDigitalDto, OptocouplerLinearDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, \
+    LedIndicatorDto, TransducerDto, InductorChokeDto, TransformerDto, CapacitorElectrolyticDto, CapacitorTantalumDto, \
+    TransistorArrayMosfetDto
 from marshmallow import fields, post_load
 
 
@@ -398,3 +399,19 @@ class CapacitorTantalumSchema(ComponentSchema):
     @post_load
     def make_capacitor_tantalum_dto(self, data, **kwargs):
         return CapacitorTantalumDto(**data)
+
+
+class TransistorArrayMosfetSchema(ComponentSchema):
+    number_of_channels = fields.String()
+    rds_on = fields.String()
+    vgs_max = fields.String()
+    vgs_th = fields.String()
+    vds_max = fields.String()
+    ids_max = fields.String()
+    current_total_max = fields.String()
+    power_max = fields.String()
+    channel_type = fields.String()
+
+    @post_load
+    def make_transistor_array_mosfet_dto(self, data, **kwargs):
+        return TransistorArrayMosfetDto(**data)

@@ -27,13 +27,14 @@ from dtos.components_dtos import ResistorDto, CapacitorCeramicDto, CrystalOscill
     DiodeZenerDto, FerriteBeadDto, TransistorMosfetDto, TransistorBjtDto, PowerInductorDto, VoltageRegulatorDCDCDto, \
     VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
     OptocouplerLinearDto, LedIndicatorDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, \
-    TransducerDto, InductorChokeDto, TransformerDto, CapacitorElectrolyticDto, CapacitorTantalumDto
+    TransducerDto, InductorChokeDto, TransformerDto, CapacitorElectrolyticDto, CapacitorTantalumDto, \
+    TransistorArrayMosfetDto
 from models import ResistorModel, CrystalOscillatorModel, DiodeRectifierModel, DiodeZenerModel, \
     DiodeTVSModel, FerriteBeadModel, TransistorMosfetModel, TransistorBjtModel, PowerInductorModel, \
     VoltageRegulatorDCDCModel, VoltageRegulatorLinearModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
     MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel, SwitchPushButtonModel, SwitchSwitchModel, \
     TransceiverModel, ConnectorPcbModel, LedIndicatorModel, InductorChokeModel, TransducerModel, TransformerModel, \
-    CapacitorCeramicModel, CapacitorElectrolyticModel, CapacitorTantalumModel
+    CapacitorCeramicModel, CapacitorElectrolyticModel, CapacitorTantalumModel, TransistorArrayMosfetModel
 
 
 class DtoModelMaper:
@@ -217,6 +218,13 @@ class CapacitorTantalumModelMapper(DtoModelMaper):
     def __init__(self):
         super(CapacitorTantalumModelMapper, self).__init__(CapacitorTantalumModel, CapacitorTantalumDto)
 
+
+class TransistorArrayMosfetModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(TransistorArrayMosfetModelMapper, self).__init__(TransistorArrayMosfetModel, TransistorArrayMosfetDto)
+
+
 mapper_instances = [
     ResistorModelMapper(),
     CrystalOscillatorModelMapper(),
@@ -245,7 +253,8 @@ mapper_instances = [
     TransformerModelMapper(),
     CapacitorCeramicModelMapper(),
     CapacitorElectrolyticModelMapper(),
-    CapacitorTantalumModelMapper()
+    CapacitorTantalumModelMapper(),
+    TransistorArrayMosfetModelMapper()
 ]
 
 model_to_dto_quick_dict = {}
