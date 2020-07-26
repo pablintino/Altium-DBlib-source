@@ -28,7 +28,7 @@ from dtos.components_dtos import CrystalOscillatorDto, DiodeRectifierDto, DiodeT
     VoltageRegulatorDCDCDto, VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, \
     OptocouplerDigitalDto, OptocouplerLinearDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, \
     LedIndicatorDto, TransducerDto, InductorChokeDto, TransformerDto, CapacitorElectrolyticDto, CapacitorTantalumDto, \
-    TransistorArrayMosfetDto
+    TransistorArrayMosfetDto, OscillatorOscillatorDto
 from marshmallow import fields, post_load
 
 
@@ -415,3 +415,18 @@ class TransistorArrayMosfetSchema(ComponentSchema):
     @post_load
     def make_transistor_array_mosfet_dto(self, data, **kwargs):
         return TransistorArrayMosfetDto(**data)
+
+
+class OscillatorOscillatorSchema(ComponentSchema):
+    base_resonator = fields.String()
+    current_supply_max = fields.String()
+    frequency = fields.String()
+    frequency_stability = fields.String()
+    temperature_min = fields.String()
+    temperature_max = fields.String()
+    voltage_supply = fields.String()
+    output_type = fields.String()
+
+    @post_load
+    def make_oscillator_oscillator_dto(self, data, **kwargs):
+        return OscillatorOscillatorDto(**data)

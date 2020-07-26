@@ -55,6 +55,7 @@ from models.capacitor_electrolytic_model import CapacitorElectrolyticModel
 from models.capacitor_ceramic_model import CapacitorCeramicModel
 from models.capacitor_tantalum_model import CapacitorTantalumModel
 from models.transistor_array_mosfet_model import TransistorArrayMosfetModel
+from models.oscillator_oscillator_model import OscillatorOscillatorModel
 from models.component_model import ComponentModel
 from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
 from models.join_tables import component_footprint_asc_table

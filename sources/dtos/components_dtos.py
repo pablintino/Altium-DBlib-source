@@ -361,3 +361,16 @@ class TransistorArrayMosfetDto(ComponentDto):
         self.current_total_max = kwargs.get('current_total_max')
         self.power_max = kwargs.get('power_max')
         self.channel_type = kwargs.get('channel_type')
+
+
+class OscillatorOscillatorDto(ComponentDto):
+    def __init__(self, **kwargs):
+        super(OscillatorOscillatorDto, self).__init__(**kwargs)
+        self.base_resonator = kwargs.get('base_resonator')
+        self.current_supply_max = kwargs.get('current_supply_max')
+        self.frequency = kwargs.get('frequency')
+        self.frequency_stability = kwargs.get('frequency_stability')
+        self.temperature_min = kwargs.get('temperature_min')
+        self.temperature_max = kwargs.get('temperature_max')
+        self.voltage_supply = kwargs.get('voltage_supply')
+        self.output_type = kwargs.get('output_type')

@@ -28,13 +28,14 @@ from dtos.components_dtos import ResistorDto, CapacitorCeramicDto, CrystalOscill
     VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
     OptocouplerLinearDto, LedIndicatorDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, \
     TransducerDto, InductorChokeDto, TransformerDto, CapacitorElectrolyticDto, CapacitorTantalumDto, \
-    TransistorArrayMosfetDto
+    TransistorArrayMosfetDto, OscillatorOscillatorDto
 from models import ResistorModel, CrystalOscillatorModel, DiodeRectifierModel, DiodeZenerModel, \
     DiodeTVSModel, FerriteBeadModel, TransistorMosfetModel, TransistorBjtModel, PowerInductorModel, \
     VoltageRegulatorDCDCModel, VoltageRegulatorLinearModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
     MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel, SwitchPushButtonModel, SwitchSwitchModel, \
     TransceiverModel, ConnectorPcbModel, LedIndicatorModel, InductorChokeModel, TransducerModel, TransformerModel, \
-    CapacitorCeramicModel, CapacitorElectrolyticModel, CapacitorTantalumModel, TransistorArrayMosfetModel
+    CapacitorCeramicModel, CapacitorElectrolyticModel, CapacitorTantalumModel, TransistorArrayMosfetModel, \
+    OscillatorOscillatorModel
 
 
 class DtoModelMaper:
@@ -225,6 +226,12 @@ class TransistorArrayMosfetModelMapper(DtoModelMaper):
         super(TransistorArrayMosfetModelMapper, self).__init__(TransistorArrayMosfetModel, TransistorArrayMosfetDto)
 
 
+class OscillatorOscillatorModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(OscillatorOscillatorModelMapper, self).__init__(OscillatorOscillatorModel, OscillatorOscillatorDto)
+
+
 mapper_instances = [
     ResistorModelMapper(),
     CrystalOscillatorModelMapper(),
@@ -254,7 +261,8 @@ mapper_instances = [
     CapacitorCeramicModelMapper(),
     CapacitorElectrolyticModelMapper(),
     CapacitorTantalumModelMapper(),
-    TransistorArrayMosfetModelMapper()
+    TransistorArrayMosfetModelMapper(),
+    OscillatorOscillatorModelMapper()
 ]
 
 model_to_dto_quick_dict = {}

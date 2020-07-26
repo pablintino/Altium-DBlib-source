@@ -28,20 +28,21 @@ from dtos.components_dtos import ResistorDto, CapacitorCeramicDto, DiodeTVSDto, 
     VoltageRegulatorLinearDto, VoltageRegulatorDCDCDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, \
     OptocouplerDigitalDto, OptocouplerLinearDto, LedIndicatorDto, SwitchSwitchDto, SwitchPushButtonDto, \
     ConnectorPcbDto, TransceiverDto, TransducerDto, InductorChokeDto, TransformerDto, CapacitorElectrolyticDto, \
-    CapacitorTantalumDto, TransistorArrayMosfetDto
+    CapacitorTantalumDto, TransistorArrayMosfetDto, OscillatorOscillatorDto
 from dtos.schemas.component_schemas import TransistorBjtSchema, CapacitorCeramicSchema, CrystalOscillatorSchema, \
     DiodeRectifierSchema, DiodeTVSSchema, DiodeZenerSchema, FerriteBeadSchema, TransistorMosfetSchema, \
     PowerInductorSchema, ResistorSchema, VoltageRegulatorDCDCSchema, VoltageRegulatorLinearSchema, \
     MicrocontrollerSchema, OpAmpSchema, PotentiometerSchema, MemorySchema, OptocouplerDigitalSchema, \
     OptocouplerLinearSchema, LedIndicatorSchema, SwitchPushButtonSchema, SwitchSwitchSchema, ConnectorPcbSchema, \
     TransceiverSchema, TransducerSchema, InductorChokeSchema, TransformerSchema, CapacitorElectrolyticSchema, \
-    CapacitorTantalumSchema, TransistorArrayMosfetSchema
+    CapacitorTantalumSchema, TransistorArrayMosfetSchema, OscillatorOscillatorSchema
 from models import ResistorModel, DiodeTVSModel, CapacitorCeramicModel, DiodeZenerModel, DiodeRectifierModel, \
     FerriteBeadModel, PowerInductorModel, CrystalOscillatorModel, TransistorBjtModel, TransistorMosfetModel, \
     VoltageRegulatorDCDCModel, VoltageRegulatorLinearModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
     MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel, LedIndicatorModel, ConnectorPcbModel, \
     SwitchPushButtonModel, SwitchSwitchModel, TransceiverModel, TransducerModel, InductorChokeModel, \
-    CapacitorElectrolyticModel, CapacitorTantalumModel, TransformerModel, TransistorArrayMosfetModel
+    CapacitorElectrolyticModel, CapacitorTantalumModel, TransformerModel, TransistorArrayMosfetModel, \
+    OscillatorOscillatorModel
 
 
 def get_schema_for_component_name(component_type):
@@ -74,7 +75,8 @@ def get_schema_for_component_name(component_type):
         CapacitorElectrolyticModel.__tablename__: CapacitorElectrolyticSchema,
         CapacitorCeramicModel.__tablename__: CapacitorCeramicSchema,
         CapacitorTantalumModel.__tablename__: CapacitorTantalumSchema,
-        TransistorArrayMosfetModel.__tablename__: TransistorArrayMosfetSchema
+        TransistorArrayMosfetModel.__tablename__: TransistorArrayMosfetSchema,
+        OscillatorOscillatorModel.__tablename__: OscillatorOscillatorSchema
     }
     return schema_map.get(component_type)
 
@@ -110,6 +112,7 @@ def get_schema_for_dto_class_name(schema):
         CapacitorElectrolyticDto.__name__: CapacitorElectrolyticSchema,
         CapacitorCeramicDto.__name__: CapacitorCeramicSchema,
         CapacitorTantalumDto.__name__: CapacitorTantalumSchema,
-        TransistorArrayMosfetDto.__name__: TransistorArrayMosfetSchema
+        TransistorArrayMosfetDto.__name__: TransistorArrayMosfetSchema,
+        OscillatorOscillatorDto.__name__: OscillatorOscillatorSchema
     }
     return schema_map.get(schema)
