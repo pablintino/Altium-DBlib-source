@@ -28,14 +28,14 @@ from dtos.components_dtos import ResistorDto, CapacitorCeramicDto, CrystalOscill
     VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, OptocouplerDigitalDto, \
     OptocouplerLinearDto, LedIndicatorDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, \
     TransducerDto, InductorChokeDto, TransformerDto, CapacitorElectrolyticDto, CapacitorTantalumDto, \
-    TransistorArrayMosfetDto, OscillatorOscillatorDto
+    TransistorArrayMosfetDto, OscillatorOscillatorDto, FusePPTCDto
 from models import ResistorModel, CrystalOscillatorModel, DiodeRectifierModel, DiodeZenerModel, \
     DiodeTVSModel, FerriteBeadModel, TransistorMosfetModel, TransistorBjtModel, PowerInductorModel, \
     VoltageRegulatorDCDCModel, VoltageRegulatorLinearModel, MicrocontrollerModel, OpAmpModel, PotentiometerModel, \
     MemoryModel, OptocouplerDigitalModel, OptocouplerLinearModel, SwitchPushButtonModel, SwitchSwitchModel, \
     TransceiverModel, ConnectorPcbModel, LedIndicatorModel, InductorChokeModel, TransducerModel, TransformerModel, \
     CapacitorCeramicModel, CapacitorElectrolyticModel, CapacitorTantalumModel, TransistorArrayMosfetModel, \
-    OscillatorOscillatorModel
+    OscillatorOscillatorModel, FusePPTCModel
 
 
 class DtoModelMaper:
@@ -232,6 +232,12 @@ class OscillatorOscillatorModelMapper(DtoModelMaper):
         super(OscillatorOscillatorModelMapper, self).__init__(OscillatorOscillatorModel, OscillatorOscillatorDto)
 
 
+class FusePPTCModelMapper(DtoModelMaper):
+
+    def __init__(self):
+        super(FusePPTCModelMapper, self).__init__(FusePPTCModel, FusePPTCDto)
+
+
 mapper_instances = [
     ResistorModelMapper(),
     CrystalOscillatorModelMapper(),
@@ -262,7 +268,8 @@ mapper_instances = [
     CapacitorElectrolyticModelMapper(),
     CapacitorTantalumModelMapper(),
     TransistorArrayMosfetModelMapper(),
-    OscillatorOscillatorModelMapper()
+    OscillatorOscillatorModelMapper(),
+    FusePPTCModelMapper()
 ]
 
 model_to_dto_quick_dict = {}

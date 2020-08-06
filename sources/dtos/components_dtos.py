@@ -374,3 +374,18 @@ class OscillatorOscillatorDto(ComponentDto):
         self.temperature_max = kwargs.get('temperature_max')
         self.voltage_supply = kwargs.get('voltage_supply')
         self.output_type = kwargs.get('output_type')
+
+
+class FusePPTCDto(ComponentDto):
+    def __init__(self, **kwargs):
+        super(FusePPTCDto, self).__init__(**kwargs)
+
+        self.current_hold = kwargs.get('current_hold')
+        self.current_trip = kwargs.get('current_trip')
+        self.voltage_rating = kwargs.get('voltage_rating')
+        self.resistance_maximum = kwargs.get('resistance_maximum')
+        self.resistance_minimum = kwargs.get('resistance_minimum')
+        self.power_rating = kwargs.get('power_rating')
+        self.current_rating = kwargs.get('current_rating')
+        self.temperature_min = kwargs.get('temperature_min')
+        self.temperature_max = kwargs.get('temperature_max')

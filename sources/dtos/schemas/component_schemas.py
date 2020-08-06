@@ -28,7 +28,7 @@ from dtos.components_dtos import CrystalOscillatorDto, DiodeRectifierDto, DiodeT
     VoltageRegulatorDCDCDto, VoltageRegulatorLinearDto, MicrocontrollerDto, OpAmpDto, PotentiometerDto, MemoryDto, \
     OptocouplerDigitalDto, OptocouplerLinearDto, SwitchPushButtonDto, SwitchSwitchDto, TransceiverDto, ConnectorPcbDto, \
     LedIndicatorDto, TransducerDto, InductorChokeDto, TransformerDto, CapacitorElectrolyticDto, CapacitorTantalumDto, \
-    TransistorArrayMosfetDto, OscillatorOscillatorDto
+    TransistorArrayMosfetDto, OscillatorOscillatorDto, FusePPTCDto
 from marshmallow import fields, post_load
 
 
@@ -430,3 +430,19 @@ class OscillatorOscillatorSchema(ComponentSchema):
     @post_load
     def make_oscillator_oscillator_dto(self, data, **kwargs):
         return OscillatorOscillatorDto(**data)
+
+
+class FusePPTCSchema(ComponentSchema):
+    current_hold = fields.String()
+    current_trip = fields.String()
+    voltage_rating = fields.String()
+    resistance_maximum = fields.String()
+    resistance_minimum = fields.String()
+    power_rating = fields.String()
+    current_rating = fields.String()
+    temperature_min = fields.String()
+    temperature_max = fields.String()
+
+    @post_load
+    def make_fuse_pptc_dto(self, data, **kwargs):
+        return FusePPTCDto(**data)
