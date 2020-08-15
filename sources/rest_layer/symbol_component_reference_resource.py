@@ -27,8 +27,7 @@ from flask_restful import Resource
 from flask import request
 from marshmallow import ValidationError
 
-from dtos.schemas.symbol_schemas import SymbolComponentReferenceSchema, SymbolSchema, \
-    SymbolComponentReferenceQueryWrapperSchema
+from dtos.schemas.symbol_schemas import SymbolComponentReferenceSchema, SymbolComponentReferenceQueryWrapperSchema
 from dtos.symbols_dtos import SymbolComponentReferenceDto, SymbolDto, SymbolComponentReferenceWrapperDto
 from rest_layer import rest_layer_utils
 from services import component_service, storage_service

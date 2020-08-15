@@ -26,34 +26,38 @@
 import logging
 
 from app import db
-from dtos import components_models_dto_mappings
 from models import ComponentModel, LibraryReference, FootprintReference
 from services import metadata_service
 from services.exceptions import ResourceAlreadyExistsApiError, ResourceNotFoundApiError, ResourceInvalidQuery, \
-    ModelMapperNotAvailable, RelationAlreadyExistsError
+    RelationAlreadyExistsError, InvalidComponentFieldsError
 
 __logger = logging.getLogger(__name__)
 
 
-def create_component(dto):
-    mapper = components_models_dto_mappings.get_mapper_for_dto(dto)
-    if not mapper:
-        msg = 'Cannot create the requested component cause the associated model-mapper is not available. {mpn=' + \
-              dto.mpn + ', manufacturer=' + dto.manufacturer + '}'
-        __logger.debug(msg)
-        raise ModelMapperNotAvailable(msg)
-    model = mapper.to_model(dto)
-    __logger.debug(f'Creating component with mpn={dto.mpn} and manufacturer={dto.manufacturer}')
-    exists_id = db.session.query(ComponentModel.id).filter_by(mpn=dto.mpn,
-                                                              manufacturer=dto.manufacturer).scalar()
+def __validate_new_component_model(model):
+    reserved_fields = ['created_on', 'updated_on', 'id']
+    present_fields = list({k: v for k, v in model.__dict__.items() if v and k in reserved_fields}.keys())
+
+    if len(present_fields) > 0:
+        raise InvalidComponentFieldsError('Reserved fields were provided', reserved_fields=present_fields)
+
+
+def create_component(model):
+    __logger.debug(f'Creating component with mpn={model.mpn} and manufacturer={model.manufacturer}')
+
+    # Check for invalid or unexpected filled fields before storing the component
+    __validate_new_component_model(model)
+
+    exists_id = db.session.query(ComponentModel.id).filter_by(mpn=model.mpn,
+                                                              manufacturer=model.manufacturer).scalar()
     if not exists_id:
         db.session.add(model)
         db.session.commit()
         __logger.debug('Component created. {id=' + str(model.id) + '}')
         return model
     else:
-        msg = 'Cannot create the requested component cause it already exists. {mpn=' + dto.mpn + \
-              ', manufacturer=' + dto.manufacturer + '}'
+        msg = 'Cannot create the requested component cause it already exists. {mpn=' + model.mpn + \
+              ', manufacturer=' + model.manufacturer + '}'
         __logger.debug(msg)
         raise ResourceAlreadyExistsApiError(msg=msg, conflicting_id=exists_id)
 
@@ -74,7 +78,7 @@ def update_create_symbol_relation(component_id, symbol_id, is_update=False):
             component.library_ref_id = symbol_id
             db.session.add(component)
             db.session.commit()
-            __logger.debug(f'Component symbol {"updated" if is_update else "created"}.' 
+            __logger.debug(f'Component symbol {"updated" if is_update else "created"}.'
                            f' Component {component_id} symbol {symbol_id}')
             return component
         else:
@@ -145,15 +149,20 @@ def get_component(component_id):
         __logger.debug(f'Component with id={component_id} not found')
         raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
     else:
-        return metadata_service.get_polymorphic_identity(component.type).query.get(component_id)
+        return metadata_service.get_polymorphic_model(component.type).query.get(component_id)
 
 
 def get_component_search(page_number, page_size, filters):
     __logger.debug(f'Querying components with page number {page_number} and page size {page_size}')
 
-    res, msg = metadata_service.are_fields_valid(filters)
+    component_type = filters.get('type', None)
+    if component_type:
+        if not metadata_service.is_component_type_valid(component_type):
+            raise ResourceInvalidQuery('The given component type does not exist')
+
+    res, inv_fields = metadata_service.validate_component_fields(filters, component_type)
     if not res:
-        raise ResourceInvalidQuery(msg)
+        raise ResourceInvalidQuery('The given search query is invalid', inv_fields)
 
     components_page = ComponentModel.query.filter_by(**filters) \
         .order_by(ComponentModel.id.desc()).paginate(page_number, per_page=page_size)

@@ -65,8 +65,41 @@ class ResourceAlreadyExistsApiError(ApiError):
 
 
 class ResourceInvalidQuery(ApiError):
-    def __init__(self, msg=None, details=None):
+    def __init__(self, msg=None, details=None, invalid_fields=[]):
         super(ResourceInvalidQuery, self).__init__(msg, details, 400)
+        self.invalid_fields = invalid_fields
+
+    def format_api_data(self):
+        data, code = super(ResourceInvalidQuery, self).format_api_data()
+        data['invalid_fields'] = self.invalid_fields
+        return data, code
+
+
+class InvalidComponentTypeError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(InvalidComponentTypeError, self).__init__(msg, details, 400)
+
+
+class InvalidComponentFieldsError(ApiError):
+    def __init__(self, msg=None, details=None, unrecognised_fields=[], mandatory_missing=[], unexpected_types=[],
+                 reserved_fields=[]):
+        super(InvalidComponentFieldsError, self).__init__(msg, details, 400)
+        self.unrecognised_fields = unrecognised_fields
+        self.mandatory_missing = mandatory_missing
+        self.unexpected_types = unexpected_types
+        self.reserved_fields = reserved_fields
+
+    def format_api_data(self):
+        data, code = super(InvalidComponentFieldsError, self).format_api_data()
+        if len(self.unrecognised_fields) > 0:
+            data['unrecognised_fields'] = self.unrecognised_fields
+        if len(self.mandatory_missing) > 0:
+            data['mandatory_missing'] = self.mandatory_missing
+        if len(self.unexpected_types) > 0:
+            data['unexpected_types'] = self.unexpected_types
+        if len(self.reserved_fields) > 0:
+            data['reserved_fields'] = self.reserved_fields
+        return data, code
 
 
 class InvalidSymbolApiError(ApiError):
@@ -107,11 +140,6 @@ class InvalidRequestError(ApiError):
 class RelationAlreadyExistsError(ApiError):
     def __init__(self, msg=None, details=None):
         super(RelationAlreadyExistsError, self).__init__(msg, details, 400)
-
-
-class ModelMapperNotAvailable(ApiError):
-    def __init__(self, msg=None, details=None):
-        super(ModelMapperNotAvailable, self).__init__(msg, details, 500)
 
 
 class SchemaNotAvailableError(ApiError):
