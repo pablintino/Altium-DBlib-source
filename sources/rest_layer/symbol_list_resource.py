@@ -57,9 +57,7 @@ class SymbolListResource(Resource):
         page_size = request.args.get('page_size', default=20, type=int)
         try:
             page = storable_objects_service.get_storable_objects(StorableLibraryResourceType.SYMBOL, page_n, page_size)
-            dtos = []
-            for object in page.items:
-                dtos.append(SymbolDto.from_model(object, None))
+            dtos = [SymbolDto.from_model(obj, None) for obj in page.items]
             page_dto = SearchPageResultDto(page_size=page.per_page, page_number=page.page, total_elements=page.total,
                                            elements=dtos)
             return SymbolsSearchPageResultSchema().dump(page_dto), 200

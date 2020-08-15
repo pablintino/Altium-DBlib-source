@@ -31,6 +31,6 @@ from dtos import metadata_dtos
 
 class MetadataResource(Resource):
     def get(self):
-        metadata = metadata_service.get_component_metadata()
+        metadata = metadata_service.get_components_metadata()
         json_dto = metadata_dtos.ModelDescriptorsDto.from_model_list(metadata).to_json()
         return Response(json_dto, mimetype="application/json", status=200)

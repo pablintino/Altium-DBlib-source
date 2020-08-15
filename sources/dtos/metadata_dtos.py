@@ -2,14 +2,14 @@ from dtos.encoders.dto_json_encoder import JsonizableBaseClass
 
 
 class FieldDto(JsonizableBaseClass):
-    def __init__(self, name, is_mandatory, nullable):
+    def __init__(self, name, is_mandatory, data_type):
         self.name = name
         self.is_mandatory = is_mandatory
-        self.nullable = nullable
+        self.data_type = data_type if type(data_type) is str else data_type.__name__
 
     @staticmethod
     def from_model(field_model):
-        return FieldDto(field_model.name, field_model.is_mandatory, field_model.nullable)
+        return FieldDto(field_model.name, field_model.is_mandatory, field_model.data_type)
 
 
 class ModelDescriptorDto(JsonizableBaseClass):

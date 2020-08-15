@@ -60,9 +60,7 @@ class FootprintListResource(Resource):
             page = storable_objects_service.get_storable_objects(StorableLibraryResourceType.FOOTPRINT,
                                                                  page_n,
                                                                  page_size)
-            dtos = []
-            for object in page.items:
-                dtos.append(FootprintDto.from_model(object, None))
+            dtos = [FootprintDto.from_model(obj, None) for obj in page.items]
             page_dto = SearchPageResultDto(page_size=page.per_page, page_number=page.page, total_elements=page.total,
                                            elements=dtos)
             return FootprintsSearchPageResultSchema().dump(page_dto), 200
