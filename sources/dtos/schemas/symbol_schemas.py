@@ -21,13 +21,12 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 #
-from marshmallow_polyfield import PolyField
+
 
 from app import marshmallow
 from marshmallow import fields, post_load
 
 from dtos.symbols_dtos import SymbolDto, SymbolComponentReferenceDto
-from services.exceptions import SchemaNotAvailableError
 
 
 class SymbolSchema(marshmallow.Schema):
@@ -48,29 +47,3 @@ class SymbolComponentReferenceSchema(marshmallow.Schema):
     @post_load
     def make_symbol_component_reference_dto(self, data, **kwargs):
         return SymbolComponentReferenceDto(**data)
-
-
-def symbol_reference_schema_serialization_disambiguation(base_object, parent_obj):
-    if isinstance(base_object, SymbolDto):
-        return SymbolSchema()
-    elif isinstance(base_object, SymbolComponentReferenceDto):
-        return SymbolComponentReferenceSchema()
-    else:
-        raise SchemaNotAvailableError(f'Cannot obtain a schema for the given content')
-
-
-def symbol_reference_schema_deserialization_disambiguation(object_dict, parent_object_dict):
-    if object_dict.get('symbol_id'):
-        return SymbolComponentReferenceSchema()
-    elif object_dict.get('path'):
-        return SymbolSchema()
-    else:
-        raise SchemaNotAvailableError(f'Cannot obtain a schema for the given content')
-
-
-class SymbolComponentReferenceQueryWrapperSchema(marshmallow.Schema):
-    data = PolyField(
-        serialization_schema_selector=symbol_reference_schema_serialization_disambiguation,
-        deserialization_schema_selector=symbol_reference_schema_deserialization_disambiguation,
-        default=None
-    )

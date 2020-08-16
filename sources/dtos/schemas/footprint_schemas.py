@@ -25,7 +25,7 @@
 
 from app import marshmallow
 from marshmallow import fields, post_load
-from dtos.footprints_dtos import FootprintDto, FootprintComponentReferenceDto, FootprintIdsComponentReferencesDto
+from dtos.footprints_dtos import FootprintDto, FootprintComponentReferenceDto
 
 
 class FootprintSchema(marshmallow.Schema):
@@ -46,15 +46,3 @@ class FootprintComponentReferenceSchema(marshmallow.Schema):
     @post_load
     def make_footprint_component_reference_dto(self, data, **kwargs):
         return FootprintComponentReferenceDto(**data)
-
-
-class FootprintIdsComponentReferencesSchema(marshmallow.Schema):
-    footprint_ids = fields.List(fields.Integer())
-
-    @post_load
-    def make_footprint_ids_component_references_dto(self, data, **kwargs):
-        return FootprintIdsComponentReferencesDto(**data)
-
-
-class FootprintsComponentReferencesSchema(marshmallow.Schema):
-    footprints = fields.List(fields.Nested(FootprintSchema))

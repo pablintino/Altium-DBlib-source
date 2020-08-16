@@ -23,18 +23,12 @@
  *
  **/
 
-create view [PPTC Fuses] as select                   mpn as [Part Number],
+create view [Capacitors 0805] as select                mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Manufacturer]                              = MAX(manufacturer),
-    [Hold Current]                              = MAX(current_hold),
-    [Trip Current]                              = MAX(current_trip),
-    [Voltage Rating]                            = MAX(voltage_rating),
-    [Maximum Resistance]                        = MAX(resistance_maximum),
-    [Minimum Resistance]                        = MAX(resistance_minimum),
-    [Power Rating]                              = MAX(power_rating),
-    [Current Rating]                            = MAX(current_rating),
-    [Minimum Temperature]                       = MAX(temperature_min),
-    [Maximum Temperature]                       = MAX(temperature_max),
+    [Tolerance]                                 = MAX(tolerance),
+    [Voltage]                                   = MAX(voltage),
+    [Composition]                               = MAX(composition),
     [Created On]                                = MAX(created_on),
     [Updated On]                                = MAX(updated_on),
     [Type]                                      = MAX(type),
@@ -51,15 +45,9 @@ create view [PPTC Fuses] as select                   mpn as [Part Number],
     [Footprint Ref 2]                           = MAX([FootprintRef2]),
     [Footprint Ref 3]                           = MAX([FootprintRef3])
 from (
-         select p.current_hold                                                                                  current_hold,
-                p.current_trip                                                                                  current_trip,
-                p.voltage_rating                                                                                voltage_rating,
-                p.resistance_maximum                                                                            resistance_maximum,
-                p.resistance_minimum                                                                            resistance_minimum,
-                p.power_rating                                                                                  power_rating,
-                p.current_rating                                                                                current_rating,
-                p.temperature_min                                                                               temperature_min,
-                p.temperature_max                                                                               temperature_max,
+         select ca.tolerance                                                                                    tolerance,
+                ca.voltage                                                                                      voltage,
+                ca.composition                                                                                  composition,
                 c.manufacturer                                                                                  manufacturer,
                 c.mpn                                                                                           mpn,
                 c.value                                                                                         value,
@@ -78,15 +66,16 @@ from (
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from fuse_pptc p
+         from capacitor ca
                   inner join component c
-                             on p.id = c.id
+                             on ca.id = c.id
                   inner join component_footprint_asc cf
                              on c.id = cf.component_id
                   inner join footprint_ref f
                              on cf.footprint_ref_id = f.id
                   inner join library_ref lf
                              on c.library_ref_id = lf.id
+		where c.package = '0805 (2012 Metric)'
      ) d
          pivot
          (

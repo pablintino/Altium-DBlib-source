@@ -27,22 +27,16 @@ from sqlalchemy import Column, String, ForeignKey
 from models.component_model import ComponentModel
 
 
-class TransistorArrayMosfetModel(ComponentModel):
-    __tablename__ = 'transistor_array_mosfet'
+class CapacitorModel(ComponentModel):
+    __tablename__ = 'capacitor'
 
     # Primary key
     id = Column(ForeignKey("component.id"), primary_key=True)
 
-    # Specific properties of a MOSFET array
-    number_of_channels = Column(String(30))
-    rds_on = Column(String(30))
-    vgs_max = Column(String(30))
-    vgs_th = Column(String(30))
-    vds_max = Column(String(30))
-    ids_max = Column(String(30))
-    current_total_max = Column(String(30))
-    power_max = Column(String(30))
-    channel_type = Column(String(30))
+    # Specific properties of a capacitor
+    tolerance = Column(String(30))
+    voltage = Column(String(30))
+    composition = Column(String(30))
 
     # Tells the ORM the type of a specific component by the distinguish column
     __mapper_args__ = {

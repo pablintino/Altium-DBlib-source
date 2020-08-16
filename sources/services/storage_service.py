@@ -32,7 +32,6 @@ import git
 from app import Config
 from models.internal.internal_models import StorageStatus
 from services.exceptions import FileNotFoundStorageError, InvalidStorageStateError
-from utils.helpers import BraceMessage as __l
 
 __logger = logging.getLogger(__name__)
 
@@ -85,13 +84,13 @@ def add_file_to_repo(file_name, encoded_data):
         repo.git.add(file_name)
         repo.index.commit('Auto commit to ' + ('add ' if not is_update else 'update ') + file_name)
         repo.remotes.origin.push(force=True)
-        __logger.debug(__l('File stored successfully [file_name={0}]'))
 
 
 def get_file_from_repo(model):
     if model.storage_status != StorageStatus.STORED:
-        raise InvalidStorageStateError('Model is not in STORED state', entity_id=model.id,
-                                       current_state=model.storage_status.name)
+        msg = f'The given model {model.id} is not in STORED state. Current status: {model.storage_status.name}'
+        __logger.debug(msg)
+        raise InvalidStorageStateError(msg)
     file_name = model.get_file_path()
     abs_file_path = os.path.join(Config.REPO_PATH, file_name)
     if not os.path.isfile(abs_file_path):

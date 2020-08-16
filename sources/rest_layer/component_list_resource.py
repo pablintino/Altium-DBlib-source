@@ -22,31 +22,29 @@
 #  SOFTWARE.
 #
 
-
+from flask_restful import Resource
 from flask import request
 from marshmallow import ValidationError
-from dtos import component_model_mapper
-from dtos.generic_objects_search_dtos import SearchPageResultDto
-from dtos.schemas.generic_objects_search_schemas import ComponentsSearchPageResultSchema
-from dtos.schemas.component_schemas import CreateComponentSchema
-from rest_layer.base_api_resource import BaseApiResource
+
+from dtos import components_models_dto_mappings
+from dtos.components_search_dtos import SearchPageResultDto
+from dtos.schemas.components_search_schemas import SearchPageResultSchema
+from dtos.schemas.create_component_schema import CreateComponentSchema
 from services import component_service
 from services.exceptions import ApiError
 
 
-class ComponentListResource(BaseApiResource):
-
+class ComponentListResource(Resource):
     def post(self):
         try:
             creation_dto = CreateComponentSchema().load(data=request.json)
-            model = component_model_mapper.map_validate_raw(creation_dto.specific_dto, pk_provided=False)
-            model = component_service.create_component(model)
-            creation_dto.specific_dto = component_model_mapper.map_model_to_raw(model)
+            model = component_service.create_component(creation_dto['specific_dto'])
+            creation_dto['specific_dto'] = components_models_dto_mappings.get_mapper_for_model(model).to_dto(model)
             return CreateComponentSchema().dump(creation_dto), 201
         except ValidationError as error:
+            print(error.messages)
             return {"errors": error.messages}, 400
         except ApiError as error:
-            self.logger().debug(error)
             return error.format_api_data()
 
     def get(self):
@@ -57,10 +55,11 @@ class ComponentListResource(BaseApiResource):
         filters.pop('page_size', None)
         try:
             page = component_service.get_component_search(page_n, page_size, filters)
-            dtos = [component_model_mapper.map_model_to_raw(d) for d in page.items]
+            dtos = []
+            for model in page.items:
+                dtos.append(components_models_dto_mappings.get_mapper_for_model(model).to_dto(model))
             page_dto = SearchPageResultDto(page_size=page.per_page, page_number=page.page, total_elements=page.total,
                                            elements=dtos)
-            return ComponentsSearchPageResultSchema().dump(page_dto), 200
+            return SearchPageResultSchema().dump(page_dto), 200
         except ApiError as error:
-            self.logger().debug(error)
             return error.format_api_data()
