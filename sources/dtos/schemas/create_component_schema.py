@@ -23,24 +23,15 @@
 #
 
 
-from sqlalchemy import Column, String, ForeignKey
-from models.component_model import ComponentModel
+from marshmallow_polyfield import PolyField
+from app import marshmallow
+from dtos.schemas.polymorphic_definitions import shape_schema_deserialization_disambiguation, \
+    shape_schema_serialization_disambiguation
 
 
-class CapacitorCeramicModel(ComponentModel):
-    __tablename__ = 'capacitor_ceramic'
-
-    # Primary key
-    id = Column(ForeignKey("component.id"), primary_key=True)
-
-    # Specific properties of a ceramic capacitor
-    tolerance = Column(String(30))
-    voltage = Column(String(30))
-    composition = Column(String(30))
-    temperature_min = Column(String(30))
-    temperature_max = Column(String(30))
-
-    # Tells the ORM the type of a specific component by the distinguish column
-    __mapper_args__ = {
-        'polymorphic_identity': __tablename__,
-    }
+class CreateComponentSchema(marshmallow.Schema):
+    specific_dto = PolyField(
+        serialization_schema_selector=shape_schema_serialization_disambiguation,
+        deserialization_schema_selector=shape_schema_deserialization_disambiguation,
+        required=True
+    )

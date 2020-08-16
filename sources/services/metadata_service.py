@@ -24,9 +24,8 @@
 
 
 from models.metadata import metadata_utils
+from services.exceptions import ResourceInvalidQuery
 import logging
-
-from services.exceptions import InvalidComponentTypeError
 
 __logger = logging.getLogger(__name__)
 
@@ -36,52 +35,35 @@ __polymorphic_identities = {}
 __common_component_metadata = {}
 
 
-def get_components_metadata():
+def get_component_metadata():
     items = []
     for comp_name, comp_type in __component_metadata.items():
         items.append(comp_type)
     return items
 
 
-def get_component_metadata(component_type):
-    global __component_metadata
-    return __component_metadata.get(component_type, None)
-
-
-def is_component_type_valid(component_type):
-    global __component_metadata
-    if component_type:
-        return not __component_metadata.get(component_type, None) is None
-    else:
-        return False
-
-
-def validate_component_fields(fields, component_type=None):
+def are_fields_valid(fields):
     global __common_component_metadata
     global __component_metadata
 
-    non_recognised_fields = []
-
+    type_filter = fields.get('type', None)
     model_metadata = __common_component_metadata
-    if component_type:
-        component_descriptor = __component_metadata.get(component_type, None)
-        # Usually the calling function performs this check before
+    if type_filter:
+        component_descriptor = __component_metadata.get(type_filter, None)
         if not component_descriptor:
-            raise InvalidComponentTypeError('Component type ' + component_type + ' not valid')
+            return False, 'Invalid query component type'
         else:
             model_metadata = component_descriptor
 
     for field in fields:
         if not model_metadata.get_field(field):
-            non_recognised_fields.append(field)
+            return False, field
+    return True, ''
 
-    return len(non_recognised_fields) == 0, non_recognised_fields
 
-
-def get_polymorphic_model(model_type):
-    global __polymorphic_identities
-    if model_type in __polymorphic_identities:
-        return __polymorphic_identities[model_type]
+def get_polymorphic_identity(identity):
+    if identity in __polymorphic_identities:
+        return __polymorphic_identities[identity]
     return None
 
 
@@ -90,7 +72,7 @@ def __init():
     global __polymorphic_identities
     global __common_component_metadata
     __component_metadata = metadata_utils.get_component_metadata()
-    __polymorphic_identities = metadata_utils.get_polymorphic_component_models()
+    __polymorphic_identities = metadata_utils.get_poymorphic_component_models()
     __common_component_metadata = metadata_utils.get_common_component_metadata()
 
 

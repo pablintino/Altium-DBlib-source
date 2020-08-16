@@ -1,9 +1,8 @@
 class FieldModelDescriptor:
-    def __init__(self, name, is_mandatory, is_pk, data_type):
+    def __init__(self, name, is_mandatory, nullable):
         self.name = name
         self.is_mandatory = is_mandatory
-        self.is_pk = is_pk
-        self.data_type = data_type
+        self.nullable = nullable
 
     def __repr__(self):
         return '%s(%s)' % (
@@ -18,9 +17,9 @@ class ModelDescriptor:
         self.model_name = model_name
         self.fields = {}
 
-    def add_field(self, name, is_mandatory, is_pk, data_type):
+    def add_field(self, name, is_mandatory, nullable):
         if name not in self.fields:
-            self.fields[name] = FieldModelDescriptor(name, is_mandatory, is_pk, data_type)
+            self.fields[name] = FieldModelDescriptor(name, is_mandatory, nullable)
 
     def get_field(self, name):
         return self.fields.get(name, None)

@@ -26,142 +26,99 @@
 import logging
 
 from app import db
+from dtos import components_models_dto_mappings
 from models import ComponentModel, LibraryReference, FootprintReference
 from services import metadata_service
 from services.exceptions import ResourceAlreadyExistsApiError, ResourceNotFoundApiError, ResourceInvalidQuery, \
-    RelationAlreadyExistsError, InvalidComponentFieldsError
-from utils.helpers import BraceMessage as __l
+    ModelMapperNotAvailable
 
 __logger = logging.getLogger(__name__)
 
 
-def __validate_new_component_model(model):
-    reserved_fields = ['created_on', 'updated_on', 'id']
-    present_fields = list({k: v for k, v in model.__dict__.items() if v and k in reserved_fields}.keys())
-
-    if len(present_fields) > 0:
-        raise InvalidComponentFieldsError('Reserved fields were provided', reserved_fields=present_fields)
-
-
-def create_component(model):
-    __logger.debug(__l('Creating component [mpn={0}, manufacturer={1}]', model.mpn, model.manufacturer))
-
-    # Check for invalid or unexpected filled fields before storing the component
-    __validate_new_component_model(model)
-
-    exists_id = db.session.query(ComponentModel.id).filter_by(mpn=model.mpn,
-                                                              manufacturer=model.manufacturer).scalar()
+def create_component(dto):
+    mapper = components_models_dto_mappings.get_mapper_for_dto(dto)
+    if not mapper:
+        msg = 'Cannot create the requested component cause the associated model-mapper is not available. {mpn=' + \
+              dto.mpn + ', manufacturer=' + dto.manufacturer + '}'
+        __logger.debug(msg)
+        raise ModelMapperNotAvailable(msg)
+    model = mapper.to_model(dto)
+    __logger.debug(f'Creating component with mpn={dto.mpn} and manufacturer={dto.manufacturer}')
+    exists_id = db.session.query(ComponentModel.id).filter_by(mpn=dto.mpn,
+                                                              manufacturer=dto.manufacturer).scalar()
     if not exists_id:
         db.session.add(model)
         db.session.commit()
-        __logger.debug(__l('Component created [id={0}]', model.id))
+        __logger.debug('Component created. {id=' + str(model.id) + '}')
         return model
     else:
-        raise ResourceAlreadyExistsApiError('Cannot create the requested component cause it already exists',
-                                            conflicting_id=exists_id)
+        msg = 'Cannot create the requested component cause it already exists. {mpn=' + dto.mpn +\
+              ', manufacturer=' + dto.manufacturer + '}'
+        __logger.debug(msg)
+        raise ResourceAlreadyExistsApiError(msg=msg, conflicting_id=exists_id)
 
 
-def update_create_symbol_relation(component_id, symbol_id, is_update=False):
-    __logger.debug(
-        __l('Creating new component-symbol relation [component_id={0}, symbol_id={1}]', component_id, symbol_id))
+def create_symbol_relation(component_id, symbol_id):
+    __logger.debug(f'Creating new symbol relation for component {component_id} and symbol {symbol_id}')
     component = ComponentModel.query.get(component_id)
-    if component:
+    if component is not None:
         library_ref = LibraryReference.query.get(symbol_id)
         if library_ref is not None:
-            #  Just protect against false updates from bad POST usage
-            if not is_update and component.library_ref_id:
-                raise RelationAlreadyExistsError(__l(
-                    'Cannot create relation. Component already has a relation [component_id={0}, library_ref_id={1}]',
-                    component_id, component.library_ref_id))
-
             component.library_ref = library_ref
             component.library_ref_id = symbol_id
             db.session.add(component)
             db.session.commit()
-            __logger.debug(f'Component symbol {"updated" if is_update else "created"}.'
-                           f' Component {component_id} symbol {symbol_id}')
+            __logger.debug(f'Component symbol updated. Component {component_id} symbol {symbol_id}')
             return component
         else:
-            raise ResourceNotFoundApiError('Symbol not found', missing_id=symbol_id)
+            raise ResourceNotFoundApiError(f'Symbol with ID {symbol_id} does not exist', missing_id=symbol_id)
     else:
-        raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
+        raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
 
 
-def create_footprints_relation(component_id, footprint_ids):
-    __logger.debug(__l('Creating new component-footprint relation [component_id={0}, footprint_ids={1}]', component_id,
-                       footprint_ids))
+def create_footprint_relation(component_id, footprint_id):
+    __logger.debug(f'Creating new footprint relation for component {component_id} and footprint {footprint_id}')
     component = ComponentModel.query.get(component_id)
-    footprint_refs = []
-
-    # Verify that the component exists before trying anything else
-    if not component:
-        raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
-
-    # Add only the footprints that are not already associated
-    footprints_to_add = [foot_id for foot_id in footprint_ids if
-                         foot_id not in [cfr.id for cfr in component.footprint_refs]]
-
-    for footprint_id in footprints_to_add:
+    if component is not None:
         footprint_ref = FootprintReference.query.get(footprint_id)
-        if footprint_ref:
-            footprint_refs.append(footprint_ref)
+        if footprint_ref is not None:
+            component.footprint_refs.append(footprint_ref)
+            db.session.add(component)
             db.session.add(footprint_ref)
+            db.session.commit()
+            __logger.debug(f'Component footprints updated. Component {component_id} symbol {footprint_id}')
+            return component
         else:
-            raise ResourceNotFoundApiError('Footprint not found', missing_id=footprint_id)
-
-    component.footprint_refs.extend(footprint_refs)
-    db.session.add(component)
-    db.session.commit()
-    __logger.debug(
-        __l('Component footprints updated [component_id={0}, footprint_ids={1}', component_id, footprint_ids))
-    return [ref.id for ref in component.footprint_refs]
+            raise ResourceNotFoundApiError(f'Footprint with ID {footprint_id} does not exist', missing_id=footprint_id)
+    else:
+        raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
 
 
 def get_component_symbol_relation(component_id):
-    __logger.debug(__l('Querying symbol relation for component [component_id={0}]', component_id))
-    component = ComponentModel.query.get(component_id)
-    if not component:
-        raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
-
-    return component.library_ref
-
-
-def get_component_footprint_relations(component_id, complete_footprints=False):
-    __logger.debug(__l('Querying footprint relations for component [component_id={0}]', component_id))
+    __logger.debug(f'Querying symbol relation for component {component_id}')
     component = ComponentModel.query.get(component_id)
     if component is not None:
-        result_list = []
-        if complete_footprints:
-            result_list = list(component.footprint_refs)
-        else:
-            for footprint in component.footprint_refs:
-                result_list.append(footprint.id)
-        return result_list
+        return component.library_ref_id
     else:
-        raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
+        raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
 
 
 def get_component(component_id):
-    __logger.debug(__l('Querying component data [component_id={0}]', component_id))
+    __logger.debug(f'Querying component with id={component_id}')
     component = db.session.query(ComponentModel.id, ComponentModel.type).filter_by(id=component_id).first()
     if component is None:
-        raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
+        __logger.debug(f'Component with id={component_id} not found')
+        raise ResourceNotFoundApiError(f'Component with ID {component_id} does not exist', missing_id=component_id)
     else:
-        return metadata_service.get_polymorphic_model(component.type).query.get(component_id)
+        return metadata_service.get_polymorphic_identity(component.type).query.get(component_id)
 
 
 def get_component_search(page_number, page_size, filters):
-    __logger.debug(
-        __l('Querying components for search [page_number={0}, page_size={1}, filters={2}]', page_number, page_size,
-            filters))
+    __logger.debug(f'Querying components with page number {page_number} and page size {page_size}')
 
-    component_type = filters.get('type', None)
-    if component_type and not metadata_service.is_component_type_valid(component_type):
-        raise ResourceInvalidQuery('The given component type does not exist', invalid_fields=['type'])
-
-    res, inv_fields = metadata_service.validate_component_fields(filters, component_type)
+    res, msg = metadata_service.are_fields_valid(filters)
     if not res:
-        raise ResourceInvalidQuery('The given search query is invalid', inv_fields)
+        raise ResourceInvalidQuery(msg)
 
     components_page = ComponentModel.query.filter_by(**filters) \
         .order_by(ComponentModel.id.desc()).paginate(page_number, per_page=page_size)
@@ -169,9 +126,9 @@ def get_component_search(page_number, page_size, filters):
 
 
 def delete_component(component_id):
-    __logger.debug(__l('Deleting component [component_id={0}]'), component_id)
+    __logger.debug(f'Deleting component with id={component_id}')
     component = ComponentModel.query.get(component_id)
     if component is not None:
         db.session.delete(component)
         db.session.commit()
-        __logger.debug(__l('Deleted component [component_id={0}]', component_id))
+        __logger.debug(f'Deleted component with id={component_id}')
