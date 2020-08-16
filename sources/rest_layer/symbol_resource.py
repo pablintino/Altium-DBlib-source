@@ -23,24 +23,24 @@
 #
 
 
-from flask import request
-from flask_restful import Resource
-
 from dtos.schemas.symbol_schemas import SymbolSchema
 from dtos.symbols_dtos import SymbolDto
 from models.internal.internal_models import StorableLibraryResourceType
+from rest_layer.base_api_resource import BaseApiResource
+from rest_layer.rest_layer_utils import is_encoded_data_request_flag
 from services import storage_service, storable_objects_service
 from services.exceptions import ApiError
 
 
-class SymbolResource(Resource):
+class SymbolResource(BaseApiResource):
 
     def get(self, id):
         try:
             encoded_data = None
             model = storable_objects_service.get_storable_model(StorableLibraryResourceType.SYMBOL, id)
-            if request.args.get('encoded_data', default=False, type=bool):
+            if is_encoded_data_request_flag():
                 encoded_data = storage_service.get_encoded_file_from_repo(model)
             return SymbolSchema().dump(SymbolDto.from_model(model, encoded_data)), 201
         except ApiError as error:
+            self.logger().debug(error)
             return error.format_api_data()

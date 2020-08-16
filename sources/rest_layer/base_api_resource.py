@@ -23,12 +23,15 @@
 #
 
 
-from flask import request
+import logging
+
+from flask_restful import Resource
 
 
-def is_all_data_request_flag():
-    return request.args.get('all', default='false', type=str).lower() == 'true'
+class BaseApiResource(Resource):
 
+    def __init__(self):
+        self.__logger__ = logging.getLogger(self.__class__.__name__)
 
-def is_encoded_data_request_flag():
-    return request.args.get('encoded_data', default='false', type=str).lower() == 'true'
+    def logger(self):
+        return self.__logger__

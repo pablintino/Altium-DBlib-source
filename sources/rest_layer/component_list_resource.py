@@ -22,19 +22,20 @@
 #  SOFTWARE.
 #
 
-from flask_restful import Resource
+
 from flask import request
 from marshmallow import ValidationError
-
 from dtos import component_model_mapper
 from dtos.generic_objects_search_dtos import SearchPageResultDto
 from dtos.schemas.generic_objects_search_schemas import ComponentsSearchPageResultSchema
 from dtos.schemas.component_schemas import CreateComponentSchema
+from rest_layer.base_api_resource import BaseApiResource
 from services import component_service
 from services.exceptions import ApiError
 
 
-class ComponentListResource(Resource):
+class ComponentListResource(BaseApiResource):
+
     def post(self):
         try:
             creation_dto = CreateComponentSchema().load(data=request.json)
@@ -43,9 +44,9 @@ class ComponentListResource(Resource):
             creation_dto.specific_dto = component_model_mapper.map_model_to_raw(model)
             return CreateComponentSchema().dump(creation_dto), 201
         except ValidationError as error:
-            print(error.messages)
             return {"errors": error.messages}, 400
         except ApiError as error:
+            self.logger().debug(error)
             return error.format_api_data()
 
     def get(self):
@@ -61,4 +62,5 @@ class ComponentListResource(Resource):
                                            elements=dtos)
             return ComponentsSearchPageResultSchema().dump(page_dto), 200
         except ApiError as error:
+            self.logger().debug(error)
             return error.format_api_data()

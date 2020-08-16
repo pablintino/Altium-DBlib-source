@@ -26,14 +26,13 @@
 import base64
 
 from flask import send_file, request
-from flask_restful import Resource
-
 from models.internal.internal_models import StorableLibraryResourceType
+from rest_layer.base_api_resource import BaseApiResource
 from services import storage_service, storable_objects_service
 from services.exceptions import ApiError, InvalidMultipartFileDataError
 
 
-class FootprintDataResource(Resource):
+class FootprintDataResource(BaseApiResource):
     def post(self, id):
         try:
             # Verify that the uploaded file is provided using 'data' as name
@@ -45,6 +44,7 @@ class FootprintDataResource(Resource):
                 storable_objects_service.update_object_data(StorableLibraryResourceType.FOOTPRINT, id, encoded_data)
             return '', 204
         except ApiError as error:
+            self.logger().debug(error)
             return error.format_api_data()
 
     def get(self, id):
@@ -53,4 +53,5 @@ class FootprintDataResource(Resource):
             footprint_file = storage_service.get_file_from_repo(model)
             return send_file(footprint_file, as_attachment=True)
         except ApiError as error:
+            self.logger().debug(error)
             return error.format_api_data()
