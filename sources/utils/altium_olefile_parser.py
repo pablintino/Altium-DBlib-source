@@ -28,6 +28,8 @@ from enum import Enum
 import olefile
 import logging
 
+from utils.helpers import CaseInsensitiveDict
+
 __logger = logging.getLogger(__name__)
 
 
@@ -78,7 +80,7 @@ class Library:
 
 def parse_key_value_string(s):
     properties = s.decode('utf-8').strip('|').split('|')
-    result = {}
+    result = CaseInsensitiveDict()
 
     for prop in properties:
         x = prop.split('=')
@@ -112,16 +114,15 @@ def read_stream(oleobj, path):
 def get_symbols_data(olebj):
     parts = {}
     for part in olebj.listdir(streams=True, storages=False):
-        if part[0] not in ['FileHeader', 'Storage', 'SectionKeys', 'FileVersionInfo'] and len(part) == 2:
-            if part[0] not in parts.keys():
-                # Part streams not used
-                data_path = f'{part[0]}/Data'
-                buffer = read_stream(olebj, data_path)
+        if part[0] not in ['FileHeader', 'Storage', 'SectionKeys', 'FileVersionInfo'] + list(parts.keys()) and len(part) == 2:
+            # Part streams not used
+            data_path = f'{part[0]}/Data'
+            buffer = read_stream(olebj, data_path)
 
-                # Properties
-                length = get_u32(buffer[:4])
-                props = parse_key_value_string(buffer[4:4 + length])
-                parts[part[0]] = props
+            # Properties
+            length = get_u32(buffer[:4])
+            props = parse_key_value_string(buffer[4:4 + length])
+            parts[part[0]] = props
     return parts
 
 

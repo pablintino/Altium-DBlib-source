@@ -23,39 +23,24 @@
 #
 
 
-from flask_restful import Resource
-from flask import request
-from marshmallow import ValidationError
-
 from dtos.footprints_dtos import FootprintDto
 from dtos.schemas.footprint_schemas import FootprintSchema
 from models.internal.internal_models import StorableLibraryResourceType
+from rest_layer.base_api_resource import BaseApiResource
+from rest_layer.rest_layer_utils import is_encoded_data_request_flag
 from services import storage_service, storable_objects_service
 from services.exceptions import ApiError
 
 
-class FootprintResource(Resource):
-    def post(self):
-        try:
-            footprint_dto = FootprintSchema().load(data=request.json)
-            footprint_model = storable_objects_service.create_storable_library_object(
-                                storable_type=StorableLibraryResourceType.FOOTPRINT,
-                                reference_name=footprint_dto.reference,
-                                storable_path=footprint_dto.path,
-                                description=footprint_dto.description,
-                                encoded_data=footprint_dto.encoded_data)
-            return FootprintSchema().dump(FootprintDto.from_model(footprint_model, None)), 201
-        except ValidationError as error:
-            return {"errors": error.messages}, 400
-        except ApiError as error:
-            return error.format_api_data()
+class FootprintResource(BaseApiResource):
 
     def get(self, id):
         try:
             encoded_data = None
             model = storable_objects_service.get_storable_model(StorableLibraryResourceType.FOOTPRINT, id)
-            if request.args.get('encoded_data', default=False, type=bool):
+            if is_encoded_data_request_flag():
                 encoded_data = storage_service.get_encoded_file_from_repo(model)
             return FootprintSchema().dump(FootprintDto.from_model(model, encoded_data)), 201
         except ApiError as error:
+            self.logger().debug(error)
             return error.format_api_data()

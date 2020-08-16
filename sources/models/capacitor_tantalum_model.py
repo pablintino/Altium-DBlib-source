@@ -23,14 +23,26 @@
 #
 
 
-from flask_restful import Resource
-from flask import Response
-from services import metadata_service
-from dtos import metadata_dtos
+from sqlalchemy import Column, String, ForeignKey
+from models.component_model import ComponentModel
 
 
-class MetadataResource(Resource):
-    def get(self):
-        metadata = metadata_service.get_components_metadata()
-        json_dto = metadata_dtos.ModelDescriptorsDto.from_model_list(metadata).to_json()
-        return Response(json_dto, mimetype="application/json", status=200)
+class CapacitorTantalumModel(ComponentModel):
+    __tablename__ = 'capacitor_tantalum'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a tantalum capacitor
+    tolerance = Column(String(30))
+    voltage = Column(String(30))
+    lifetime_temperature = Column(String(30))
+    esr = Column(String(30))
+    temperature_min = Column(String(30))
+    temperature_max = Column(String(30))
+
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

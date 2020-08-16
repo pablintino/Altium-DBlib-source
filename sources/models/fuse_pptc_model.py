@@ -23,14 +23,28 @@
 #
 
 
-from flask_restful import Resource
-from flask import Response
-from services import metadata_service
-from dtos import metadata_dtos
+from sqlalchemy import Column, String, ForeignKey
+from models.component_model import ComponentModel
 
 
-class MetadataResource(Resource):
-    def get(self):
-        metadata = metadata_service.get_components_metadata()
-        json_dto = metadata_dtos.ModelDescriptorsDto.from_model_list(metadata).to_json()
-        return Response(json_dto, mimetype="application/json", status=200)
+class FusePPTCModel(ComponentModel):
+    __tablename__ = 'fuse_pptc'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a PPTC fuse
+    current_hold = Column(String(30))
+    current_trip = Column(String(30))
+    voltage_rating = Column(String(30))
+    resistance_maximum = Column(String(30))
+    resistance_minimum = Column(String(30))
+    power_rating = Column(String(30))
+    current_rating = Column(String(30))
+    temperature_min = Column(String(30))
+    temperature_max = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

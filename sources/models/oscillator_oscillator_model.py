@@ -23,14 +23,27 @@
 #
 
 
-from flask_restful import Resource
-from flask import Response
-from services import metadata_service
-from dtos import metadata_dtos
+from sqlalchemy import Column, String, ForeignKey
+from models.component_model import ComponentModel
 
 
-class MetadataResource(Resource):
-    def get(self):
-        metadata = metadata_service.get_components_metadata()
-        json_dto = metadata_dtos.ModelDescriptorsDto.from_model_list(metadata).to_json()
-        return Response(json_dto, mimetype="application/json", status=200)
+class OscillatorOscillatorModel(ComponentModel):
+    __tablename__ = 'oscillator_oscillator'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a oscillator
+    base_resonator = Column(String(30))
+    current_supply_max = Column(String(30))
+    frequency = Column(String(30))
+    frequency_stability = Column(String(30))
+    temperature_min = Column(String(30))
+    temperature_max = Column(String(30))
+    voltage_supply = Column(String(30))
+    output_type = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

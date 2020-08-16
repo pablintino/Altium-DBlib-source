@@ -23,13 +23,17 @@
  *
  **/
 
-
-create view [Capacitors 1206] as select                mpn as [Part Number],
+create view [Oscillator Oscillators] as select           mpn as [Part Number],
     [Value]                                     = MAX(value),
     [Manufacturer]                              = MAX(manufacturer),
-    [Tolerance]                                 = MAX(tolerance),
-    [Voltage]                                   = MAX(voltage),
-    [Composition]                               = MAX(composition),
+    [Base Resonator]                            = MAX(base_resonator),
+    [Current Supply Maximum]                    = MAX(current_supply_max),
+    [Frequency]                                 = MAX(frequency),
+    [Frequency Stability]                       = MAX(frequency_stability),
+    [Temperature Minimum]                       = MAX(temperature_min),
+    [Temperature Maximum]                       = MAX(temperature_max),
+    [Voltage Supply]                            = MAX(voltage_supply),
+    [Output Type]                               = MAX(output_type),
     [Created On]                                = MAX(created_on),
     [Updated On]                                = MAX(updated_on),
     [Type]                                      = MAX(type),
@@ -46,9 +50,14 @@ create view [Capacitors 1206] as select                mpn as [Part Number],
     [Footprint Ref 2]                           = MAX([FootprintRef2]),
     [Footprint Ref 3]                           = MAX([FootprintRef3])
 from (
-         select ca.tolerance                                                                                    tolerance,
-                ca.voltage                                                                                      voltage,
-                ca.composition                                                                                  composition,
+         select co.base_resonator                                                                               base_resonator,
+                co.current_supply_max                                                                           current_supply_max,
+                co.frequency                                                                                    frequency,
+                co.frequency_stability                                                                          frequency_stability,
+                co.temperature_min                                                                              temperature_min,
+                co.temperature_max                                                                              temperature_max,
+                co.voltage_supply                                                                               voltage_supply,
+                co.output_type                                                                                  output_type,
                 c.manufacturer                                                                                  manufacturer,
                 c.mpn                                                                                           mpn,
                 c.value                                                                                         value,
@@ -67,16 +76,15 @@ from (
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
                         DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
-         from capacitor ca
+         from oscillator_oscillator co
                   inner join component c
-                             on ca.id = c.id
+                             on co.id = c.id
                   inner join component_footprint_asc cf
                              on c.id = cf.component_id
                   inner join footprint_ref f
                              on cf.footprint_ref_id = f.id
                   inner join library_ref lf
                              on c.library_ref_id = lf.id
-		where c.package = '1206 (3216 Metric)'
      ) d
          pivot
          (

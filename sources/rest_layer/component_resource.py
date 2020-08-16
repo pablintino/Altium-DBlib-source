@@ -21,23 +21,25 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 #
+import logging
 
-from flask_restful import Resource
-from dtos import components_models_dto_mappings
-from dtos.schemas import schema_mapper
+from dtos import component_model_mapper
+from dtos.components_dtos import GenericComponentDto
+from dtos.schemas.component_schemas import GenericComponentSchema
+from rest_layer.base_api_resource import BaseApiResource
 from services import component_service
 from services.exceptions import ApiError
 
 
-class ComponentResource(Resource):
+class ComponentResource(BaseApiResource):
 
     def get(self, id):
         try:
             model = component_service.get_component(id)
-            resulting_dto = components_models_dto_mappings.get_mapper_for_model(model).to_dto(model)
-            return schema_mapper.get_schema_for_dto_class_name(resulting_dto.__class__.__name__)().dump(
-                resulting_dto), 200
+            raw_component = component_model_mapper.map_model_to_raw(model)
+            return GenericComponentSchema().dump(GenericComponentDto(raw_component)), 200
         except ApiError as error:
+            self.logger().debug(error)
             return error.format_api_data()
 
     def delete(self, id):

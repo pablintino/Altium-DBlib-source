@@ -23,16 +23,12 @@
 #
 
 
-class CreateComponentDto:
+from flask import request
 
-    def __init__(self, component_type, specific_dto, symbol_ref_id, footprint_ref_ids):
-        self.component_type = component_type
-        self.specific_dto = specific_dto
-        self.symbol_ref_id = symbol_ref_id
-        self.footprint_ref_ids = footprint_ref_ids
 
-    def __repr__(self):
-        return '%s(%s)' % (
-            type(self).__name__,
-            ', '.join('%s=%s' % item for item in vars(self).items())
-        )
+def is_all_data_request_flag():
+    return request.args.get('all', default='false', type=str).lower() == 'true'
+
+
+def is_encoded_data_request_flag():
+    return request.args.get('encoded_data', default='false', type=str).lower() == 'true'

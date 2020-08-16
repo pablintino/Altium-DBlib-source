@@ -35,12 +35,6 @@ class FootprintDto:
         self.encoded_data = kwargs.get('encoded_data', '')
         self.description = kwargs.get('description', '')
 
-    def __repr__(self):
-        return '%s(%s)' % (
-            type(self).__name__,
-            ', '.join('%s=%s' % item for item in vars(self).items())
-        )
-
     @staticmethod
     def to_model(data):
         return FootprintReference(
@@ -63,8 +57,22 @@ class FootprintComponentReferenceDto:
     def __init__(self, **kwargs):
         self.footprint_id = kwargs.get('footprint_id', None)
 
-    def __repr__(self):
-        return '%s(%s)' % (
-            type(self).__name__,
-            ', '.join('%s=%s' % item for item in vars(self).items())
-        )
+
+class FootprintIdsComponentReferencesDto:
+
+    def __init__(self, footprint_ids):
+        self.footprint_ids = footprint_ids
+
+    @staticmethod
+    def from_model(footprint_ids):
+        return FootprintIdsComponentReferencesDto(footprint_ids=footprint_ids)
+
+
+class FootprintComponentReferencesDto:
+
+    def __init__(self, footprints):
+        self.footprints = footprints
+
+    @staticmethod
+    def from_model(footprints):
+        return FootprintComponentReferencesDto(footprints=footprints)
