@@ -23,7 +23,6 @@
 #
 
 
-from flask_restful import Resource
 from flask import request
 from marshmallow import ValidationError
 
@@ -31,11 +30,12 @@ from dtos.footprints_dtos import FootprintIdsComponentReferencesDto, FootprintDt
 from dtos.schemas.footprint_schemas import FootprintSchema, FootprintsComponentReferencesSchema, \
     FootprintIdsComponentReferencesSchema
 from rest_layer import rest_layer_utils
+from rest_layer.base_api_resource import BaseApiResource
 from services import component_service, storage_service
 from services.exceptions import ApiError, InvalidRequestError
 
 
-class FootprintComponentReferenceResource(Resource):
+class FootprintComponentReferenceResource(BaseApiResource):
     def post(self, id):
         try:
             footprints_ids = FootprintIdsComponentReferencesSchema().load(data=request.json).footprint_ids
@@ -43,15 +43,15 @@ class FootprintComponentReferenceResource(Resource):
             return FootprintIdsComponentReferencesSchema().dump(
                 FootprintIdsComponentReferencesDto.from_model(actual_ids)), 200
         except ValidationError as error:
-            print(error.messages)
             return {"errors": error.messages}, 400
         except ApiError as error:
+            self.logger().debug(error)
             return error.format_api_data()
 
     def get(self, id):
         try:
-            retrieve_all = rest_layer_utils.parse_request_all_data_flag()
-            retrieve_encoded_data = rest_layer_utils.parse_request_encoded_data_flag()
+            retrieve_all = rest_layer_utils.is_all_data_request_flag()
+            retrieve_encoded_data = rest_layer_utils.is_encoded_data_request_flag()
 
             # Protection against full requests requested as an "id only" request
             if retrieve_encoded_data and not retrieve_all:
@@ -71,4 +71,5 @@ class FootprintComponentReferenceResource(Resource):
 
             return resp, 200
         except ApiError as error:
+            self.logger().debug(error)
             return error.format_api_data()

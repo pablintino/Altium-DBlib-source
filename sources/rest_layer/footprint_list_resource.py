@@ -23,7 +23,6 @@
 #
 
 
-from flask_restful import Resource
 from flask import request
 from marshmallow import ValidationError
 
@@ -32,11 +31,12 @@ from dtos.generic_objects_search_dtos import SearchPageResultDto
 from dtos.schemas.footprint_schemas import FootprintSchema
 from dtos.schemas.generic_objects_search_schemas import FootprintsSearchPageResultSchema
 from models.internal.internal_models import StorableLibraryResourceType
+from rest_layer.base_api_resource import BaseApiResource
 from services import storable_objects_service
 from services.exceptions import ApiError
 
 
-class FootprintListResource(Resource):
+class FootprintListResource(BaseApiResource):
     def post(self):
         try:
             footprint_dto = FootprintSchema().load(data=request.json)
@@ -50,6 +50,7 @@ class FootprintListResource(Resource):
         except ValidationError as error:
             return {"errors": error.messages}, 400
         except ApiError as error:
+            self.logger().debug(error)
             return error.format_api_data()
 
     def get(self):
@@ -65,4 +66,5 @@ class FootprintListResource(Resource):
                                            elements=dtos)
             return FootprintsSearchPageResultSchema().dump(page_dto), 200
         except ApiError as error:
+            self.logger().debug(error)
             return error.format_api_data()

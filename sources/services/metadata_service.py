@@ -50,7 +50,7 @@ def get_component_metadata(component_type):
 
 def is_component_type_valid(component_type):
     global __component_metadata
-    if type:
+    if component_type:
         return not __component_metadata.get(component_type, None) is None
     else:
         return False
