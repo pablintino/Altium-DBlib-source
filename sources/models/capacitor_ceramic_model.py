@@ -37,8 +37,6 @@ class CapacitorCeramicModel(ComponentModel):
     tolerance = Column(String(30))
     voltage = Column(String(30))
     composition = Column(String(30))
-    temperature_min = Column(String(30))
-    temperature_max = Column(String(30))
 
     # Tells the ORM the type of a specific component by the distinguish column
     __mapper_args__ = {

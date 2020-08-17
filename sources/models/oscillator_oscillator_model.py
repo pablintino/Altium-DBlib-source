@@ -38,8 +38,6 @@ class OscillatorOscillatorModel(ComponentModel):
     current_supply_max = Column(String(30))
     frequency = Column(String(30))
     frequency_stability = Column(String(30))
-    temperature_min = Column(String(30))
-    temperature_max = Column(String(30))
     voltage_supply = Column(String(30))
     output_type = Column(String(30))
 

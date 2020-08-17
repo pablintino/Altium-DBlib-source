@@ -38,9 +38,6 @@ class CapacitorTantalumModel(ComponentModel):
     voltage = Column(String(30))
     lifetime_temperature = Column(String(30))
     esr = Column(String(30))
-    temperature_min = Column(String(30))
-    temperature_max = Column(String(30))
-
 
     # Tells the ORM the type of a specific component by the distinguish column
     __mapper_args__ = {

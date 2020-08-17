@@ -23,47 +23,52 @@
  *
  **/
 
-create view [Resistors 0805] as select mpn as [Part Number],
-    [Value]                                     = MAX(value),
-    [Manufacturer]                              = MAX(manufacturer),
-    [Power Max]                                 = MAX(power_max),
-    [Tolerance]                                 = MAX(tolerance),
-    [Created On]                                = MAX(created_on),
-    [Updated On]                                = MAX(updated_on),
-    [Type]                                      = MAX(type),
-    [Package]                                   = MAX(package),
-    [Description]                               = MAX(description),
-    [Comment]                                   = MAX(comment),
-    [Through Hole]                              = MAX(CAST([is_through_hole] AS tinyint)),
-    [Library Path]                              = MAX(symbol_path),
-    [Library Ref]                               = MAX(symbol_ref),
-    [Footprint Path 1]                          = MAX([FootprintPath1]),
-    [Footprint Path 2]                          = MAX([FootprintPath2]),
-    [Footprint Path 3]                          = MAX([FootprintPath3]),
-    [Footprint Ref 1]                           = MAX([FootprintRef1]),
-    [Footprint Ref 2]                           = MAX([FootprintRef2]),
-    [Footprint Ref 3]                           = MAX([FootprintRef3])
+create view [Resistors 0805] as
+select                                mpn as [Part Number],
+    [Value]                         = MAX(value),
+    [Manufacturer]                  = MAX(manufacturer),
+    [Power Max]                     = MAX(power_max),
+    [Tolerance]                     = MAX(tolerance),
+    [Created On]                    = MAX(created_on),
+    [Updated On]                    = MAX(updated_on),
+    [Type]                          = MAX(type),
+    [Package]                       = MAX(package),
+    [Description]                   = MAX(description),
+    [Comment]                       = MAX(comment),
+    [Minimum Operating Temperature] = MAX(operating_temperature_min),
+    [Maximum Operating Temperature] = MAX(operating_temperature_max),
+    [Through Hole]                  = MAX(CAST([is_through_hole] AS tinyint)),
+    [Library Path]                  = MAX(symbol_path),
+    [Library Ref]                   = MAX(symbol_ref),
+    [Footprint Path 1]              = MAX([FootprintPath1]),
+    [Footprint Path 2]              = MAX([FootprintPath2]),
+    [Footprint Path 3]              = MAX([FootprintPath3]),
+    [Footprint Ref 1]               = MAX([FootprintRef1]),
+    [Footprint Ref 2]               = MAX([FootprintRef2]),
+    [Footprint Ref 3]               = MAX([FootprintRef3])
 from (
-         select r.power_max                                                                                   power_max,
-                r.tolerance                                                                                   tolerance,
-                c.manufacturer                                                                                manufacturer,
-                c.mpn                                                                                         mpn,
-                c.value                                                                                       value,
-                c.created_on                                                                                  created_on,
-                c.updated_on                                                                                  updated_on,
-                c.type                                                                                        type,
-                c.package                                                                                     package,
-                c.description                                                                                 description,
-                c.comment                                                                                     comment,
-                c.is_through_hole                                                                             is_through_hole,
-                lf.symbol_path                                                                                symbol_path,
-                lf.symbol_ref                                                                                 symbol_ref,
-                f.footprint_path                                                                              footprint_path,
-                f.footprint_ref                                                                               footprint_ref,
+         select r.power_max                                                                     power_max,
+                r.tolerance                                                                     tolerance,
+                c.manufacturer                                                                  manufacturer,
+                c.mpn                                                                           mpn,
+                c.value                                                                         value,
+                c.created_on                                                                    created_on,
+                c.updated_on                                                                    updated_on,
+                c.type                                                                          type,
+                c.package                                                                       package,
+                c.description                                                                   description,
+                c.comment                                                                       comment,
+                c.operating_temperature_min                                                     operating_temperature_min,
+                c.operating_temperature_max                                                     operating_temperature_max,
+                c.is_through_hole                                                               is_through_hole,
+                lf.symbol_path                                                                  symbol_path,
+                lf.symbol_ref                                                                   symbol_ref,
+                f.footprint_path                                                                footprint_path,
+                f.footprint_ref                                                                 footprint_ref,
                 'FootprintPath' + CAST(
-                        DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintPathPivot],
+                        DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR) AS [FootprintPathPivot],
                 'FootprintRef' + CAST(
-                        DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR)               AS [FootprintRefPivot]
+                        DENSE_RANK() OVER (PARTITION BY c.id ORDER BY f.id ASC) AS NVARCHAR) AS [FootprintRefPivot]
          from resistor r
                   inner join component c
                              on r.id = c.id
@@ -73,7 +78,7 @@ from (
                              on cf.footprint_ref_id = f.id
                   inner join library_ref lf
                              on c.library_ref_id = lf.id
-		where c.package = '0805 (2012 Metric)'
+         where c.package = '0805 (2012 Metric)'
      ) d
          pivot
          (

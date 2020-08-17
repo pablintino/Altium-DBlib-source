@@ -49,6 +49,8 @@ def __get_generic_raw_resistor():
         "value": "392 Ohms",
         "package": "0603 (1608 Metric)",
         "comment": "=Value",
+        "operating_temperature_min": "-40 ºC",
+        "operating_temperature_max": "125 ºC",
         "type": "resistor",
         "is_through_hole": False,
         "mpn": "CRCW0603392RFKEAC",
@@ -66,6 +68,8 @@ def test_map_resistor_ok():
         value="392 Ohms",
         package="0603 (1608 Metric)",
         comment="=Value",
+        operating_temperature_min= "-40 ºC",
+        operating_temperature_max= "125 ºC",
         type="resistor",
         is_through_hole=False,
         mpn="CRCW0603392RFKEAC",
@@ -84,6 +88,8 @@ def test_map_model_to_raw_resistor_ok():
         value="392 Ohms",
         package="0603 (1608 Metric)",
         comment="=Value",
+        operating_temperature_min="-40 ºC",
+        operating_temperature_max="125 ºC",
         type="resistor",
         is_through_hole=False,
         mpn="CRCW0603392RFKEAC",
@@ -101,6 +107,8 @@ def test_map_model_to_raw_resistor_ok():
     assert model.is_through_hole == raw['is_through_hole']
     assert model.mpn == raw['mpn']
     assert model.manufacturer == raw['manufacturer']
+    assert model.operating_temperature_min == raw['operating_temperature_min']
+    assert model.operating_temperature_max == raw['operating_temperature_max']
 
 
 def test_map_component_not_expected_field_ko():

@@ -49,6 +49,8 @@ class ComponentModel(db.Model):
     description = Column(String(200))
     comment = Column(String(100))
     is_through_hole = Column(Boolean())
+    operating_temperature_min = Column(String(30))
+    operating_temperature_max = Column(String(30))
 
     # Relationships
     library_ref_id = Column(Integer, ForeignKey('library_ref.id'))
