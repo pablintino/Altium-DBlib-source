@@ -23,39 +23,22 @@
 #
 
 
-from sqlalchemy import Column, String, Integer, Enum
-from models.component_model import component_footprint_asc_table
-from sqlalchemy.orm import relationship
-from models.storable_library_model import StorableLibraryModel
+from app import db
+
+__all__ = ["setup_db", "clean_db", "teardown_db"]
 
 
-class FootprintReference(StorableLibraryModel):
-    __tablename__ = "footprint_ref"
-    id = Column(Integer, primary_key=True)
-    footprint_path = Column(String(300))
-    footprint_ref = Column(String(150))
-    description = Column(String(200))
+def setup_db(app):
+    db.app = app
+    db.create_all()
 
-    # relationships
-    components_f = relationship("ComponentModel",
-                                secondary=component_footprint_asc_table,
-                                back_populates="footprint_refs",
-                                lazy=True)
 
-    def get_file_path(self):
-        return self.footprint_path
+def teardown_db():
+    db.session.remove()
+    db.drop_all()
+    db.session.bind.dispose()
 
-    def get_reference(self):
-        return self.footprint_ref
 
-    def set_file_path(self, path):
-        self.footprint_path = path
-
-    def set_reference(self, reference):
-        self.footprint_ref = reference
-
-    def __repr__(self):
-        return "FootprintReference %s %s" % (
-            self.footprint_path,
-            self.footprint_ref,
-        )
+def clean_db():
+    for table in reversed(db.metadata.sorted_tables):
+        db.session.execute(table.delete())

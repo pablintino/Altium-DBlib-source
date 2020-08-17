@@ -50,15 +50,16 @@ def create_component(model):
     __validate_new_component_model(model)
 
     exists_id = db.session.query(ComponentModel.id).filter_by(mpn=model.mpn,
-                                                              manufacturer=model.manufacturer).scalar()
-    if not exists_id:
-        db.session.add(model)
-        db.session.commit()
-        __logger.debug(__l('Component created [id={0}]', model.id))
-        return model
-    else:
+                                                           manufacturer=model.manufacturer).scalar()
+    if exists_id:
         raise ResourceAlreadyExistsApiError('Cannot create the requested component cause it already exists',
                                             conflicting_id=exists_id)
+
+    db.session.add(model)
+    db.session.commit()
+    __logger.debug(__l('Component created [id={0}]', model.id))
+    return model
+
 
 
 def update_create_symbol_relation(component_id, symbol_id, is_update=False):
@@ -129,7 +130,7 @@ def get_component_symbol_relation(component_id):
 def get_component_footprint_relations(component_id, complete_footprints=False):
     __logger.debug(__l('Querying footprint relations for component [component_id={0}]', component_id))
     component = ComponentModel.query.get(component_id)
-    if component is not None:
+    if component:
         result_list = []
         if complete_footprints:
             result_list = list(component.footprint_refs)
@@ -144,24 +145,33 @@ def get_component_footprint_relations(component_id, complete_footprints=False):
 def get_component(component_id):
     __logger.debug(__l('Querying component data [component_id={0}]', component_id))
     component = db.session.query(ComponentModel.id, ComponentModel.type).filter_by(id=component_id).first()
-    if component is None:
+    if not component:
         raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
-    else:
-        return metadata_service.get_polymorphic_model(component.type).query.get(component_id)
+
+    return metadata_service.get_polymorphic_model(component.type).query.get(component_id)
 
 
-def get_component_search(page_number, page_size, filters):
+def get_component_search(page_number, page_size, filters=None):
     __logger.debug(
         __l('Querying components for search [page_number={0}, page_size={1}, filters={2}]', page_number, page_size,
             filters))
+
+    # Allow passing empty filters
+    filters = {} if not filters else filters
 
     component_type = filters.get('type', None)
     if component_type and not metadata_service.is_component_type_valid(component_type):
         raise ResourceInvalidQuery('The given component type does not exist', invalid_fields=['type'])
 
+    if page_number < 1:
+        raise ResourceInvalidQuery('Page number should be greater than 0', invalid_fields=['page_n'])
+
+    if page_size < 1:
+        raise ResourceInvalidQuery('Page size should be greater than 0', invalid_fields=['page_size'])
+
     res, inv_fields = metadata_service.validate_component_fields(filters, component_type)
     if not res:
-        raise ResourceInvalidQuery('The given search query is invalid', inv_fields)
+        raise ResourceInvalidQuery('The given search query is invalid', invalid_fields=inv_fields)
 
     components_page = ComponentModel.query.filter_by(**filters) \
         .order_by(ComponentModel.id.desc()).paginate(page_number, per_page=page_size)
@@ -169,9 +179,9 @@ def get_component_search(page_number, page_size, filters):
 
 
 def delete_component(component_id):
-    __logger.debug(__l('Deleting component [component_id={0}]'), component_id)
+    __logger.debug(__l('Deleting component [component_id={0}]', component_id))
     component = ComponentModel.query.get(component_id)
-    if component is not None:
+    if component:
         db.session.delete(component)
         db.session.commit()
         __logger.debug(__l('Deleted component [component_id={0}]', component_id))

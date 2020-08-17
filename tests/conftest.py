@@ -23,39 +23,34 @@
 #
 
 
-from sqlalchemy import Column, String, Integer, Enum
-from models.component_model import component_footprint_asc_table
-from sqlalchemy.orm import relationship
-from models.storable_library_model import StorableLibraryModel
+import pytest
+from app import db, create_app
+from tests import setup_db, teardown_db, clean_db
 
 
-class FootprintReference(StorableLibraryModel):
-    __tablename__ = "footprint_ref"
-    id = Column(Integer, primary_key=True)
-    footprint_path = Column(String(300))
-    footprint_ref = Column(String(150))
-    description = Column(String(200))
+class TestConfig:
+    SQLALCHEMY_DATABASE_URI = 'mssql+pyodbc://testuser:Testing12345!@127.0.0.1,1433/altium_db_test?driver=ODBC+Driver+17+for+SQL+Server'
+    REDIS_URL = 'redis://'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # relationships
-    components_f = relationship("ComponentModel",
-                                secondary=component_footprint_asc_table,
-                                back_populates="footprint_refs",
-                                lazy=True)
 
-    def get_file_path(self):
-        return self.footprint_path
+@pytest.fixture(scope="session")
+def app():
+    yield create_app(config_class=TestConfig)
 
-    def get_reference(self):
-        return self.footprint_ref
 
-    def set_file_path(self, path):
-        self.footprint_path = path
+@pytest.fixture(scope="session")
+def database(app):
+    assert app is not None
+    setup_db(app)
+    yield db
+    teardown_db()
 
-    def set_reference(self, reference):
-        self.footprint_ref = reference
 
-    def __repr__(self):
-        return "FootprintReference %s %s" % (
-            self.footprint_path,
-            self.footprint_ref,
-        )
+@pytest.fixture(scope="function")
+def db_session(database, app):
+    assert app is not None
+    with app.app_context():
+        clean_db()
+        yield database.session
+        database.session.rollback()

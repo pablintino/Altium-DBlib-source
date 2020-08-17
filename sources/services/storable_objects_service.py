@@ -105,7 +105,7 @@ def update_object_data(storable_type, model_id, encoded_data):
         raise ResourceNotFoundApiError('Storable object not found', missing_id=model_id)
 
     # If the model has already been stored and its content is the same just skip updating
-    if model.storage_status is StorageStatus.STORED and \
+    if model.get_storage_status() is StorageStatus.STORED and \
             encoded_data == storage_service.get_encoded_file_from_repo(model):
         __logger.debug('Given new storable object data has the same content as the current one. Skipping...')
         return
@@ -135,7 +135,7 @@ def update_object_data(storable_type, model_id, encoded_data):
         raise __get_error_for_type(storable_type)('Ambiguous library update. Provide a reference')
 
     # Reset storage status
-    model.storage_status = StorageStatus.NOT_STORED
+    model.set_storage_status(StorageStatus.NOT_STORED)
     db.session.add(model)
     db.session.commit()
 
