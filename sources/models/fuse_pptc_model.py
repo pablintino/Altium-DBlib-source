@@ -41,8 +41,6 @@ class FusePPTCModel(ComponentModel):
     resistance_minimum = Column(String(30))
     power_rating = Column(String(30))
     current_rating = Column(String(30))
-    temperature_min = Column(String(30))
-    temperature_max = Column(String(30))
 
     # Tells the ORM the type of a specific component by the distinguish column
     __mapper_args__ = {
