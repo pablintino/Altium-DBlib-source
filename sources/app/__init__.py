@@ -42,9 +42,9 @@ config_logs()
 Config.log_config()
 
 
-def create_app():
+def create_app(config_class=None):
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(Config if not config_class else config_class)
 
     db.init_app(app)
 

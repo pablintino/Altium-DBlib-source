@@ -23,7 +23,7 @@
 #
 
 
-from sqlalchemy import Column, Enum
+from sqlalchemy import Column, String
 from app import db
 from models.internal.internal_models import StorageStatus
 
@@ -31,10 +31,16 @@ from models.internal.internal_models import StorageStatus
 class StorableLibraryModel(db.Model):
     __abstract__ = True
 
-    storage_status = Column(Enum(StorageStatus))
+    storage_status = Column(String(30))
 
     def get_file_path(self):
         return None
 
     def get_reference(self):
         return None
+
+    def get_storage_status(self):
+        return StorageStatus[self.storage_status] if self.storage_status else None
+
+    def set_storage_status(self, status):
+        self.storage_status = status

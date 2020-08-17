@@ -23,8 +23,7 @@
 #
 
 
-from sqlalchemy import Column, String, Integer
-
+from sqlalchemy import Column, String, Integer, Enum
 from models.component_model import component_footprint_asc_table
 from sqlalchemy.orm import relationship
 from models.storable_library_model import StorableLibraryModel
