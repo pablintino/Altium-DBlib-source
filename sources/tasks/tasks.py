@@ -42,7 +42,7 @@ app.app_context().push()
 
 def __save_storage_status(model, status):
     try:
-        model.storage_status = status
+        model.set_storage_status(status)
         db.session.add(model)
         db.session.commit()
     except SQLAlchemyError as error:

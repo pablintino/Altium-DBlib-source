@@ -89,9 +89,9 @@ def add_file_to_repo(file_name, encoded_data):
 
 
 def get_file_from_repo(model):
-    if model.storage_status != StorageStatus.STORED:
+    if model.get_storage_status() != StorageStatus.STORED:
         raise InvalidStorageStateError('Model is not in STORED state', entity_id=model.id,
-                                       current_state=model.storage_status.name)
+                                       current_state=model.get_storage_status().name)
     file_name = model.get_file_path()
     abs_file_path = os.path.join(Config.REPO_PATH, file_name)
     if not os.path.isfile(abs_file_path):

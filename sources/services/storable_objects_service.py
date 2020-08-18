@@ -185,7 +185,7 @@ def create_storable_library_object(storable_type, reference_name, storable_path,
         else LibraryReference(symbol_path=storable_path, symbol_ref=reference_name, description=description)
 
     # Ensure that storage status at creation time is set to NOT_STORED
-    model.storage_status = StorageStatus.NOT_STORED
+    model.set_storage_status(StorageStatus.NOT_STORED)
 
     db.session.add(model)
     db.session.commit()

@@ -43,4 +43,4 @@ class StorableLibraryModel(db.Model):
         return StorageStatus[self.storage_status] if self.storage_status else None
 
     def set_storage_status(self, status):
-        self.storage_status = status
+        self.storage_status = status.name if isinstance(status, StorageStatus) else status
