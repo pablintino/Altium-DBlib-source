@@ -50,7 +50,7 @@ def create_component(model):
     __validate_new_component_model(model)
 
     exists_id = db.session.query(ComponentModel.id).filter_by(mpn=model.mpn,
-                                                           manufacturer=model.manufacturer).scalar()
+                                                              manufacturer=model.manufacturer).scalar()
     if exists_id:
         raise ResourceAlreadyExistsApiError('Cannot create the requested component cause it already exists',
                                             conflicting_id=exists_id)
@@ -59,7 +59,6 @@ def create_component(model):
     db.session.commit()
     __logger.debug(__l('Component created [id={0}]', model.id))
     return model
-
 
 
 def update_create_symbol_relation(component_id, symbol_id, is_update=False):
@@ -185,3 +184,30 @@ def delete_component(component_id):
         db.session.delete(component)
         db.session.commit()
         __logger.debug(__l('Deleted component [component_id={0}]', component_id))
+
+
+def delete_component_symbol_relation(component_id):
+    __logger.debug(__l('Deleting component symbol relation[component_id={0}]', component_id))
+    component = ComponentModel.query.get(component_id)
+    if not component:
+        raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
+    symbol_id = component.library_ref_id
+    component.library_ref_id = None
+    component.library_ref = None
+    db.session.add(component)
+    db.session.commit()
+    __logger.debug(__l('Deleted component symbol relation [component_id={0}, symbol_id={1}]', component_id, symbol_id))
+
+
+def delete_component_footprint_relation(component_id, footprint_id):
+    __logger.debug(
+        __l('Deleting component footprint relation[component_id={0}, footprint_id={1}]', component_id, footprint_id))
+    component = ComponentModel.query.get(component_id)
+    if not component:
+        raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
+
+    component.footprint_refs = [x for x in component.footprint_refs if x.id != footprint_id]
+    db.session.add(component)
+    db.session.commit()
+    __logger.debug(
+        __l('Deleted component footprint relation [component_id={0}, footprint_id={1}]', component_id, footprint_id))

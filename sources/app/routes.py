@@ -21,14 +21,17 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 #
+
+
+from app import api
 from rest_layer.component_list_resource import ComponentListResource
 from rest_layer.component_resource import ComponentResource
 from rest_layer.footprint_component_reference_resource import FootprintComponentReferenceResource
 from rest_layer.footprint_data_resource import FootprintDataResource
+from rest_layer.footprint_element_component_reference_resource import FootprintElementComponentReferenceResource
 from rest_layer.footprint_list_resource import FootprintListResource
 from rest_layer.footprint_resource import FootprintResource
 from rest_layer.metadata_api import MetadataResource
-from app import api
 from rest_layer.symbol_component_reference_resource import SymbolComponentReferenceResource
 from rest_layer.symbol_data_resource import SymbolDataResource
 from rest_layer.symbol_list_resource import SymbolListResource
@@ -39,6 +42,7 @@ api.add_resource(ComponentListResource, '/components')
 api.add_resource(ComponentResource, '/components/<int:id>')
 api.add_resource(SymbolComponentReferenceResource, '/components/<int:id>/symbol')
 api.add_resource(FootprintComponentReferenceResource, '/components/<int:id>/footprints')
+api.add_resource(FootprintElementComponentReferenceResource, '/components/<int:id>/footprints/<int:id_f>')
 api.add_resource(SymbolListResource, '/symbols')
 api.add_resource(SymbolResource, '/symbols/<int:id>')
 api.add_resource(SymbolDataResource, '/symbols/<int:id>/data')

@@ -23,35 +23,17 @@
 #
 
 
-import base64
-
-from flask import send_file, request
-from models.internal.internal_models import StorableLibraryResourceType
 from rest_layer.base_api_resource import BaseApiResource
-from services import storage_service, storable_objects_service
-from services.exceptions import ApiError, InvalidMultipartFileDataError
+from services import component_service
+from services.exceptions import ApiError
 
 
-class FootprintDataResource(BaseApiResource):
-    def put(self, id):
+class FootprintElementComponentReferenceResource(BaseApiResource):
+
+    def delete(self, id, id_f):
         try:
-            # Verify that the uploaded file is provided using 'data' as name
-            if 'data' not in request.files:
-                raise InvalidMultipartFileDataError(msg="'data' multipart element not found in request")
-
-            with request.files['data'].stream as file:
-                encoded_data = base64.b64encode(file.read())
-                storable_objects_service.update_object_data(StorableLibraryResourceType.FOOTPRINT, id, encoded_data)
-            return '', 204
-        except ApiError as error:
-            self.logger().debug(error)
-            return error.format_api_data()
-
-    def get(self, id):
-        try:
-            model = storable_objects_service.get_storable_model(StorableLibraryResourceType.FOOTPRINT, id)
-            footprint_file = storage_service.get_file_from_repo(model)
-            return send_file(footprint_file, as_attachment=True)
+            component_service.delete_component_footprint_relation(id, id_f)
+            return {}, 204
         except ApiError as error:
             self.logger().debug(error)
             return error.format_api_data()
