@@ -34,7 +34,7 @@ from services.exceptions import ApiError, InvalidMultipartFileDataError
 
 
 class SymbolDataResource(BaseApiResource):
-    def post(self, id):
+    def put(self, id):
         try:
             # Verify that the uploaded file is provided using 'data' as name
             if 'data' not in request.files:

@@ -42,6 +42,7 @@ class OpAmpModel(ComponentModel):
     voltage_supplies = Column(String(30))
     voltage_input_offset = Column(String(30))
     current_output = Column(String(30))
+    number_of_channels = Column(String(30))
 
     # Tells the ORM the type of a specific component by the distinguish column
     __mapper_args__ = {

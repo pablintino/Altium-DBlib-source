@@ -78,3 +78,11 @@ class SymbolComponentReferenceResource(BaseApiResource):
         except ApiError as error:
             self.logger().debug(error)
             return error.format_api_data()
+
+    def delete(self, id):
+        try:
+            component_service.delete_component_symbol_relation(id)
+            return {}, 204
+        except ApiError as error:
+            self.logger().debug(error)
+            return error.format_api_data()

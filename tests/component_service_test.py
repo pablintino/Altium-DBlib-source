@@ -425,3 +425,73 @@ def test_get_component_search_invalid_page_size_ko(db_session):
     assert e_info.type is ResourceInvalidQuery
     assert len(e_info.value.invalid_fields) == 1
     assert e_info.value.invalid_fields[0] == 'page_size'
+
+
+def test_delete_component_symbol_relation_ok(db_session):
+    component_model = __get_dummy_resistor_component()
+    symbol_ref = LibraryReference(storage_status="NOT_STORED", symbol_path="/tes/test", description="dummy ref")
+
+    component_model.library_ref = symbol_ref
+    db_session.add(component_model)
+    db_session.add(symbol_ref)
+    db_session.commit()
+
+    component_service.delete_component_symbol_relation(component_model.id)
+    db_component = ComponentModel.query.get(component_model.id)
+
+    assert db_component.library_ref_id is None
+    assert db_component.library_ref is None
+
+
+def test_delete_component_symbol_relation_no_component_ko(db_session):
+    symbol_ref = LibraryReference(storage_status="NOT_STORED", symbol_path="/tes/test", description="dummy ref")
+    db_session.add(symbol_ref)
+    db_session.commit()
+
+    with pytest.raises(Exception) as e_info:
+        component_service.delete_component_symbol_relation(9999)
+    assert e_info.type is ResourceNotFoundApiError
+    assert e_info.value.missing_id == 9999
+
+
+def test_delete_component_footprint_relations_ok(db_session):
+    component_model = __get_dummy_resistor_component()
+    footprint_references = [
+        FootprintReference(storage_status="NOT_STORED", footprint_path="/test/test1", description="dummy ref"),
+        FootprintReference(storage_status="NOT_STORED", footprint_path="/test/test2", description="dummy ref"),
+        FootprintReference(storage_status="NOT_STORED", footprint_path="/test/test3", description="dummy ref")
+    ]
+
+    db_session.add(footprint_references[0])
+    db_session.add(footprint_references[1])
+    db_session.add(footprint_references[2])
+    db_session.commit()
+
+    component_model.footprint_refs.append(footprint_references[0])
+    component_model.footprint_refs.append(footprint_references[1])
+    component_model.footprint_refs.append(footprint_references[2])
+    db_session.add(component_model)
+    db_session.commit()
+
+    component_service.delete_component_footprint_relation(component_model.id, footprint_references[0].id)
+    db_component = ComponentModel.query.get(component_model.id)
+    assert len(db_component.footprint_refs) == 2
+    assert next((x for x in db_component.footprint_refs if x.id == footprint_references[1].id), None)
+    assert next((x for x in db_component.footprint_refs if x.id == footprint_references[2].id), None)
+    component_service.delete_component_footprint_relation(component_model.id, footprint_references[1].id)
+    component_service.delete_component_footprint_relation(component_model.id, footprint_references[2].id)
+    db_component = ComponentModel.query.get(component_model.id)
+    assert len(db_component.footprint_refs) == 0
+
+
+def test_delete_component_footprint_relation_no_component_ko(db_session):
+    footprint_reference = FootprintReference(storage_status="NOT_STORED", footprint_path="/test/test1",
+                                             description="dummy ref")
+
+    db_session.add(footprint_reference)
+    db_session.commit()
+
+    with pytest.raises(Exception) as e_info:
+        component_service.delete_component_footprint_relation(9999, footprint_reference.id)
+    assert e_info.type is ResourceNotFoundApiError
+    assert e_info.value.missing_id == 9999
