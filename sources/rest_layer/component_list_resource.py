@@ -39,7 +39,7 @@ class ComponentListResource(BaseApiResource):
     def post(self):
         try:
             creation_dto = CreateComponentSchema().load(data=request.json)
-            model = component_model_mapper.map_validate_raw(creation_dto.specific_dto, pk_provided=False)
+            model = component_model_mapper.map_validate_raw_to_model(creation_dto.specific_dto, pk_provided=False)
             model = component_service.create_component(model)
             creation_dto.specific_dto = component_model_mapper.map_model_to_raw(model)
             return CreateComponentSchema().dump(creation_dto), 201

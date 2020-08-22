@@ -25,11 +25,15 @@
 from app import marshmallow
 from marshmallow import fields, post_load
 
-from dtos.components_dtos import CreateComponentDto
+from dtos.components_dtos import CreateComponentDto, GenericComponentDto
 
 
 class GenericComponentSchema(marshmallow.Schema):
     data = fields.Dict(keys=fields.Str())
+
+    @post_load
+    def make_generic_component_dto(self, data, **kwargs):
+        return GenericComponentDto(component_data=data.get('data', None))
 
 
 class CreateComponentSchema(marshmallow.Schema):

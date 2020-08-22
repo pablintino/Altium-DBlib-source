@@ -26,6 +26,7 @@
 import logging
 
 from app import db
+from dtos import component_model_mapper
 from models import ComponentModel, LibraryReference, FootprintReference
 from services import metadata_service
 from services.exceptions import ResourceAlreadyExistsApiError, ResourceNotFoundApiError, ResourceInvalidQuery, \
@@ -41,6 +42,18 @@ def __validate_new_component_model(model):
 
     if len(present_fields) > 0:
         raise InvalidComponentFieldsError('Reserved fields were provided', reserved_fields=present_fields)
+
+
+def __validate_update_component_model(raw_update_fields):
+    reserved_fields = ['created_on', 'updated_on', 'id', 'mpn', 'manufacturer', 'type']
+
+    if not raw_update_fields:
+        raise InvalidComponentFieldsError('Component update data cannot be empty')
+
+    present_fields = list({k: v for k, v in raw_update_fields.items() if v and k in reserved_fields}.keys())
+
+    if len(present_fields) > 0:
+        raise InvalidComponentFieldsError('Update reserved fields were provided', reserved_fields=present_fields)
 
 
 def create_component(model):
@@ -59,6 +72,28 @@ def create_component(model):
     db.session.commit()
     __logger.debug(__l('Component created [id={0}]', model.id))
     return model
+
+
+def update_component(component_id, raw_update_fields):
+    __logger.debug(__l('Updating component [component_id={0}]', component_id))
+
+    component = ComponentModel.query.get(component_id)
+    if not component:
+        raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
+
+    # Check for invalid or unexpected filled fields before storing the component
+    __validate_update_component_model(raw_update_fields)
+
+    # raw_mapped has passed field and type mapping and validation process
+    raw_mapped = component_model_mapper.map_validate_raw(raw_update_fields, pk_provided=False, ignore_mandatory=True,
+                                                         force_type=component.type)
+
+    component.update_from_raw(raw_mapped)
+    db.session.add(component)
+    db.session.commit()
+    __logger.debug(__l('Component updated [id={0}, mpn={1}, manufacturer={2}]', component.id, component.mpn,
+                       component.manufacturer))
+    return component
 
 
 def update_create_symbol_relation(component_id, symbol_id, is_update=False):

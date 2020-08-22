@@ -73,3 +73,7 @@ class ComponentModel(db.Model):
             type(self).__name__,
             ', '.join('%s=%s' % item for item in vars(self).items())
         )
+
+    def update_from_raw(self, raw_data):
+        for key, value in raw_data.items():
+            setattr(self, key, value)

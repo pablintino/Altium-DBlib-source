@@ -23,6 +23,9 @@
 #
 import logging
 
+from flask import request
+from marshmallow import ValidationError
+
 from dtos import component_model_mapper
 from dtos.components_dtos import GenericComponentDto
 from dtos.schemas.component_schemas import GenericComponentSchema
@@ -38,6 +41,18 @@ class ComponentResource(BaseApiResource):
             model = component_service.get_component(id)
             raw_component = component_model_mapper.map_model_to_raw(model)
             return GenericComponentSchema().dump(GenericComponentDto(raw_component)), 200
+        except ApiError as error:
+            self.logger().debug(error)
+            return error.format_api_data()
+
+    def put(self, id):
+        try:
+            generic_dto_data = GenericComponentSchema().load(data=request.json)
+            model = component_service.update_component(id, generic_dto_data.data)
+            raw_updated_component = component_model_mapper.map_model_to_raw(model)
+            return GenericComponentSchema().dump(GenericComponentDto(raw_updated_component)), 200
+        except ValidationError as error:
+            return {"errors": error.messages}, 400
         except ApiError as error:
             self.logger().debug(error)
             return error.format_api_data()

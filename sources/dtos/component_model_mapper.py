@@ -27,6 +27,12 @@ from services import metadata_service
 from services.exceptions import InvalidComponentTypeError, InvalidComponentFieldsError
 
 
+def __calculate_not_present_mandatory(component_metadata, raw_component, pk_provided):
+    return [req.name for req in list(filter(lambda
+                                                x: x.is_mandatory and not x.is_pk and x.name not in raw_component or x.is_pk and pk_provided and x.name not in raw_component,
+                                            component_metadata.fields.values()))]
+
+
 def __map_fields_type(raw_fields, fields_metadata):
     invalid_type_fields = []
     mapped_fields = {}
@@ -53,16 +59,14 @@ def __map_fields_type(raw_fields, fields_metadata):
     return mapped_fields
 
 
-def __validate(raw_component, component_metadata, pk_provided):
+def __validate(raw_component, component_metadata, pk_provided, ignore_mandatory):
     # Calculate fields that are present in the provided component but are not part of the model
     unrecognised_fields = [ureq for ureq in raw_component if ureq not in component_metadata.fields and (ureq != 'type')]
 
     # Calculate fields that the model claims as mandatory but are not provided in the component
-    not_present_mandatory = [req.name for req in list(filter(lambda
-                                                                 x: x.is_mandatory and not x.is_pk and
-                                                                    x.name not in raw_component or x.is_pk and
-                                                                    pk_provided and x.name not in raw_component,
-                                                             component_metadata.fields.values()))]
+    # Only if ignore_mandatory is false (typically done for already created components that are going to be updated)
+    not_present_mandatory = __calculate_not_present_mandatory(component_metadata, raw_component,
+                                                              pk_provided) if not ignore_mandatory else []
 
     # If mandatory fields are not provided or there are unrecognised fields just raise a validation error
     if len(unrecognised_fields) > 0 or len(not_present_mandatory) > 0:
@@ -71,8 +75,8 @@ def __validate(raw_component, component_metadata, pk_provided):
                                           mandatory_missing=not_present_mandatory)
 
 
-def map_validate_raw(raw_component, pk_provided=False):
-    component_type = raw_component.get('type', None)
+def map_validate_raw(raw_component, pk_provided=False, ignore_mandatory=False, force_type=None):
+    component_type = raw_component.get('type', None) if not force_type else force_type
     if component_type and not metadata_service.is_component_type_valid(component_type):
         raise InvalidComponentTypeError('Component type ' + component_type + ' not recognised')
     elif not component_type:
@@ -81,11 +85,17 @@ def map_validate_raw(raw_component, pk_provided=False):
     component_metadata = metadata_service.get_component_metadata(component_type)
 
     # Validate invalid or unexpected fields
-    __validate(raw_component, component_metadata, pk_provided)
+    __validate(raw_component, component_metadata, pk_provided, ignore_mandatory)
 
-    mapped_fields = __map_fields_type(raw_component, component_metadata.fields)
+    return __map_fields_type(raw_component, component_metadata.fields)
 
-    mapped_model = metadata_service.get_polymorphic_model(component_type)(**mapped_fields)
+
+def map_validate_raw_to_model(raw_component, pk_provided=False):
+
+    mapped_fields = map_validate_raw(raw_component, pk_provided=pk_provided)
+
+    # Call to raw_component.get('type', None) is safe here since raw was already validated
+    mapped_model = metadata_service.get_polymorphic_model(raw_component.get('type', None))(**mapped_fields)
     return mapped_model
 
 
