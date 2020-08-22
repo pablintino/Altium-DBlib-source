@@ -57,6 +57,8 @@ from models.capacitor_tantalum_model import CapacitorTantalumModel
 from models.transistor_array_mosfet_model import TransistorArrayMosfetModel
 from models.oscillator_oscillator_model import OscillatorOscillatorModel
 from models.fuse_pptc_model import FusePPTCModel
+from models.triac_model import TriacModel
+from models.discrete_logic_model import DiscreteLogicModel
 from models.component_model import ComponentModel
 from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
 from models.join_tables import component_footprint_asc_table
