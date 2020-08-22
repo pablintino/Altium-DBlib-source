@@ -495,3 +495,46 @@ def test_delete_component_footprint_relation_no_component_ko(db_session):
         component_service.delete_component_footprint_relation(9999, footprint_reference.id)
     assert e_info.type is ResourceNotFoundApiError
     assert e_info.value.missing_id == 9999
+
+
+def test_update_component_ok(db_session):
+    model = __get_dummy_resistor_component()
+    db_session.add(model)
+    db_session.commit()
+
+    update_data = {
+        "power_max": '5 W',
+        "tolerance": "10 %"
+    }
+
+    result = component_service.update_component(model.id, update_data)
+    assert result.id == model.id
+    assert result.power_max == update_data['power_max']
+    assert result.tolerance == update_data['tolerance']
+
+    db_component = ComponentModel.query.get(model.id)
+    assert db_component.id == model.id
+    assert db_component.power_max == update_data['power_max']
+    assert db_component.tolerance == update_data['tolerance']
+
+
+def test_update_component_reserved_fields_ko(db_session):
+    model = __get_dummy_resistor_component()
+    db_session.add(model)
+    db_session.commit()
+
+    update_data = {
+        "power_max": '5 W',
+        "tolerance": "10 %",
+        "created_on": datetime.now(),
+        "updated_on": datetime.now(),
+        "mpn": "test",
+        "manufacturer": "test"
+    }
+    with pytest.raises(Exception) as e_info:
+        component_service.update_component(model.id, update_data)
+    assert e_info.value.reserved_fields is not None
+    assert next((x for x in e_info.value.reserved_fields if x == "created_on"), None)
+    assert next((x for x in e_info.value.reserved_fields if x == "updated_on"), None)
+    assert next((x for x in e_info.value.reserved_fields if x == "mpn"), None)
+    assert next((x for x in e_info.value.reserved_fields if x == "manufacturer"), None)

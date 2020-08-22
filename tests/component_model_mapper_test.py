@@ -41,6 +41,21 @@ def __assert_base_component(result, expected):
     assert expected.manufacturer == result.manufacturer
 
 
+def __assert_base_raw_resistor(mapped):
+    assert mapped["power_max"] == "100 mW"
+    assert mapped["tolerance"] == "1%"
+    assert mapped["description"] == "Thin Film Resistor 392 Ohms 1%"
+    assert mapped["value"] == "392 Ohms"
+    assert mapped["package"] == "0603 (1608 Metric)"
+    assert mapped["comment"] == "=Value"
+    assert mapped["operating_temperature_min"] == "-40 ºC"
+    assert mapped["operating_temperature_max"] == "125 ºC"
+    assert mapped["type"] == "resistor"
+    assert mapped["is_through_hole"] == False
+    assert mapped["mpn"] == "CRCW0603392RFKEAC"
+    assert mapped["manufacturer"] == "Vishay / Dale"
+
+
 def __get_generic_raw_resistor():
     return {
         "power_max": "100 mW",
@@ -56,6 +71,34 @@ def __get_generic_raw_resistor():
         "mpn": "CRCW0603392RFKEAC",
         "manufacturer": "Vishay / Dale"
     }
+
+
+def test_map_raw_component_ok():
+    raw = __get_generic_raw_resistor()
+
+    mapped = component_model_mapper.map_validate_raw(raw, pk_provided=False)
+    __assert_base_raw_resistor(mapped)
+
+
+def test_map_raw_component_given_type_ok():
+    raw = __get_generic_raw_resistor()
+    raw.pop('type')
+    mapped = component_model_mapper.map_validate_raw(raw, pk_provided=False, force_type='resistor')
+    assert 'type' not in mapped
+    mapped['type'] = 'resistor'
+    __assert_base_raw_resistor(mapped)
+
+
+def test_map_raw_component_ignore_mandatory_ok():
+    raw = __get_generic_raw_resistor()
+    raw.pop('mpn')
+    raw.pop('manufacturer')
+    mapped = component_model_mapper.map_validate_raw(raw, pk_provided=False, ignore_mandatory=True)
+    assert 'mpn' not in mapped
+    assert 'manufacturer' not in mapped
+    mapped['mpn'] = __get_generic_raw_resistor().get('mpn', None)
+    mapped['manufacturer'] = __get_generic_raw_resistor().get('manufacturer', None)
+    __assert_base_raw_resistor(mapped)
 
 
 def test_map_resistor_ok():
@@ -76,7 +119,7 @@ def test_map_resistor_ok():
         manufacturer="Vishay / Dale"
     )
 
-    mapped = component_model_mapper.map_validate_raw(raw, pk_provided=False)
+    mapped = component_model_mapper.map_validate_raw_to_model(raw, pk_provided=False)
     __assert_base_component(mapped, model)
 
 
@@ -116,7 +159,7 @@ def test_map_component_not_expected_field_ko():
     raw['thisfieldshouldtbepresent'] = "wololo"
 
     with pytest.raises(Exception) as e_info:
-        component_model_mapper.map_validate_raw(raw, pk_provided=False)
+        component_model_mapper.map_validate_raw(raw, pk_provided=False, ignore_mandatory=False)
 
     assert e_info.type is InvalidComponentFieldsError
     assert e_info.value.unrecognised_fields is not None
@@ -129,14 +172,14 @@ def test_map_component_not_expected_type_ko():
     raw['type'] = 'shouldnotexist'
 
     with pytest.raises(Exception) as e_info:
-        component_model_mapper.map_validate_raw(raw, pk_provided=False)
+        component_model_mapper.map_validate_raw(raw, pk_provided=False, ignore_mandatory=False)
 
     assert e_info.type is InvalidComponentTypeError
 
     # Try map without type
     del raw['type']
     with pytest.raises(Exception) as e_info:
-        component_model_mapper.map_validate_raw(raw, pk_provided=False)
+        component_model_mapper.map_validate_raw(raw, pk_provided=False, ignore_mandatory=False)
 
     assert e_info.type is InvalidComponentTypeError
 
@@ -145,7 +188,7 @@ def test_map_component_not_expected_field_type_ko():
     raw = __get_generic_raw_resistor()
     raw['power_max'] = 1.0
     with pytest.raises(Exception) as e_info:
-        component_model_mapper.map_validate_raw(raw, pk_provided=False)
+        component_model_mapper.map_validate_raw(raw, pk_provided=False, ignore_mandatory=False)
 
     assert e_info.type is InvalidComponentFieldsError
     assert e_info.value.unexpected_types is not None
@@ -157,7 +200,7 @@ def test_map_component_no_mandatory_field_ko():
     raw = __get_generic_raw_resistor()
     del raw['mpn']
     with pytest.raises(Exception) as e_info:
-        component_model_mapper.map_validate_raw(raw, pk_provided=False)
+        component_model_mapper.map_validate_raw(raw, pk_provided=False, ignore_mandatory=False)
 
     assert e_info.type is InvalidComponentFieldsError
     assert e_info.value.mandatory_missing is not None
