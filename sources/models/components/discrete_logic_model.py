@@ -23,13 +23,27 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from sqlalchemy import Column, String, ForeignKey
+from models.components.component_model import ComponentModel
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+
+class DiscreteLogicModel(ComponentModel):
+    __tablename__ = 'discrete_logic'
+    __id_prefix__ = 'LGIC'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a discrete logic component
+    logic_family = Column(String(30))
+    logic_type = Column(String(30))
+    number_of_bits = Column(String(30))
+    propagation_delay = Column(String(30))
+    supply_voltage_max = Column(String(30))
+    supply_voltage_min = Column(String(30))
+    logic_function = Column(String(100))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

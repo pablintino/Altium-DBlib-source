@@ -23,13 +23,23 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+from app import db
+
+
+class InventoryCategoryModel(db.Model):
+    __tablename__ = "inventory_category"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100))
+    description = Column(String(100))
+
+    # relationships
+    category_items = relationship("InventoryItemModel", back_populates='category', lazy=True)
+
+    def __repr__(self):
+        return '%s(%s)' % (
+            type(self).__name__,
+            ', '.join('%s=%s' % item for item in vars(self).items())
+        )

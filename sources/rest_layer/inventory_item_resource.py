@@ -23,13 +23,19 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from dtos.inventory_dtos import InventoryItemDto
+from dtos.schemas.inventory_schemas import InventoryItemSchema
+from rest_layer.base_api_resource import BaseApiResource
+from services import inventory_service
+from services.exceptions import ApiError
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+
+class InventoryItemResource(BaseApiResource):
+
+    def get(self, id):
+        try:
+            item_model = inventory_service.get_item(id)
+            return InventoryItemSchema().dump(InventoryItemDto.from_model(item_model)), 200
+        except ApiError as error:
+            self.logger().debug(error)
+            return error.format_api_data()

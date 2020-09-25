@@ -23,13 +23,25 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from sqlalchemy import Column, String, ForeignKey
+from models.components.component_model import ComponentModel
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+
+class SwitchPushButtonModel(ComponentModel):
+    __tablename__ = 'switch_push_button'
+    __id_prefix__ = 'SBUT'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a pushbutton
+    function = Column(String(50))
+    dc_voltage_rating = Column(String(30))
+    ac_voltage_rating = Column(String(30))
+    current_rating = Column(String(30))
+    circuit_type = Column(String(50))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

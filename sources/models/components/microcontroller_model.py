@@ -23,13 +23,28 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from sqlalchemy import Column, String, ForeignKey
+from models.components.component_model import ComponentModel
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+
+class MicrocontrollerModel(ComponentModel):
+    __tablename__ = 'microcontroller'
+    __id_prefix__ = 'MCRO'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a resistor
+    core = Column(String(50))
+    core_size = Column(String(30))
+    speed = Column(String(30))
+    flash_size = Column(String(30))
+    ram_size = Column(String(30))
+    peripherals = Column(String(250))
+    connectivity = Column(String(250))
+    voltage_supply = Column(String(50))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

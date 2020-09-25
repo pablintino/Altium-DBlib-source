@@ -23,13 +23,26 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+from models.inventory.inventory_identificable_item_model import InventoryIdentificableItemModel
+
+
+class InventoryLocationModel(InventoryIdentificableItemModel):
+    __tablename__ = "inventory_location"
+    __id_prefix__ = 'LOC'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100), nullable=False, unique=True)
+    description = Column(String(100))
+    dici = Column(String(70), nullable=False, index=True)
+
+    # relationships
+    stock_items = relationship("InventoryItemStockModel", back_populates="location")
+
+    def __repr__(self):
+        return '%s(%s)' % (
+            type(self).__name__,
+            ', '.join('%s=%s' % item for item in vars(self).items())
+        )

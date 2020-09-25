@@ -23,13 +23,35 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from sqlalchemy import Column, String, Integer
+from sqlalchemy.orm import relationship
+from models.libraries.storable_library_model import StorableLibraryModel
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+
+class LibraryReference(StorableLibraryModel):
+    __tablename__ = "library_ref"
+    id = Column(Integer, primary_key=True)
+    symbol_path = Column(String(300))
+    symbol_ref = Column(String(150))
+    description = Column(String(200))
+
+    def get_file_path(self):
+        return self.symbol_path
+
+    def get_reference(self):
+        return self.symbol_ref
+
+    def set_file_path(self, path):
+        self.symbol_path = path
+
+    def set_reference(self, reference):
+        self.symbol_ref = reference
+
+    # relationships
+    library_components = relationship("ComponentModel", back_populates='library_ref', lazy=True)
+
+    def __repr__(self):
+        return "LibraryReference %s %s" % (
+            self.symbol_path,
+            self.symbol_ref,
+        )

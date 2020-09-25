@@ -23,13 +23,26 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from sqlalchemy import Column, String, ForeignKey
+from models.components.component_model import ComponentModel
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+
+class ConnectorPcbModel(ComponentModel):
+    __tablename__ = 'connector_pcb'
+    __id_prefix__ = 'CONP'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a PCB connector
+    orientation = Column(String(50))
+    pitch = Column(String(30))
+    voltage_rating = Column(String(30))
+    current_rating = Column(String(30))
+    number_of_rows = Column(String(30))
+    number_of_contacts = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

@@ -23,13 +23,26 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from sqlalchemy import Column, String, ForeignKey
+from models.components.component_model import ComponentModel
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+
+class TransistorBjtModel(ComponentModel):
+    __tablename__ = 'transistor_bjt'
+    __id_prefix__ = 'QBJT'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a BJT
+    vce_sat_max = Column(String(30))
+    hfe = Column(String(30))
+    vce_max = Column(String(30))
+    ic_max = Column(String(50))
+    power_max = Column(String(50))
+    bjt_type = Column(String(10))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

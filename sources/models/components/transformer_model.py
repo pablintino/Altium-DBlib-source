@@ -22,14 +22,33 @@
 #  SOFTWARE.
 #
 
+from sqlalchemy import Column, String, ForeignKey
+from models.components.component_model import ComponentModel
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+class TransformerModel(ComponentModel):
+    __tablename__ = 'transformer'
+    __id_prefix__ = 'TFRM'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a transformer
+    number_of_windings = Column(String(30))
+    primary_dc_resistance = Column(String(30))
+    secondary_dc_resistance = Column(String(30))
+    tertiary_dc_resistance = Column(String(30))
+    leakage_inductance = Column(String(30))
+    primary_inductance = Column(String(30))
+    secondary_current_rating = Column(String(30))
+    tertiary_current_rating = Column(String(30))
+    primary_voltage_rating = Column(String(30))
+    secondary_voltage_rating = Column(String(30))
+    tertiary_voltage_rating = Column(String(30))
+    nps_turns_ratio = Column(String(30))
+    npt_turns_ratio = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

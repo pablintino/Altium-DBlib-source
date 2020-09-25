@@ -23,13 +23,27 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from sqlalchemy import Column, String, ForeignKey
+from models.components.component_model import ComponentModel
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+
+class TransistorMosfetModel(ComponentModel):
+    __tablename__ = 'transistor_mosfet'
+    __id_prefix__ = 'QFET'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a MOSFET
+    rds_on = Column(String(30))
+    vgs_max = Column(String(30))
+    vgs_th = Column(String(30))
+    vds_max = Column(String(30))
+    ids_max = Column(String(30))
+    power_max = Column(String(30))
+    channel_type = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

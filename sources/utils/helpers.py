@@ -22,6 +22,7 @@
 #  SOFTWARE.
 #
 
+
 class BraceMessage(object):
     def __init__(self, fmt, *args, **kwargs):
         self.fmt = fmt

@@ -23,13 +23,30 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, UniqueConstraint
+from sqlalchemy.orm import relationship
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+from app import db
+
+
+class InventoryItemPropertyModel(db.Model):
+    __tablename__ = "inventory_item_property"
+    id = Column(Integer, primary_key=True)
+    property_name = Column(String(100), index=True)
+    property_s_value = Column(String(100))
+    property_i_value = Column(Integer)
+    property_f_value = Column(Float)
+
+    # relationships
+    item_id = Column(Integer, ForeignKey('inventory_item.id'))
+    item = relationship("InventoryItemModel", back_populates="item_properties")
+
+    # Set a constraint that enforces Item - Property Name
+    __table_args__ = (UniqueConstraint('item_id', 'property_name', name='_item_prop_uc'),
+                      )
+
+    def __repr__(self):
+        return '%s(%s)' % (
+            type(self).__name__,
+            ', '.join('%s=%s' % item for item in vars(self).items())
+        )

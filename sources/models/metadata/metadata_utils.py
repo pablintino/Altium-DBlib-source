@@ -1,4 +1,4 @@
-from models import ComponentModel
+from models.components.component_model import ComponentModel
 from sqlalchemy import inspect
 from models import ModelDescriptor
 from sqlalchemy.orm.properties import ColumnProperty

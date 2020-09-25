@@ -140,6 +140,7 @@ class InvalidStorageStateError(ApiError):
             data['current_state'] = self.current_state
         return data, code
 
+
 class FileNotFoundStorageError(ApiError):
     def __init__(self, msg=None, details=None):
         super(FileNotFoundStorageError, self).__init__(msg, details, 404)
@@ -163,3 +164,13 @@ class RelationAlreadyExistsError(ApiError):
 class SchemaNotAvailableError(ApiError):
     def __init__(self, msg=None, details=None):
         super(SchemaNotAvailableError, self).__init__(msg, details, 500)
+
+
+class UniqueIdentifierCreationError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(UniqueIdentifierCreationError, self).__init__(msg, details, 500)
+
+
+class RemainingStocksExistError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(RemainingStocksExistError, self).__init__(msg, details, 400)

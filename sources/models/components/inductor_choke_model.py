@@ -22,14 +22,24 @@
 #  SOFTWARE.
 #
 
+from sqlalchemy import Column, String, ForeignKey
+from models.components.component_model import ComponentModel
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+class InductorChokeModel(ComponentModel):
+    __tablename__ = 'inductor_choke'
+    __id_prefix__ = 'ICHK'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of an inductor choke
+    number_of_lines = Column(String(30))
+    dc_resistance = Column(String(30))
+    impedance_freq = Column(String(30))
+    current_rating = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

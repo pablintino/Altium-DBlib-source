@@ -23,13 +23,27 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from sqlalchemy import Column, String, ForeignKey
+from models.components.component_model import ComponentModel
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+
+class OptocouplerDigitalModel(ComponentModel):
+    __tablename__ = 'optocoupler_digital'
+    __id_prefix__ = 'OPTD'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a digital optocoupler
+    voltage_isolation = Column(String(30))
+    voltage_saturation_max = Column(String(30))
+    current_transfer_ratio_max = Column(String(30))
+    current_transfer_ratio_min = Column(String(30))
+    voltage_forward_typical = Column(String(30))
+    voltage_output_max = Column(String(30))
+    number_of_channels = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

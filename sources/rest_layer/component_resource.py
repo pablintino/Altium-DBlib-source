@@ -21,11 +21,10 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 #
-import logging
+
 
 from flask import request
 from marshmallow import ValidationError
-
 from dtos import component_model_mapper
 from dtos.components_dtos import GenericComponentDto
 from dtos.schemas.component_schemas import GenericComponentSchema
@@ -58,5 +57,11 @@ class ComponentResource(BaseApiResource):
             return error.format_api_data()
 
     def delete(self, id):
-        component_service.delete_component(id)
-        return {}, 204
+        try:
+            component_service.delete_component(id)
+            return {}, 204
+        except ValidationError as error:
+            return {"errors": error.messages}, 400
+        except ApiError as error:
+            self.logger().debug(error)
+            return error.format_api_data()

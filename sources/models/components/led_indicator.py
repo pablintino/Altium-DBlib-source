@@ -23,13 +23,27 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from sqlalchemy import Column, String, ForeignKey
+from models.components.component_model import ComponentModel
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+
+class LedIndicatorModel(ComponentModel):
+    __tablename__ = 'led_indicator'
+    __id_prefix__ = 'LEDI'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a led indicator
+    forward_voltage = Column(String(30))
+    color = Column(String(30))
+    lens_style = Column(String(50))
+    lens_transparency = Column(String(30))
+    dominant_wavelength = Column(String(30))
+    test_current = Column(String(30))
+    lens_size = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

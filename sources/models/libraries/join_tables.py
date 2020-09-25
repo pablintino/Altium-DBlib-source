@@ -23,13 +23,10 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from sqlalchemy import Column, Integer, ForeignKey, Table
+from app import db
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+component_footprint_asc_table = Table('component_footprint_asc', db.metadata,
+                                      Column('component_id', Integer, ForeignKey('component.id')),
+                                      Column('footprint_ref_id', Integer, ForeignKey('footprint_ref.id'))
+                                      )

@@ -23,13 +23,27 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from sqlalchemy import Column, String, ForeignKey
+from models.components.component_model import ComponentModel
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+
+class FusePPTCModel(ComponentModel):
+    __tablename__ = 'fuse_pptc'
+    __id_prefix__ = 'PPTC'
+
+    # Primary key
+    id = Column(ForeignKey("component.id"), primary_key=True)
+
+    # Specific properties of a PPTC fuse
+    current_hold = Column(String(30))
+    current_trip = Column(String(30))
+    voltage_rating = Column(String(30))
+    resistance_maximum = Column(String(30))
+    resistance_minimum = Column(String(30))
+    power_rating = Column(String(30))
+    current_rating = Column(String(30))
+
+    # Tells the ORM the type of a specific component by the distinguish column
+    __mapper_args__ = {
+        'polymorphic_identity': __tablename__,
+    }

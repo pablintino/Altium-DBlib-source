@@ -23,13 +23,25 @@
 #
 
 
-from models.libraries.library_reference_model import LibraryReference
-from models.libraries.footprint_reference_model import FootprintReference
-from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-import models.components
-import models.inventory
-from utils import python_importer_utils
+from flask import request
+from marshmallow import ValidationError
+from dtos.inventory_dtos import InventoryItemLocationRelationDto
+from dtos.schemas.inventory_schemas import InventoryItemLocationRelationSchema
+from rest_layer.base_api_resource import BaseApiResource
+from services import inventory_service
+from services.exceptions import ApiError
 
-# Import model recursively
-python_importer_utils.import_submodules(models.components)
-python_importer_utils.import_submodules(models.inventory)
+
+class InventoryItemLocationResource(BaseApiResource):
+
+    def post(self, id):
+        try:
+            location_ids = InventoryItemLocationRelationSchema().load(data=request.json).location_ids
+            actual_ids = inventory_service.create_item_stocks_for_locations(id, location_ids)
+            return InventoryItemLocationRelationSchema().dump(
+                InventoryItemLocationRelationDto.from_model(actual_ids)), 200
+        except ValidationError as error:
+            return {"errors": error.messages}, 400
+        except ApiError as error:
+            self.logger().debug(error)
+            return error.format_api_data()

@@ -25,10 +25,15 @@
 
 import logging
 
+import pyodbc
+from sqlalchemy.exc import SQLAlchemyError
+
 from app import db
 from dtos import component_model_mapper
-from models import ComponentModel, LibraryReference, FootprintReference
-from services import metadata_service
+from models.components.component_model import ComponentModel
+from models.libraries import LibraryReference, FootprintReference
+
+from services import metadata_service, inventory_service
 from services.exceptions import ResourceAlreadyExistsApiError, ResourceNotFoundApiError, ResourceInvalidQuery, \
     RelationAlreadyExistsError, InvalidComponentFieldsError
 from utils.helpers import BraceMessage as __l
@@ -67,9 +72,17 @@ def create_component(model):
     if exists_id:
         raise ResourceAlreadyExistsApiError('Cannot create the requested component cause it already exists',
                                             conflicting_id=exists_id)
+    try:
+        db.session.add(model)
 
-    db.session.add(model)
-    db.session.commit()
+        # Create inventory item automatically
+        inventory_service.create_item_for_component(model)
+
+        db.session.commit()
+
+    except:
+        db.session.rollback()
+        raise
     __logger.debug(__l('Component created [id={0}]', model.id))
     return model
 
