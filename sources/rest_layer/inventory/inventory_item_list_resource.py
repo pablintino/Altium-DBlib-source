@@ -23,21 +23,23 @@
 #
 
 
-from datetime import datetime
-from sqlalchemy import Column, Integer, ForeignKey, Float, String, DateTime
-from sqlalchemy.orm import relationship
+from flask import request
+from rest_layer.base_api_resource import BaseApiResource
+from services import inventory_service
+from services.exceptions import ApiError
 
-from app import db
 
+class InventoryItemListResource(BaseApiResource):
 
-class InventoryItemLocationStockMovementModel(db.Model):
-    __tablename__ = "inventory_item_location_stock_movement"
-    id = Column(Integer, primary_key=True)
-
-    stock_change = Column(Float, nullable=False)
-    reason = Column(String(100), nullable=False)
-    created_on = Column(DateTime(), default=datetime.now)
-
-    # relationships
-    stock_item_id = Column(Integer, ForeignKey('inventory_item_location_stock.id'), nullable=False)
-    stock_item = relationship("InventoryItemLocationStockModel", back_populates="stock_movements")
+    def get(self):
+        try:
+            page_n = request.args.get('page_n', default=1, type=int)
+            page_size = request.args.get('page_size', default=20, type=int)
+            filters = request.args.to_dict(flat=True)
+            filters.pop('page_n', None)
+            filters.pop('page_size', None)
+            result_page = inventory_service.search_items(filters, page_n, page_size)
+            return {}, 200
+        except ApiError as error:
+            self.logger().debug(error)
+            return error.format_api_data()

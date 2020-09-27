@@ -24,6 +24,8 @@
 
 
 import logging
+
+from sqlalchemy import and_
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from app import db
 from models.internal.internal_inventory_models import InventoryItemStockStatus, InventoryMassStockMovementResult
@@ -32,6 +34,7 @@ from models.inventory.inventory_item_location_stock import InventoryItemLocation
 from models.inventory.inventory_item_property import InventoryItemPropertyModel
 from models.inventory.inventory_item_stock_movement import InventoryItemLocationStockMovementModel
 from models.inventory.inventory_location import InventoryLocationModel
+from utils import helpers
 from utils.dici_utils import generate_item_id
 from utils.helpers import BraceMessage as __l
 from services.exceptions import ResourceAlreadyExistsApiError, UniqueIdentifierCreationError, ResourceNotFoundApiError, \
@@ -307,7 +310,7 @@ def add_property_to_item(item_id, property_model):
         raise ResourceNotFoundApiError('Inventory item not found', missing_id=item_id)
 
     prop = InventoryItemPropertyModel.query.filter_by(property_name=property_model.property_name,
-                                                         item_id=item_id).first()
+                                                      item_id=item_id).first()
     if prop:
         # Already exists
         raise ResourceAlreadyExistsApiError('Property already exists', conflicting_id=prop.id)
@@ -355,3 +358,75 @@ def delete_item_property(item_id, prop_id):
     if prop:
         db.session.delete(prop)
         db.session.commit()
+
+
+def __parse_numerical_property_filter(filters, filter_key, filter_v):
+    key_split = filter_key.split('_')
+    if helpers.is_int(filter_v) and '.' not in filter_v:
+        resolved_val = int(filter_v)
+        value_column = getattr(InventoryItemPropertyModel, 'property_i_value')
+    else:
+        resolved_val = float(filter_v)
+        value_column = getattr(InventoryItemPropertyModel, 'property_f_value')
+    property_name = getattr(InventoryItemPropertyModel, 'property_name')
+    if len(key_split) == 3 and filter_key.endswith('_min'):
+        filters.append(and_(value_column > resolved_val, property_name == key_split[1]))
+    elif len(key_split) == 3 and filter_key.endswith('_max'):
+        filters.append(and_(value_column < resolved_val, property_name == key_split[1]))
+    elif len(key_split) == 4 and filter_key.endswith('_max_eq'):
+        filters.append(and_(value_column <= resolved_val, property_name == key_split[1]))
+    elif len(key_split) == 4 and filter_key.endswith('_min_eq'):
+        filters.append(and_(value_column >= resolved_val, property_name == key_split[1]))
+    elif len(key_split) == 2 and key_split[0] == 'prop':
+        filters.append(and_(value_column == resolved_val, property_name == key_split[1]))
+    else:
+        print('error')
+    return filters
+
+
+def __parse_string_property_filter(filters, filter_key, filter_v):
+    val = filter_v if type(filter_v) is str else str(filter_v)
+    key_split = filter_key.split('_')
+    if len(key_split) > 3 or len(key_split) < 2:
+        # exception
+        print("error")
+    elif filter_key.endswith('_like'):
+        filters.append(and_(
+            getattr(InventoryItemPropertyModel, 'property_s_value').like(val), getattr(InventoryItemPropertyModel,
+                                                                                       'property_name') == key_split[
+                                                                                   1]))
+    else:
+        filters.append(and_(
+            getattr(InventoryItemPropertyModel, 'property_s_value') == val, getattr(InventoryItemPropertyModel,
+                                                                                    'property_name') == key_split[1]))
+    return filters
+
+
+def __parse_item_property_filters(search_filters):
+    filters = []
+
+    for k, v in {k: v for k, v in search_filters.items() if k.startswith('prop_')}.items():
+        if (helpers.is_int(v) and '.' not in v) or helpers.is_float(v):
+            __parse_numerical_property_filter(filters, k, v)
+        else:
+            __parse_string_property_filter(filters, k, v)
+    return filters
+
+
+def search_items(search_filters, page_number, page_size):
+    # Allow passing empty filters
+    search_filters = {} if not search_filters else search_filters
+
+    item_cols = InventoryItemModel.__table__.columns.keys()
+
+    rejects_filters = [k for k in search_filters.keys() if ((k not in item_cols) and (not k.startswith('prop_')))]
+    if len(rejects_filters) != 0:
+        # Should rise a proper exception
+        return []
+
+    prop_filters = __parse_item_property_filters(search_filters)
+
+    result_page = InventoryItemModel.query.join(InventoryItemPropertyModel).filter(*prop_filters)\
+        .order_by(InventoryItemModel.id.desc()).paginate(page_number, per_page=page_size)
+
+    return result_page

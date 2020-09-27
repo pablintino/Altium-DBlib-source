@@ -72,7 +72,6 @@ class InventoryItemPropertyModel(db.Model):
             self.property_i_value = None
             self.property_f_value = None
 
-
     def __repr__(self):
         return '%s(%s)' % (
             type(self).__name__,

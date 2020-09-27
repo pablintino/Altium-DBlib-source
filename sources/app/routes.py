@@ -31,6 +31,7 @@ from rest_layer.footprint_data_resource import FootprintDataResource
 from rest_layer.footprint_element_component_reference_resource import FootprintElementComponentReferenceResource
 from rest_layer.footprint_list_resource import FootprintListResource
 from rest_layer.footprint_resource import FootprintResource
+from rest_layer.inventory.inventory_item_list_resource import InventoryItemListResource
 from rest_layer.inventory.inventory_item_location_resource import InventoryItemLocationResource
 from rest_layer.inventory.inventory_item_property_element_resource import InventoryItemPropertyElementResource
 from rest_layer.inventory.inventory_item_property_list_resource import InventoryItemPropertyListResource
@@ -59,6 +60,7 @@ api.add_resource(FootprintListResource, '/footprints')
 api.add_resource(FootprintResource, '/footprints/<int:id>')
 api.add_resource(FootprintDataResource, '/footprints/<int:id>/data')
 api.add_resource(InventoryItemResource, '/inventory/items/<int:id>')
+api.add_resource(InventoryItemListResource, '/inventory/items')
 api.add_resource(InventoryItemLocationResource, '/inventory/items/<int:id>/locations')
 api.add_resource(InventoryItemPropertyListResource, '/inventory/items/<int:id>/properties')
 api.add_resource(InventoryItemPropertyElementResource, '/inventory/items/<int:id>/properties/<int:prop_id>')
