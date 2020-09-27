@@ -47,8 +47,6 @@ class InventoryLocationResource(BaseApiResource):
         try:
             inventory_service.delete_stock_location(id)
             return {}, 204
-        except ValidationError as error:
-            return {"errors": error.messages}, 400
         except ApiError as error:
             self.logger().debug(error)
             return error.format_api_data()

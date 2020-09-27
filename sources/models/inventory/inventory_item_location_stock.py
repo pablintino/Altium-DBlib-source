@@ -23,29 +23,25 @@
 #
 
 
-from sqlalchemy import Column, Integer, String, ForeignKey, Float, UniqueConstraint
+from sqlalchemy import Column, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
-from models.inventory.inventory_identificable_item_model import InventoryIdentificableItemModel
+from app import db
 
 
-class InventoryItemModel(InventoryIdentificableItemModel):
-    __tablename__ = "inventory_item"
+class InventoryItemLocationStockModel(db.Model):
+    __tablename__ = "inventory_item_location_stock"
+
     id = Column(Integer, primary_key=True)
-    mpn = Column(String(100), nullable=False, index=True)
-    manufacturer = Column(String(100), nullable=False, index=True)
-    name = Column(String(100))
-    description = Column(String(100))
-    last_buy_price = Column(Float)
-    dici = Column(String(70), nullable=False, index=True)
+    actual_stock = Column(Float, nullable=False)
+    stock_min_level = Column(Float)
+    stock_notify_min_level = Column(Float)
 
     # relationships
-    component_id = Column(Integer, ForeignKey('component.id'))
-    component = relationship("ComponentModel", back_populates="inventory_item")
-    category_id = Column(Integer, ForeignKey('inventory_category.id'))
-    category = relationship('InventoryCategoryModel', back_populates="category_items", lazy='subquery')
-    stock_items = relationship("InventoryItemLocationStockModel", back_populates="item")
-    item_properties = relationship("InventoryItemPropertyModel", back_populates="item")
+    location_id = Column(Integer, ForeignKey('inventory_location.id'), nullable=False)
+    location = relationship("InventoryLocationModel", back_populates="stock_items")
 
-    # Set a constraint that enforces Part Number - Manufacturer uniqueness for Iventory Item
-    __table_args__ = (UniqueConstraint('mpn', 'manufacturer', name='_mpn_manufacturer_item_uc'),)
+    item_id = Column(Integer, ForeignKey('inventory_item.id'), nullable=False)
+    item = relationship("InventoryItemModel", back_populates="stock_items")
+
+    stock_movements = relationship("InventoryItemLocationStockMovementModel", back_populates="stock_item")

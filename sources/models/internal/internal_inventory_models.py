@@ -23,29 +23,33 @@
 #
 
 
-from sqlalchemy import Column, Integer, ForeignKey, Float
-from sqlalchemy.orm import relationship
+class MassStockMovement:
 
-from app import db
+    def __init__(self, reason, comment, movements):
+        self.reason = reason
+        self.comment = comment
+        self.movements = movements
 
 
-class InventoryItemStockModel(db.Model):
-    __tablename__ = "inventory_item_stock"
-    id = Column(Integer, primary_key=True)
+class SingleStockMovement:
 
-    actual_stock = Column(Float, nullable=False)
-    stock_min_level = Column(Float)
-    stock_notify_min_level = Column(Float)
+    def __init__(self, quantity, item_dici=None, item_id=None, location_dici=None, location_id=None):
+        self.item_dici = item_dici
+        self.item_id = item_id
+        self.location_dici = location_dici
+        self.location_id = location_id
+        self.quantity = quantity
 
-    # relationships
-    location_id = Column(Integer, ForeignKey('inventory_location.id'), nullable=False)
-    location = relationship("InventoryLocationModel", back_populates="stock_items")
 
-    item_id = Column(Integer, ForeignKey('inventory_item.id'), nullable=False)
-    item = relationship("InventoryItemModel", back_populates="stock_items")
+class InventoryMassStockMovementResult:
 
-    def __repr__(self):
-        return '%s(%s)' % (
-            type(self).__name__,
-            ', '.join('%s=%s' % item for item in vars(self).items())
-        )
+    def __init__(self, stock_levels):
+        self.stock_levels = stock_levels
+
+
+class InventoryItemStockStatus:
+
+    def __init__(self, stock_level, item_dici, location_dici):
+        self.stock_level = stock_level
+        self.item_dici = item_dici
+        self.location_dici = location_dici

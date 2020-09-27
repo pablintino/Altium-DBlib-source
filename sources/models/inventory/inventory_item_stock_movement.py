@@ -21,31 +21,21 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 #
-
-
-from sqlalchemy import Column, Integer, String, ForeignKey, Float, UniqueConstraint
+from datetime import datetime
+from sqlalchemy import Column, Integer, ForeignKey, Float, String, DateTime
 from sqlalchemy.orm import relationship
 
-from models.inventory.inventory_identificable_item_model import InventoryIdentificableItemModel
+from app import db
 
 
-class InventoryItemModel(InventoryIdentificableItemModel):
-    __tablename__ = "inventory_item"
+class InventoryItemLocationStockMovementModel(db.Model):
+    __tablename__ = "inventory_item_location_stock_movement"
     id = Column(Integer, primary_key=True)
-    mpn = Column(String(100), nullable=False, index=True)
-    manufacturer = Column(String(100), nullable=False, index=True)
-    name = Column(String(100))
-    description = Column(String(100))
-    last_buy_price = Column(Float)
-    dici = Column(String(70), nullable=False, index=True)
+
+    stock_change = Column(Float, nullable=False)
+    reason = Column(String(100), nullable=False)
+    created_on = Column(DateTime(), default=datetime.now)
 
     # relationships
-    component_id = Column(Integer, ForeignKey('component.id'))
-    component = relationship("ComponentModel", back_populates="inventory_item")
-    category_id = Column(Integer, ForeignKey('inventory_category.id'))
-    category = relationship('InventoryCategoryModel', back_populates="category_items", lazy='subquery')
-    stock_items = relationship("InventoryItemLocationStockModel", back_populates="item")
-    item_properties = relationship("InventoryItemPropertyModel", back_populates="item")
-
-    # Set a constraint that enforces Part Number - Manufacturer uniqueness for Iventory Item
-    __table_args__ = (UniqueConstraint('mpn', 'manufacturer', name='_mpn_manufacturer_item_uc'),)
+    stock_item_id = Column(Integer, ForeignKey('inventory_item_location_stock.id'), nullable=False)
+    stock_item = relationship("InventoryItemLocationStockModel", back_populates="stock_movements")

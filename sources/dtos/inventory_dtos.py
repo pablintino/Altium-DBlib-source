@@ -21,9 +21,9 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 #
-
-
+from models.internal.internal_inventory_models import MassStockMovement, SingleStockMovement
 from models.inventory.inventory_item_model import InventoryItemModel
+from models.inventory.inventory_item_property import InventoryItemPropertyModel
 from models.inventory.inventory_location import InventoryLocationModel
 
 
@@ -94,3 +94,113 @@ class InventoryItemLocationRelationDto:
     @staticmethod
     def from_model(location_ids):
         return InventoryItemLocationRelationDto(location_ids=location_ids)
+
+
+class InventoryItemLocationStockDto:
+
+    def __init__(self, id=None, actual_stock=None, stock_min_level=None, stock_notify_min_level=None):
+        self.id = id
+        self.actual_stock = actual_stock
+        self.stock_min_level = stock_min_level
+        self.stock_notify_min_level = stock_notify_min_level
+
+    @staticmethod
+    def from_model(data):
+        return InventoryItemLocationStockDto(
+            id=data.id,
+            actual_stock=data.actual_stock,
+            stock_min_level=data.stock_min_level,
+            stock_notify_min_level=data.stock_notify_min_level,
+        )
+
+
+class InventorySingleStockMovementDto:
+    def __init__(self, quantity, location_dici=None, location_id=None, item_dici=None, item_id=None):
+        self.location_dici = location_dici
+        self.location_id = location_id
+        self.item_id = item_id
+        self.item_dici = item_dici
+        self.quantity = quantity
+
+    @staticmethod
+    def to_model(data):
+        return SingleStockMovement(
+            item_dici=data.item_dici,
+            item_id=data.item_id,
+            location_id=data.location_id,
+            location_dici=data.location_dici,
+            quantity=data.quantity)
+
+
+class InventoryMassStockMovementDto:
+    def __init__(self, reason, comment=None, movements=None):
+        self.reason = reason
+        self.comment = comment
+        self.movements = movements
+
+    @staticmethod
+    def to_model(data):
+        return MassStockMovement(
+            reason=data.reason,
+            comment=data.comment,
+            movements=[InventorySingleStockMovementDto.to_model(ent) for ent in data.movements])
+
+
+class InventoryItemStockStatusDto:
+    def __init__(self, stock_level, item_dici, location_dici):
+        self.stock_level = stock_level
+        self.item_dici = item_dici
+        self.location_dici = location_dici
+
+    @staticmethod
+    def from_model(data):
+        return InventoryItemStockStatusDto(
+            stock_level=data.stock_level,
+            item_dici=data.item_dici,
+            location_dici=data.location_dici
+        )
+
+
+class InventoryMassStockMovementResultDto:
+
+    def __init__(self, stock_levels):
+        self.stock_levels = stock_levels
+
+    @staticmethod
+    def from_model(data):
+        return InventoryMassStockMovementResultDto(
+            stock_levels=[InventoryItemStockStatusDto.from_model(ent) for ent in data.stock_levels])
+
+
+class InventoryItemPropertyDto:
+
+    def __init__(self, name, id=None, value=None):
+        self.id = id
+        self.name = name
+        self.value = value
+
+    @staticmethod
+    def to_model(data):
+        model = InventoryItemPropertyModel(id=data.id, property_name=data.name)
+        model.set_value(data.value)
+        return model
+
+    @staticmethod
+    def from_model(data):
+        return InventoryItemPropertyDto(id=data.id, name=data.property_name, value=data.get_value())
+
+
+class InventoryItemPropertyUpdateDto:
+
+    def __init__(self, value=None):
+        self.value = value
+
+
+class InventoryItemPropertiesDto:
+
+    def __init__(self, properties=None):
+        self.properties = properties
+
+    @staticmethod
+    def from_model(data):
+        return InventoryItemPropertiesDto(properties=[InventoryItemPropertyDto.from_model(prop) for prop in data])

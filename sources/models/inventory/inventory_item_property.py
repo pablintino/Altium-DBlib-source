@@ -45,6 +45,34 @@ class InventoryItemPropertyModel(db.Model):
     __table_args__ = (UniqueConstraint('item_id', 'property_name', name='_item_prop_uc'),
                       )
 
+    def get_value(self):
+        if self.property_i_value:
+            return self.property_i_value
+        elif self.property_f_value:
+            return self.property_f_value
+        elif self.property_s_value:
+            return self.property_s_value
+
+    def set_value(self, value):
+        # Ensure that only one column is written. Only one value type is allowed
+        if type(value) is int:
+            self.property_s_value = None
+            self.property_i_value = value
+            self.property_f_value = None
+        elif type(value) is float:
+            self.property_s_value = None
+            self.property_i_value = None
+            self.property_f_value = value
+        elif type(value) is str or (value is None):
+            self.property_s_value = value if type(value) is str else str(value)
+            self.property_i_value = None
+            self.property_f_value = None
+        else:
+            self.property_s_value = None
+            self.property_i_value = None
+            self.property_f_value = None
+
+
     def __repr__(self):
         return '%s(%s)' % (
             type(self).__name__,

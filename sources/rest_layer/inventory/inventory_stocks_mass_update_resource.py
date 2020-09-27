@@ -23,26 +23,26 @@
 #
 
 
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
+from flask import request
+from marshmallow import ValidationError
+from dtos.inventory_dtos import InventoryMassStockMovementDto, InventoryMassStockMovementResultDto
+from dtos.schemas.inventory_schemas import InventoryMassStockMovementSchema, InventoryMassStockMovementResultSchema
+from rest_layer.base_api_resource import BaseApiResource
+from services import inventory_service
+from services.exceptions import ApiError
 
-from models.inventory.inventory_identificable_item_model import InventoryIdentificableItemModel
 
+class InventoryStocksMassUpdateResource(BaseApiResource):
 
-class InventoryLocationModel(InventoryIdentificableItemModel):
-    __tablename__ = "inventory_location"
-    __id_prefix__ = 'LOC'
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=False, unique=True)
-    description = Column(String(100))
-    dici = Column(String(70), nullable=False, index=True)
-
-    # relationships
-    stock_items = relationship("InventoryItemLocationStockModel", back_populates="location")
-
-    def __repr__(self):
-        return '%s(%s)' % (
-            type(self).__name__,
-            ', '.join('%s=%s' % item for item in vars(self).items())
-        )
+    def post(self):
+        try:
+            mass_update_dto = InventoryMassStockMovementSchema().load(data=request.json)
+            mass_update_result = inventory_service.stock_mass_update(
+                InventoryMassStockMovementDto.to_model(mass_update_dto))
+            return InventoryMassStockMovementResultSchema().dump(
+                InventoryMassStockMovementResultDto.from_model(mass_update_result)), 200
+        except ValidationError as error:
+            return {"errors": error.messages}, 400
+        except ApiError as error:
+            self.logger().debug(error)
+            return error.format_api_data()

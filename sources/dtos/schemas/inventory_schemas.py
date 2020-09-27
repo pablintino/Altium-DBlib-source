@@ -25,7 +25,10 @@
 
 from app import marshmallow
 from marshmallow import fields, post_load
-from dtos.inventory_dtos import InventoryItemDto, InventoryLocationDto, InventoryItemLocationRelationDto
+from dtos.inventory_dtos import InventoryItemDto, InventoryLocationDto, InventoryItemLocationRelationDto, \
+    InventoryItemLocationStockDto, InventorySingleStockMovementDto, InventoryMassStockMovementDto, \
+    InventoryItemStockStatusDto, InventoryMassStockMovementResultDto, InventoryItemPropertyDto, \
+    InventoryItemPropertyUpdateDto
 
 
 class InventoryItemSchema(marshmallow.Schema):
@@ -60,3 +63,78 @@ class InventoryItemLocationRelationSchema(marshmallow.Schema):
     def make_footprint_ids_component_references_dto(self, data, **kwargs):
         return InventoryItemLocationRelationDto(**data)
 
+
+class InventoryItemLocationStockSchema(marshmallow.Schema):
+    id = fields.Integer(missing=None, default=None)
+    actual_stock = fields.Float()
+    stock_min_level = fields.Float(missing=None, default=None)
+    stock_notify_min_level = fields.Float(missing=None, default=None)
+
+
+    @post_load
+    def make_inventory_item_location_stock_dto(self, data, **kwargs):
+        return InventoryItemLocationStockDto(**data)
+
+
+class InventorySingleStockMovementSchema(marshmallow.Schema):
+    item_dici = fields.String(missing=None, default=None)
+    item_id = fields.Integer(missing=None, default=None)
+    location_dici = fields.String(missing=None, default=None)
+    location_id = fields.Integer(missing=None, default=None)
+    quantity = fields.Float()
+
+    @post_load
+    def make_inventory_single_stock_movement_dto(self, data, **kwargs):
+        return InventorySingleStockMovementDto(**data)
+
+
+class InventoryMassStockMovementSchema(marshmallow.Schema):
+
+    reason = fields.String()
+    comment = fields.String()
+    movements = fields.Nested(InventorySingleStockMovementSchema, many=True)
+
+    @post_load
+    def make_inventory_mass_stock_movement_dto(self, data, **kwargs):
+        return InventoryMassStockMovementDto(**data)
+
+
+class InventoryItemStockStatusSchema(marshmallow.Schema):
+    stock_level = fields.Float()
+    item_dici = fields.String()
+    location_dici = fields.String()
+
+    @post_load
+    def make_inventory_item_stock_status_dto(self, data, **kwargs):
+        return InventoryItemStockStatusDto(**data)
+
+
+class InventoryMassStockMovementResultSchema(marshmallow.Schema):
+
+    stock_levels = fields.Nested(InventoryItemStockStatusSchema, many=True)
+
+    @post_load
+    def make_inventory_mass_stock_movement_result_dto(self, data, **kwargs):
+        return InventoryMassStockMovementResultDto(**data)
+
+
+class InventoryItemPropertyUpdateSchema(marshmallow.Schema):
+    value = fields.Raw(default=None)
+
+    @post_load
+    def make_inventory_item_property_update_dto(self, data, **kwargs):
+        return InventoryItemPropertyUpdateDto(**data)
+
+
+class InventoryItemPropertySchema(marshmallow.Schema):
+    id = fields.Integer(missing=None, default=None)
+    name = fields.String()
+    value = fields.Raw(missing=None, default=None)
+
+    @post_load
+    def make_inventory_item_property_dto(self, data, **kwargs):
+        return InventoryItemPropertyDto(**data)
+
+
+class InventoryItemPropertiesSchema(marshmallow.Schema):
+    properties = fields.Nested(InventoryItemPropertySchema, many=True)

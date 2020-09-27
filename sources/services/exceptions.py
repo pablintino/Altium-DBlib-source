@@ -47,16 +47,19 @@ class ApiError(Exception):
         )
 
 
-
 class ResourceNotFoundApiError(ApiError):
 
-    def __init__(self, msg=None, details=None, missing_id=None):
+    def __init__(self, msg=None, details=None, missing_id=None, missing_dici=None):
         super(ResourceNotFoundApiError, self).__init__(msg, details, 404)
         self.missing_id = missing_id
+        self.missing_dici = missing_dici
 
     def format_api_data(self):
         data, code = super(ResourceNotFoundApiError, self).format_api_data()
-        data['missing_id'] = self.missing_id
+        if self.missing_id:
+            data['missing_id'] = self.missing_id
+        if self.missing_dici:
+            data['missing_dici'] = self.missing_dici
         return data, code
 
 
@@ -174,3 +177,8 @@ class UniqueIdentifierCreationError(ApiError):
 class RemainingStocksExistError(ApiError):
     def __init__(self, msg=None, details=None):
         super(RemainingStocksExistError, self).__init__(msg, details, 400)
+
+
+class InvalidMassStockUpdateError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(InvalidMassStockUpdateError, self).__init__(msg, details, 400)
