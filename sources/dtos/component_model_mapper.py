@@ -23,6 +23,8 @@
 #
 
 from datetime import datetime
+
+from models.metadata.metadata_parser import metadata_parser
 from services import metadata_service
 from services.exceptions import InvalidComponentTypeError, InvalidComponentFieldsError
 
@@ -77,12 +79,12 @@ def __validate(raw_component, component_metadata, pk_provided, ignore_mandatory)
 
 def map_validate_raw(raw_component, pk_provided=False, ignore_mandatory=False, force_type=None):
     component_type = raw_component.get('type', None) if not force_type else force_type
-    if component_type and not metadata_service.is_component_type_valid(component_type):
+    if component_type and not metadata_parser.model_exists_by_name(component_type):
         raise InvalidComponentTypeError('Component type ' + component_type + ' not recognised')
     elif not component_type:
         raise InvalidComponentTypeError('Component type not provided')
 
-    component_metadata = metadata_service.get_component_metadata(component_type)
+    component_metadata = metadata_parser.get_model_metadata_by_name(component_type)
 
     # Validate invalid or unexpected fields
     __validate(raw_component, component_metadata, pk_provided, ignore_mandatory)
@@ -95,13 +97,13 @@ def map_validate_raw_to_model(raw_component, pk_provided=False):
     mapped_fields = map_validate_raw(raw_component, pk_provided=pk_provided)
 
     # Call to raw_component.get('type', None) is safe here since raw was already validated
-    mapped_model = metadata_service.get_polymorphic_model(raw_component.get('type', None))(**mapped_fields)
+    mapped_model = metadata_parser.get_model_by_name(raw_component.get('type', None))(**mapped_fields)
     return mapped_model
 
 
 def map_model_to_raw(model):
     mapped_fields = {}
-    for k, v in metadata_service.get_component_metadata(model.type).fields.items():
+    for k, v in metadata_parser.get_model_metadata_by_name(model.type).fields.items():
         if k in model.__dict__:
             value = model.__dict__[k]
             value_type = type(value)

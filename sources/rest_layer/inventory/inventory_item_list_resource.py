@@ -25,7 +25,7 @@
 
 from flask import request
 from rest_layer.base_api_resource import BaseApiResource
-from services import inventory_service
+from services import inventory_service, search_service
 from services.exceptions import ApiError
 
 
@@ -38,7 +38,7 @@ class InventoryItemListResource(BaseApiResource):
             filters = request.args.to_dict(flat=True)
             filters.pop('page_n', None)
             filters.pop('page_size', None)
-            result_page = inventory_service.search_items(filters, page_n, page_size)
+            result_page = search_service.search_items(filters, page_n, page_size)
             return {}, 200
         except ApiError as error:
             self.logger().debug(error)

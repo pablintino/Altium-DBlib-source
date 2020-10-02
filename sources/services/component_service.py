@@ -32,6 +32,7 @@ from app import db
 from dtos import component_model_mapper
 from models.components.component_model import ComponentModel
 from models.libraries import LibraryReference, FootprintReference
+from models.metadata.metadata_parser import metadata_parser
 
 from services import metadata_service, inventory_service
 from services.exceptions import ResourceAlreadyExistsApiError, ResourceNotFoundApiError, ResourceInvalidQuery, \
@@ -195,20 +196,12 @@ def get_component(component_id):
     if not component:
         raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
 
-    return metadata_service.get_polymorphic_model(component.type).query.get(component_id)
+    return metadata_parser.get_model_by_name(component.type).query.get(component_id)
 
 
-def get_component_search(page_number, page_size, filters=None):
+def get_component_list(page_number, page_size):
     __logger.debug(
-        __l('Querying components for search [page_number={0}, page_size={1}, filters={2}]', page_number, page_size,
-            filters))
-
-    # Allow passing empty filters
-    filters = {} if not filters else filters
-
-    component_type = filters.get('type', None)
-    if component_type and not metadata_service.is_component_type_valid(component_type):
-        raise ResourceInvalidQuery('The given component type does not exist', invalid_fields=['type'])
+        __l('Listing components for [page_number={0}, page_size={1}]', page_number, page_size))
 
     if page_number < 1:
         raise ResourceInvalidQuery('Page number should be greater than 0', invalid_fields=['page_n'])
@@ -216,12 +209,7 @@ def get_component_search(page_number, page_size, filters=None):
     if page_size < 1:
         raise ResourceInvalidQuery('Page size should be greater than 0', invalid_fields=['page_size'])
 
-    res, inv_fields = metadata_service.validate_component_fields(filters, component_type)
-    if not res:
-        raise ResourceInvalidQuery('The given search query is invalid', invalid_fields=inv_fields)
-
-    components_page = ComponentModel.query.filter_by(**filters) \
-        .order_by(ComponentModel.id.desc()).paginate(page_number, per_page=page_size)
+    components_page = ComponentModel.query.order_by(ComponentModel.id.desc()).paginate(page_number, per_page=page_size)
     return components_page
 
 

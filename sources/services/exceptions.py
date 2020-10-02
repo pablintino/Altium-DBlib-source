@@ -182,3 +182,13 @@ class RemainingStocksExistError(ApiError):
 class InvalidMassStockUpdateError(ApiError):
     def __init__(self, msg=None, details=None):
         super(InvalidMassStockUpdateError, self).__init__(msg, details, 400)
+
+
+class MalformedSearchQueryError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(MalformedSearchQueryError, self).__init__(msg, details, 400)
+
+
+class GenericIntenalApiError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(GenericIntenalApiError, self).__init__(msg, details, 500)
