@@ -158,6 +158,18 @@ def get_item(item_id):
     return item
 
 
+def get_item_component(item_id):
+    __logger.debug(__l('Querying item component [item_id={0}]', item_id))
+    item = InventoryItemModel.query.get(item_id)
+    if not item:
+        raise ResourceNotFoundApiError('Item not found', missing_id=item_id)
+
+    if not item.component:
+        raise ResourceNotFoundApiError('Item has no component', missing_id=item_id)
+
+    return item.component
+
+
 def create_location(name, description):
     location = InventoryLocationModel(name=name, description=description)
     location.dici = __gen_dici(location)

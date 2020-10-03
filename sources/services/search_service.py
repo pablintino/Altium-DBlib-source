@@ -24,6 +24,8 @@
 
 
 from sqlalchemy import and_
+
+from models.components.component_model import ComponentModel
 from models.inventory.inventory_item_model import InventoryItemModel
 from models.inventory.inventory_item_property import InventoryItemPropertyModel
 from models.metadata.metadata_parser import metadata_parser
@@ -42,9 +44,9 @@ def __create_numerical_field_filter_expression(field_name, operator, filter_v, k
         return __generate_aggreate_filter_expression(value_column > filter_v, key_col_condition)
     elif operator == 'max':
         return __generate_aggreate_filter_expression(value_column < filter_v, key_col_condition)
-    elif operator == 'max_eq':
+    elif operator == 'maxeq':
         return __generate_aggreate_filter_expression(value_column <= filter_v, key_col_condition)
-    elif operator == 'min_eq':
+    elif operator == 'mineq':
         return __generate_aggreate_filter_expression(value_column >= filter_v, key_col_condition)
     elif operator == 'eq':
         return __generate_aggreate_filter_expression(value_column == filter_v, key_col_condition)
@@ -56,6 +58,18 @@ def __create_string_field_filter_expression(field_name, operator, filter_v, key_
     key_col_condition = key_column == field_name if key_column.key != field_name else None
     if operator == 'like':
         return __generate_aggreate_filter_expression(value_column.like(filter_v), key_col_condition)
+    elif operator == 'eq':
+        return __generate_aggreate_filter_expression(value_column == filter_v, key_col_condition)
+    elif operator == 'noteq':
+        return __generate_aggreate_filter_expression(value_column != filter_v, key_col_condition)
+
+    raise MalformedSearchQueryError(__l('Operator {0} not recognised', operator))
+
+
+def __create_boolean_field_filter_expression(field_name, operator, filter_v, key_column, value_column):
+    key_col_condition = key_column == field_name if key_column.key != field_name else None
+    if operator == 'noteq':
+        return __generate_aggreate_filter_expression(value_column != filter_v, key_col_condition)
     elif operator == 'eq':
         return __generate_aggreate_filter_expression(value_column == filter_v, key_col_condition)
 
@@ -130,13 +144,15 @@ def __parse_filter_for_sqlalquemy_model(model, filter_model_prefix, search_filte
                                                                           field_column,
                                                                           field_column)
         elif field_metadata.data_type is float:
-            # Field is an int but the passed value is not...
+            # Field is a float but the passed value is not...
             raise MalformedSearchQueryError(
                 __l('Filter value for field {0} is not of the proper type {1}', field_name,
                     field_metadata.data_type.__name__))
         elif field_metadata.data_type is bool:
-            # Todo Implement boolean filters
-            raise MalformedSearchQueryError('Not yet supported')
+            bool_value = True if value and filter_value.lower() == 'true' else False
+            filter_condition = __create_boolean_field_filter_expression(field_name, operator, bool_value,
+                                                                        field_column,
+                                                                        field_column)
 
         elif field_metadata.data_type is str:
             value = filter_value if type(filter_value) is str else str(filter_value)
@@ -155,14 +171,26 @@ def search_items(search_filters, page_number, page_size):
     # Allow passing empty filters
     search_filters = {} if not search_filters else search_filters
 
-    filters = __parse_item_property_filters(search_filters) + __parse_filter_for_sqlalquemy_model(InventoryItemModel,
-                                                                                                  'item',
-                                                                                                  search_filters)
-    query_build = InventoryItemModel.query.join(InventoryItemPropertyModel)
-    if 'component_type' in search_filters:
-        component_model = metadata_parser.get_model_by_name(search_filters.get('component_type'))
+    query_build = InventoryItemModel.query
+    filters = __parse_filter_for_sqlalquemy_model(InventoryItemModel, 'item', search_filters)
+
+    # Apply item property filters
+    prop_filters = __parse_item_property_filters(search_filters)
+    if len(prop_filters) > 0:
+        filters = filters + prop_filters
+        query_build = query_build.join(InventoryItemPropertyModel)
+
+    # Apply component model filters
+    if any(filt.startswith('comp_') for filt in search_filters.keys()):
+        # An specific component type has been provided
+        if 'comp_type_eq' in search_filters:
+            component_model = metadata_parser.get_model_by_name(search_filters.get('comp_type_eq'))
+            query_build = query_build.join(component_model)
+        else:
+            # Generic component search
+            component_model = ComponentModel
+            query_build = query_build.join(ComponentModel)
         filters = filters + __parse_filter_for_sqlalquemy_model(component_model, 'comp', search_filters)
-        query_build.join(component_model)
 
     result_page = query_build.filter(*filters).order_by(InventoryItemModel.id.desc()).paginate(page_number,
                                                                                                per_page=page_size)

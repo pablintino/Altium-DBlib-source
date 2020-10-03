@@ -39,6 +39,7 @@ class InventoryItemSchema(marshmallow.Schema):
     description = fields.String()
     last_buy_price = fields.Float()
     dici = fields.String(missing=None, default=None)
+    component = fields.Dict(keys=fields.Str())
 
     @post_load
     def make_inventory_item_dto(self, data, **kwargs):

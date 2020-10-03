@@ -103,13 +103,15 @@ def map_validate_raw_to_model(raw_component, pk_provided=False):
 
 def map_model_to_raw(model):
     mapped_fields = {}
-    for k, v in metadata_parser.get_model_metadata_by_name(model.type).fields.items():
-        if k in model.__dict__:
-            value = model.__dict__[k]
-            value_type = type(value)
-            if value_type is str or value_type is float or value_type is int or value_type is bool:
-                mapped_fields[k] = value
-            elif value_type is datetime:
-                mapped_fields[k] = value.isoformat()
+    if model:
+        for k, v in metadata_parser.get_model_metadata_by_name(model.type).fields.items():
+            if k in model.__dict__:
+                value = model.__dict__[k]
+                value_type = type(value)
+                if value_type is str or value_type is float or value_type is int or value_type is bool:
+                    mapped_fields[k] = value
+                elif value_type is datetime:
+                    mapped_fields[k] = value.isoformat()
+        return mapped_fields
 
-    return mapped_fields
+    return None

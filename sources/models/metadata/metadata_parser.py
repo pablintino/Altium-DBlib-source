@@ -40,9 +40,16 @@ class MetadataParser:
                 isinstance(cls, type) and issubclass(cls, db.Model)]
 
     @staticmethod
+    def model_exists_by_name(model_name):
+        return any(cls.__tablename__ == model_name for cls in MetadataParser.__get_all_alquemy_models())
+
+    @staticmethod
     def __get_model_from_alquemy(name, raise_ex=True):
+        if not name:
+            raise GenericIntenalApiError('SQLAlchemy model name cannot be empty')
+
         models = [cls for cls in MetadataParser.__get_all_alquemy_models() if cls.__tablename__ == name]
-        if len(models) != 1 and raise_ex:
+        if (not MetadataParser.model_exists_by_name(name)) and raise_ex:
             raise GenericIntenalApiError(
                 BraceMessage('SQLAlquemy model parse has failed cause model {0} cannot be found', name))
         return models[0]
@@ -69,10 +76,6 @@ class MetadataParser:
             model = MetadataParser.__get_model_from_alquemy(model_name)
             self.mappers[model_name] = model
             return model
-
-    @staticmethod
-    def model_exists_by_name(model_name):
-        return len([cls for cls in MetadataParser.__get_all_alquemy_models() if cls.__tablename__ == model_name]) > 0
 
     def get_model_children_by_parent_name(self, parent_name):
         parent_mapper = inspect(self.get_model_by_name(parent_name))

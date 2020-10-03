@@ -37,6 +37,7 @@ class InventoryItemDto:
         self.description = kwargs.get('description', '')
         self.last_buy_price = kwargs.get('last_buy_price', '')
         self.dici = kwargs.get('dici', '')
+        self.component = kwargs.get('component', None)
 
     @staticmethod
     def to_model(data):
@@ -50,7 +51,7 @@ class InventoryItemDto:
             dici=data.dici)
 
     @staticmethod
-    def from_model(data):
+    def from_model(data, component_dto=None):
         return InventoryItemDto(
             id=data.id,
             mpn=data.mpn,
@@ -58,7 +59,8 @@ class InventoryItemDto:
             name=data.name,
             description=data.description,
             last_buy_price=data.last_buy_price,
-            dici=data.dici)
+            dici=data.dici,
+            component=component_dto)
 
 
 class InventoryLocationDto:
