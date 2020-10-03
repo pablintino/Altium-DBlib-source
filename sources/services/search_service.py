@@ -183,7 +183,8 @@ def search_items(search_filters, page_number, page_size):
     # Apply component model filters
     if any(filt.startswith('comp_') for filt in search_filters.keys()):
         # An specific component type has been provided
-        if 'comp_type_eq' in search_filters:
+        if 'comp_type_eq' in search_filters and metadata_parser.model_exists_by_name(
+                search_filters.get('comp_type_eq')):
             component_model = metadata_parser.get_model_by_name(search_filters.get('comp_type_eq'))
             query_build = query_build.join(component_model)
         else:
