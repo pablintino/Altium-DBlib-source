@@ -29,7 +29,7 @@ from models.components.component_model import ComponentModel
 from models.inventory.inventory_item_model import InventoryItemModel
 from models.inventory.inventory_item_property import InventoryItemPropertyModel
 from models.metadata.metadata_parser import metadata_parser
-from services.exceptions import MalformedSearchQueryError
+from services.exceptions import MalformedSearchQueryError, ResourceInvalidQuery
 from utils import helpers
 from utils.helpers import BraceMessage as __l
 
@@ -83,7 +83,7 @@ def __parse_item_property_filters(search_filters):
         if len(filter_key_split) < 2:
             raise MalformedSearchQueryError('Item property filter should be only composed by prop_PROPNAME_OPERATOR')
 
-        # For InventoryItemPropertyModel related filters [0] (first) is the field name and [-1] (last) is the filter operator
+        # For InventoryItemPropertyModel filter the 0 index is the field name and [-1] (last) is the filter operator
         field_name = filter_key[:filter_key.rindex('_')]
         operator = filter_key_split[-1]
 
@@ -168,6 +168,13 @@ def __parse_filter_for_sqlalquemy_model(model, filter_model_prefix, search_filte
 
 
 def search_items(search_filters, page_number, page_size):
+    # Dumb validation of pagination parameters
+    if page_number < 1:
+        raise ResourceInvalidQuery('Page number should be greater than 0', invalid_fields=['page_n'])
+
+    if page_size < 1:
+        raise ResourceInvalidQuery('Page size should be greater than 0', invalid_fields=['page_size'])
+
     # Allow passing empty filters
     search_filters = {} if not search_filters else search_filters
 

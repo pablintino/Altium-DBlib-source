@@ -192,3 +192,13 @@ class MalformedSearchQueryError(ApiError):
 class GenericIntenalApiError(ApiError):
     def __init__(self, msg=None, details=None):
         super(GenericIntenalApiError, self).__init__(msg, details, 500)
+
+
+class CyclicCategoryDependecy(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(CyclicCategoryDependecy, self).__init__(msg, details, 400)
+
+
+class InvalidCategoryRelationError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(InvalidCategoryRelationError, self).__init__(msg, details, 400)

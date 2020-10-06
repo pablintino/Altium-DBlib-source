@@ -31,6 +31,9 @@ from rest_layer.footprint_data_resource import FootprintDataResource
 from rest_layer.footprint_element_component_reference_resource import FootprintElementComponentReferenceResource
 from rest_layer.footprint_list_resource import FootprintListResource
 from rest_layer.footprint_resource import FootprintResource
+from rest_layer.inventory.inventory_category_list_resource import InventoryCategoryListResource
+from rest_layer.inventory.inventory_category_parent_resource import InventoryCategoryParentResource
+from rest_layer.inventory.inventory_category_resource import InventoryCategoryResource
 from rest_layer.inventory.inventory_item_list_resource import InventoryItemListResource
 from rest_layer.inventory.inventory_item_location_resource import InventoryItemLocationResource
 from rest_layer.inventory.inventory_item_property_element_resource import InventoryItemPropertyElementResource
@@ -68,3 +71,6 @@ api.add_resource(InventoryItemStockLocationResource, '/inventory/items/<int:id>/
 api.add_resource(InventoryLocationListResource, '/inventory/locations')
 api.add_resource(InventoryLocationResource, '/inventory/locations/<int:id>')
 api.add_resource(InventoryStocksMassUpdateResource, '/inventory/stocks/updates')
+api.add_resource(InventoryCategoryListResource, '/inventory/categories')
+api.add_resource(InventoryCategoryResource, '/inventory/categories/<int:id>')
+api.add_resource(InventoryCategoryParentResource, '/inventory/categories/<int:id>/parent')

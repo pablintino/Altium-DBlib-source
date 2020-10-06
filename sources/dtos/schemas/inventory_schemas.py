@@ -28,18 +28,18 @@ from marshmallow import fields, post_load
 from dtos.inventory_dtos import InventoryItemDto, InventoryLocationDto, InventoryItemLocationRelationDto, \
     InventoryItemLocationStockDto, InventorySingleStockMovementDto, InventoryMassStockMovementDto, \
     InventoryItemStockStatusDto, InventoryMassStockMovementResultDto, InventoryItemPropertyDto, \
-    InventoryItemPropertyUpdateDto
+    InventoryItemPropertyUpdateDto, InventoryCategoryDto, InventoryCategoryReferenceDto
 
 
 class InventoryItemSchema(marshmallow.Schema):
     id = fields.Integer(missing=None, default=None)
-    mpn = fields.String(required=None, missing=None)
-    manufacturer = fields.String(required=None, missing=None)
-    name = fields.String(required=None, missing=None)
+    mpn = fields.String(required=True)
+    manufacturer = fields.String(required=True)
+    name = fields.String(required=True)
     description = fields.String()
     last_buy_price = fields.Float()
     dici = fields.String(missing=None, default=None)
-    component = fields.Dict(keys=fields.Str())
+    component = fields.Dict(keys=fields.Str(), missing=None, default=None)
 
     @post_load
     def make_inventory_item_dto(self, data, **kwargs):
@@ -48,7 +48,7 @@ class InventoryItemSchema(marshmallow.Schema):
 
 class InventoryLocationSchema(marshmallow.Schema):
     id = fields.Integer(missing=None, default=None)
-    name = fields.String(required=None, missing=None)
+    name = fields.String(required=True)
     description = fields.String()
     dici = fields.String(missing=None, default=None)
 
@@ -139,3 +139,23 @@ class InventoryItemPropertySchema(marshmallow.Schema):
 
 class InventoryItemPropertiesSchema(marshmallow.Schema):
     properties = fields.Nested(InventoryItemPropertySchema, many=True)
+
+
+class InventoryCategorySchema(marshmallow.Schema):
+    id = fields.Integer(missing=None, default=None)
+    name = fields.String(required=True)
+    description = fields.String()
+    parent_id = fields.Integer(missing=None, default=None)
+
+    @post_load
+    def make_inventory_category_dto(self, data, **kwargs):
+        return InventoryCategoryDto(**data)
+
+
+class InventoryCategoryReferenceSchema(marshmallow.Schema):
+    category_id = fields.Integer(missing=None, default=None)
+
+    @post_load
+    def make_symbol_inventory_category_reference_dto(self, data, **kwargs):
+        return InventoryCategoryReferenceDto(**data)
+

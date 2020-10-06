@@ -22,6 +22,7 @@
 #  SOFTWARE.
 #
 from models.internal.internal_inventory_models import MassStockMovement, SingleStockMovement
+from models.inventory.inventory_category_model import InventoryCategoryModel
 from models.inventory.inventory_item_model import InventoryItemModel
 from models.inventory.inventory_item_property import InventoryItemPropertyModel
 from models.inventory.inventory_location import InventoryLocationModel
@@ -81,7 +82,7 @@ class InventoryLocationDto:
 
     @staticmethod
     def from_model(data):
-        return InventoryLocationModel(
+        return InventoryLocationDto(
             id=data.id,
             name=data.name,
             description=data.description,
@@ -206,3 +207,38 @@ class InventoryItemPropertiesDto:
     @staticmethod
     def from_model(data):
         return InventoryItemPropertiesDto(properties=[InventoryItemPropertyDto.from_model(prop) for prop in data])
+
+
+class InventoryCategoryDto:
+
+    def __init__(self, **kwargs):
+        self.id = kwargs.get('id', None)
+        self.name = kwargs.get('name', '')
+        self.description = kwargs.get('description', '')
+        self.parent_id = kwargs.get('parent_id', None)
+
+    @staticmethod
+    def to_model(data):
+        return InventoryCategoryModel(
+            id=data.id,
+            name=data.name,
+            description=data.description,
+            parent_id=data.parent_id)
+
+    @staticmethod
+    def from_model(data):
+        return InventoryCategoryDto(
+            id=data.id,
+            name=data.name,
+            description=data.description,
+            parent_id=data.parent_id)
+
+
+class InventoryCategoryReferenceDto:
+
+    def __init__(self, **kwargs):
+        self.category_id = kwargs.get('category_id', None)
+
+    @staticmethod
+    def from_model(id):
+        return InventoryCategoryReferenceDto(category_id=id)

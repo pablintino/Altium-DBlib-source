@@ -23,8 +23,8 @@
 #
 
 
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship, relation
 
 from app import db
 
@@ -32,14 +32,12 @@ from app import db
 class InventoryCategoryModel(db.Model):
     __tablename__ = "inventory_category"
     id = Column(Integer, primary_key=True)
-    name = Column(String(100))
+    name = Column(String(100), unique=True)
     description = Column(String(100))
 
     # relationships
-    category_items = relationship("InventoryItemModel", back_populates='category', lazy=True)
+    parent_id = Column(Integer, ForeignKey('inventory_category.id'))
+    parent = relationship('InventoryCategoryModel', remote_side=[id])
+    children = relation('InventoryCategoryModel', remote_side=[id], uselist=True)
 
-    def __repr__(self):
-        return '%s(%s)' % (
-            type(self).__name__,
-            ', '.join('%s=%s' % item for item in vars(self).items())
-        )
+    category_items = relationship("InventoryItemModel", back_populates='category', lazy=True)

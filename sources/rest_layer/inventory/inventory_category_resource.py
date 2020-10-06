@@ -21,43 +21,38 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 #
-
-
 from flask import request
 from marshmallow import ValidationError
 
-from dtos.generic_objects_search_dtos import SearchPageResultDto
-from dtos.inventory_dtos import InventoryLocationDto
-from dtos.schemas.generic_objects_search_schemas import InventoryLocationsPageSchema
-from dtos.schemas.inventory_schemas import InventoryLocationSchema
+from dtos.inventory_dtos import InventoryCategoryDto
+from dtos.schemas.inventory_schemas import InventoryCategorySchema
 from rest_layer.base_api_resource import BaseApiResource
 from services import inventory_service
 from services.exceptions import ApiError
 
 
-class InventoryLocationListResource(BaseApiResource):
+class InventoryCategoryResource(BaseApiResource):
 
-    def post(self):
+    def get(self, id):
         try:
-            location_dto = InventoryLocationSchema().load(data=request.json)
-            location_model = inventory_service.create_location(location_dto.name, location_dto.description)
-            return InventoryLocationSchema().dump(InventoryLocationDto.from_model(location_model)), 201
+            category_model = inventory_service.get_category(id)
+            return InventoryCategorySchema().dump(InventoryCategoryDto.from_model(category_model)), 201
         except ValidationError as error:
             return {"errors": error.messages}, 400
         except ApiError as error:
             self.logger().debug(error)
             return error.format_api_data()
 
-    def get(self):
+    def put(self, id):
         try:
-            page_n = request.args.get('page_n', default=1, type=int)
-            page_size = request.args.get('page_size', default=20, type=int)
-            page = inventory_service.get_locations(page_n, page_size)
-            page_dto = SearchPageResultDto(page_size=page.per_page, page_number=page.page, total_elements=page.total,
-                                           elements=[InventoryLocationDto.from_model(model) for model in page.items])
-            return InventoryLocationsPageSchema().dump(page_dto), 200
+            category_dto = InventoryCategorySchema().load(data=request.json)
+            category_model = inventory_service.update_category(id, category_dto.name, category_dto.description)
+            return InventoryCategorySchema().dump(InventoryCategoryDto.from_model(category_model)), 201
+        except ValidationError as error:
+            return {"errors": error.messages}, 400
         except ApiError as error:
             self.logger().debug(error)
             return error.format_api_data()
+
 
 

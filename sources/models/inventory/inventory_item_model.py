@@ -34,7 +34,7 @@ class InventoryItemModel(InventoryIdentificableItemModel):
     id = Column(Integer, primary_key=True)
     mpn = Column(String(100), nullable=False, index=True)
     manufacturer = Column(String(100), nullable=False, index=True)
-    name = Column(String(100))
+    name = Column(String(100), nullable=False)
     description = Column(String(100))
     last_buy_price = Column(Float)
     dici = Column(String(70), nullable=False, index=True)

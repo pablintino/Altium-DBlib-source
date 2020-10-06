@@ -25,10 +25,10 @@
 
 import logging
 
-from sqlalchemy import and_
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from app import db
 from models.internal.internal_inventory_models import InventoryItemStockStatus, InventoryMassStockMovementResult
+from models.inventory.inventory_category_model import InventoryCategoryModel
 from models.inventory.inventory_item_model import InventoryItemModel
 from models.inventory.inventory_item_location_stock import InventoryItemLocationStockModel
 from models.inventory.inventory_item_property import InventoryItemPropertyModel
@@ -37,7 +37,8 @@ from models.inventory.inventory_location import InventoryLocationModel
 from utils.dici_utils import generate_item_id
 from utils.helpers import BraceMessage as __l
 from services.exceptions import ResourceAlreadyExistsApiError, UniqueIdentifierCreationError, ResourceNotFoundApiError, \
-    RemainingStocksExistError, InvalidMassStockUpdateError, MalformedSearchQueryError
+    RemainingStocksExistError, InvalidMassStockUpdateError, CyclicCategoryDependecy, ResourceInvalidQuery, \
+    InvalidCategoryRelationError
 
 __logger = logging.getLogger(__name__)
 
@@ -51,14 +52,14 @@ def __search_item_location_stock_by_ids_dicis(item_id=None, item_dici=None, loca
     item_filters = []
     location_filters = []
     if location_id:
-        location_filters.append(getattr(InventoryLocationModel, "id") == location_id)
+        location_filters.append(InventoryLocationModel.id == location_id)
     else:
-        location_filters.append(getattr(InventoryLocationModel, "dici") == location_dici)
+        location_filters.append(InventoryLocationModel.dici == location_dici)
 
     if item_id:
-        item_filters.append(getattr(InventoryItemModel, "id") == item_id)
+        item_filters.append(InventoryItemModel.id == item_id)
     else:
-        item_filters.append(getattr(InventoryItemModel, "dici") == item_dici)
+        item_filters.append(InventoryItemModel.dici == item_dici)
 
     try:
 
@@ -121,6 +122,13 @@ def __check_item_existance(item_id):
     return db.session.query(InventoryItemModel.id).filter_by(id=item_id).scalar() is not None
 
 
+def __recursive_parent_search(id_to_avoid, category):
+    if category.id == id_to_avoid:
+        raise CyclicCategoryDependecy(__l('Category {0} association will cause a cyclic category tree', id_to_avoid))
+    for child in category.children:
+        __recursive_parent_search(id_to_avoid, child)
+
+
 def create_item_for_component(component_model, auto_commit=False):
     exists_id = db.session.query(InventoryItemModel.id).filter_by(mpn=component_model.mpn,
                                                                   manufacturer=component_model.manufacturer).scalar()
@@ -171,6 +179,12 @@ def get_item_component(item_id):
 
 
 def create_location(name, description):
+    # Check if a location with the given name already exists
+    current_location = db.session.query(InventoryLocationModel.id).filter_by(name=name).first()
+    if current_location:
+        raise ResourceAlreadyExistsApiError(__l('Location with name {0} already exists', name),
+                                            conflicting_id=current_location.id)
+
     location = InventoryLocationModel(name=name, description=description)
     location.dici = __gen_dici(location)
 
@@ -183,11 +197,26 @@ def create_location(name, description):
 
 def get_location(location_id):
     __logger.debug(__l('Querying location [location_id={0}]', location_id))
-    item = InventoryLocationModel.query.get(location_id)
-    if not item:
+    location = InventoryLocationModel.query.get(location_id)
+    if not location:
         raise ResourceNotFoundApiError('Location not found', missing_id=location_id)
 
-    return item
+    return location
+
+
+def get_locations(page_number, page_size):
+    __logger.debug(__l('Retrieving locations [page_n={0}, page_size={1}]', page_number, page_size))
+
+    # Dumb validation of pagination parameters
+    if page_number < 1:
+        raise ResourceInvalidQuery('Page number should be greater than 0', invalid_fields=['page_n'])
+
+    if page_size < 1:
+        raise ResourceInvalidQuery('Page size should be greater than 0', invalid_fields=['page_size'])
+
+    result_page = InventoryLocationModel.query.order_by(InventoryLocationModel.id.desc()).paginate(page_number,
+                                                                                                   per_page=page_size)
+    return result_page
 
 
 def create_item_stocks_for_locations(item_id, location_ids):
@@ -369,3 +398,112 @@ def delete_item_property(item_id, prop_id):
     if prop:
         db.session.delete(prop)
         db.session.commit()
+
+
+def create_category(name, description):
+    __logger.debug(__l('Creating category [name={0}, description={1}]', name, description))
+
+    category = InventoryCategoryModel(name=name, description=description)
+
+    current_category = db.session.query(InventoryCategoryModel.id).filter_by(name=name).first()
+    if current_category:
+        raise ResourceAlreadyExistsApiError(__l('Category with name {0} already exists', name),
+                                            conflicting_id=current_category.id)
+
+    db.session.add(category)
+    db.session.commit()
+
+    __logger.debug(__l('Inventory category created [id={0}]', category.id))
+    return category
+
+
+def get_category(category_id):
+    __logger.debug(__l('Querying category [category_id={0}]', category_id))
+    category = InventoryCategoryModel.query.get(category_id)
+    if not category:
+        raise ResourceNotFoundApiError('Category not found', missing_id=category_id)
+    return category
+
+
+def get_categories(page_number, page_size):
+    __logger.debug('Retrieving categories')
+
+    # Dumb validation of pagination parameters
+    if page_number < 1:
+        raise ResourceInvalidQuery('Page number should be greater than 0', invalid_fields=['page_n'])
+
+    if page_size < 1:
+        raise ResourceInvalidQuery('Page size should be greater than 0', invalid_fields=['page_size'])
+
+    result_page = InventoryCategoryModel.query.order_by(InventoryCategoryModel.id.desc()).paginate(page_number,
+                                                                                                   per_page=page_size)
+    return result_page
+
+
+def set_category_parent(category_id, parent_id):
+    __logger.debug(__l('Updating category parent [category_id={0}, parent_id={1}]', category_id, parent_id))
+    category = InventoryCategoryModel.query.get(category_id)
+    if not category:
+        raise ResourceNotFoundApiError('Category not found', missing_id=category_id)
+
+    if not parent_id:
+        raise InvalidCategoryRelationError('Parent ID cannot be null. Use delete method to delete the relation')
+
+    parent = InventoryCategoryModel.query.get(parent_id)
+    if not category:
+        raise ResourceNotFoundApiError('Category not found', missing_id=parent_id)
+
+
+    __recursive_parent_search(category_id, parent)
+
+    category.parent_id = parent_id
+
+    db.session.add(category)
+    db.session.commit()
+
+
+    return parent_id
+
+
+def remove_category_parent(category_id):
+    __logger.debug(__l('Removing category parent [category_id={0}]', category_id))
+    category = InventoryCategoryModel.query.get(category_id)
+    if not category:
+        raise ResourceNotFoundApiError('Category not found', missing_id=category_id)
+
+    category.parent_id = None
+    db.session.add(category)
+    db.session.commit()
+
+    return category
+
+
+def get_category_parent(category_id):
+    __logger.debug(__l('Retrieving category parent [category_id={0}]', category_id))
+    category = InventoryCategoryModel.query.get(category_id)
+    if not category:
+        raise ResourceNotFoundApiError('Category not found', missing_id=category_id)
+
+    return category.parent_id
+
+
+def update_category(category_id, name, description):
+    __logger.debug(
+        __l('Updating category [category_id={0}, name={1}, description={2}]', category_id, name, description))
+    category = InventoryCategoryModel.query.get(category_id)
+    if not category:
+        raise ResourceNotFoundApiError('Category not found', missing_id=category_id)
+
+    if name != category.name:
+        current_category = db.session.query(InventoryCategoryModel.id).filter_by(name=name).first()
+        if current_category:
+            raise ResourceAlreadyExistsApiError(__l('Category with name {0} already exists', name),
+                                                conflicting_id=current_category.id)
+
+        category.name = name
+    category.description = description
+
+    db.session.add(category)
+    db.session.commit()
+
+    return category
