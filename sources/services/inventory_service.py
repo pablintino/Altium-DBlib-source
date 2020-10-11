@@ -219,6 +219,27 @@ def get_locations(page_number, page_size):
     return result_page
 
 
+def get_category_items(category_id, page_number, page_size):
+    __logger.debug(
+        __l('Retrieving category items [category_id={0}, page_n={1}, page_size={2}]', category_id, page_number,
+            page_size))
+
+    # Dumb validation of pagination parameters
+    if page_number < 1:
+        raise ResourceInvalidQuery('Page number should be greater than 0', invalid_fields=['page_n'])
+
+    if page_size < 1:
+        raise ResourceInvalidQuery('Page size should be greater than 0', invalid_fields=['page_size'])
+
+    if not db.session.query(InventoryCategoryModel.id).filter_by(id=category_id).first():
+        raise ResourceNotFoundApiError('Category not found', missing_id=category_id)
+
+    result_page = InventoryItemModel.query.filter_by(category_id=category_id).order_by(
+        InventoryItemModel.id.desc()).paginate(page_number,
+                                               per_page=page_size)
+    return result_page
+
+
 def create_item_stocks_for_locations(item_id, location_ids):
     __logger.debug(__l('Creating new item-location relations [item_id={0}, footprint_ids={1}]', item_id,
                        location_ids))
@@ -282,6 +303,26 @@ def delete_stock_location(location_id):
             db.session.rollback()
 
         __logger.debug(__l('Removed location [location_id={0}]', location_id))
+
+
+def delete_item(item_id):
+    item = InventoryItemModel.query.get(item_id)
+    if item:
+        if len([si for si in item.stock_items if si.actual_stock != 0]) > 0:
+            raise RemainingStocksExistError("Item still contains available stocks")
+
+        try:
+            for stock_item in item.stock_items:
+                # This should trigger the cascade delete of the movements history
+                db.session.delete(stock_item)
+
+            db.session.delete(item)
+            db.session.commit()
+
+        except:
+            db.session.rollback()
+
+        __logger.debug(__l('Removed item [item_id={0}]', item_id))
 
 
 def get_item_stock_for_location(item_id, location_id):
@@ -425,7 +466,7 @@ def get_category(category_id):
     return category
 
 
-def get_categories(page_number, page_size):
+def get_categories(page_number, page_size, only_root):
     __logger.debug('Retrieving categories')
 
     # Dumb validation of pagination parameters
@@ -435,8 +476,11 @@ def get_categories(page_number, page_size):
     if page_size < 1:
         raise ResourceInvalidQuery('Page size should be greater than 0', invalid_fields=['page_size'])
 
-    result_page = InventoryCategoryModel.query.order_by(InventoryCategoryModel.id.desc()).paginate(page_number,
-                                                                                                   per_page=page_size)
+    query = InventoryCategoryModel.query
+    if only_root:
+        query = query.filter_by(parent_id=None)
+
+    result_page = query.order_by(InventoryCategoryModel.id.desc()).paginate(page_number, per_page=page_size)
     return result_page
 
 
@@ -453,14 +497,12 @@ def set_category_parent(category_id, parent_id):
     if not category:
         raise ResourceNotFoundApiError('Category not found', missing_id=parent_id)
 
-
     __recursive_parent_search(category_id, parent)
 
     category.parent_id = parent_id
 
     db.session.add(category)
     db.session.commit()
-
 
     return parent_id
 
@@ -507,3 +549,37 @@ def update_category(category_id, name, description):
     db.session.commit()
 
     return category
+
+
+def set_item_category(item_id, category_id):
+    __logger.debug(__l('Setting item category [item_id={1}, category_id={0}]', item_id, category_id))
+
+    category = InventoryCategoryModel.query.get(item_id)
+    if not category:
+        raise ResourceNotFoundApiError('Category not found', missing_id=category_id)
+
+    item = InventoryItemModel.query.get(item_id)
+    if not item:
+        raise ResourceNotFoundApiError('Item not found', missing_id=item_id)
+
+    item.category_id = category.id
+    item.category = category
+
+    db.session.add(item)
+    db.session.commit()
+
+    return category_id
+
+
+def delete_item_category(item_id):
+    __logger.debug(__l('Deleting category from item [item_id={1}]', item_id))
+
+    item = InventoryItemModel.query.get(item_id)
+    if not item:
+        raise ResourceNotFoundApiError('Item not found', missing_id=item_id)
+
+    item.category_id = None
+    item.category = None
+
+    db.session.add(item)
+    db.session.commit()

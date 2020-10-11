@@ -45,3 +45,11 @@ class InventoryItemResource(BaseApiResource):
         except ApiError as error:
             self.logger().debug(error)
             return error.format_api_data()
+
+    def delete(self, id):
+        try:
+            inventory_service.delete_item(id)
+            return {}, 204
+        except ApiError as error:
+            self.logger().debug(error)
+            return error.format_api_data()

@@ -26,7 +26,7 @@
 import pytest
 
 from dtos import component_model_mapper
-from models import ResistorModel
+from models.components.resistor_model import ResistorModel
 from services.exceptions import InvalidComponentFieldsError, InvalidComponentTypeError
 
 

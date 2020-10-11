@@ -27,7 +27,10 @@ from datetime import datetime
 
 import pytest
 
-from models import ResistorModel, ComponentModel, CapacitorCeramicModel, LibraryReference, FootprintReference
+from models import LibraryReference, FootprintReference
+from models.components.capacitor_ceramic_model import CapacitorCeramicModel
+from models.components.component_model import ComponentModel
+from models.components.resistor_model import ResistorModel
 from services import component_service
 from services.exceptions import InvalidComponentFieldsError, ResourceNotFoundApiError, RelationAlreadyExistsError, \
     ResourceAlreadyExistsApiError, ResourceInvalidQuery

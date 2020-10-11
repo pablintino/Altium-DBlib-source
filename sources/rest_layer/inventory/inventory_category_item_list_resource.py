@@ -24,43 +24,33 @@
 
 
 from flask import request
-from marshmallow import ValidationError
-from dtos.inventory_dtos import InventoryCategoryReferenceDto
-from dtos.schemas.inventory_schemas import InventoryCategoryReferenceSchema
+
+from dtos import component_model_mapper
+from dtos.generic_objects_search_dtos import SearchPageResultDto
+from dtos.inventory_dtos import InventoryItemDto
+from dtos.schemas.generic_objects_search_schemas import InventorySearchPageResultSchema
+from rest_layer import rest_layer_utils
 from rest_layer.base_api_resource import BaseApiResource
 from services import inventory_service
 from services.exceptions import ApiError
 
 
-class InventoryCategoryParentResource(BaseApiResource):
+class InventoryCategoryItemListResource(BaseApiResource):
 
     def get(self, id):
         try:
-            parent_id = inventory_service.get_category_parent(id)
-            return InventoryCategoryReferenceSchema().dump(
-                InventoryCategoryReferenceDto.from_model(parent_id)), 201
-        except ValidationError as error:
-            return {"errors": error.messages}, 400
-        except ApiError as error:
-            self.logger().debug(error)
-            return error.format_api_data()
-
-    def post(self, id):
-        try:
-            category_reference_dto = InventoryCategoryReferenceSchema().load(data=request.json)
-            category_parent_id = inventory_service.set_category_parent(id, category_reference_dto.category_id)
-            return InventoryCategoryReferenceSchema().dump(
-                InventoryCategoryReferenceDto.from_model(category_parent_id)), 201
-        except ValidationError as error:
-            return {"errors": error.messages}, 400
-        except ApiError as error:
-            self.logger().debug(error)
-            return error.format_api_data()
-
-    def delete(self, id):
-        try:
-            inventory_service.remove_category_parent(id)
-            return {}, 201
+            page_n = request.args.get('page_n', default=1, type=int)
+            page_size = request.args.get('page_size', default=20, type=int)
+            include_component = rest_layer_utils.is_include_component_request_flag(False)
+            filters = request.args.to_dict(flat=True)
+            filters.pop('page_n', None)
+            filters.pop('page_size', None)
+            page = inventory_service.get_category_items(id, page_n, page_size)
+            dtos = [InventoryItemDto.from_model(item_model, component_dto=component_model_mapper.map_model_to_raw(
+                item_model.component) if include_component else None) for item_model in page.items]
+            page_dto = SearchPageResultDto(page_size=page.per_page, page_number=page.page, total_elements=page.total,
+                                           elements=dtos)
+            return InventorySearchPageResultSchema().dump(page_dto), 200
         except ApiError as error:
             self.logger().debug(error)
             return error.format_api_data()

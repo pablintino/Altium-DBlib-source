@@ -52,7 +52,8 @@ class InventoryCategoryListResource(BaseApiResource):
         try:
             page_n = request.args.get('page_n', default=1, type=int)
             page_size = request.args.get('page_size', default=20, type=int)
-            page = inventory_service.get_categories(page_n, page_size)
+            only_root = request.args.get('only_root', default=False, type=bool)
+            page = inventory_service.get_categories(page_n, page_size, only_root)
             page_dto = SearchPageResultDto(page_size=page.per_page, page_number=page.page, total_elements=page.total,
                                            elements=[InventoryCategoryDto.from_model(model) for model in page.items])
             return InventoryCategoriesPageSchema().dump(page_dto), 200

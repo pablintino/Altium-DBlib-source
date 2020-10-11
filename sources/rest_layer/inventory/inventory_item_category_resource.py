@@ -23,25 +23,29 @@
 #
 
 
-from sqlalchemy import Column, Integer, ForeignKey, Float
-from sqlalchemy.orm import relationship
+from flask import request
+from dtos.inventory_dtos import InventoryCategoryReferenceDto
+from dtos.schemas.inventory_schemas import InventoryCategoryReferenceSchema
+from rest_layer.base_api_resource import BaseApiResource
+from services import inventory_service
+from services.exceptions import ApiError
 
-from app import db
 
+class InventoryItemCategoryResource(BaseApiResource):
 
-class InventoryItemLocationStockModel(db.Model):
-    __tablename__ = "inventory_item_location_stock"
+    def post(self, id):
+        try:
+            category_reference_dto = InventoryCategoryReferenceSchema().load(data=request.json)
+            category_id = inventory_service.update_item_property(id, category_reference_dto.category_id)
+            return InventoryCategoryReferenceSchema().dump(InventoryCategoryReferenceDto.from_model(category_id)), 200
+        except ApiError as error:
+            self.logger().debug(error)
+            return error.format_api_data()
 
-    id = Column(Integer, primary_key=True)
-    actual_stock = Column(Float, nullable=False)
-    stock_min_level = Column(Float)
-    stock_notify_min_level = Column(Float)
-
-    # relationships
-    location_id = Column(Integer, ForeignKey('inventory_location.id'), nullable=False)
-    location = relationship("InventoryLocationModel", back_populates="stock_items")
-
-    item_id = Column(Integer, ForeignKey('inventory_item.id'), nullable=False)
-    item = relationship("InventoryItemModel", back_populates="stock_items")
-
-    stock_movements = relationship("InventoryItemLocationStockMovementModel", back_populates="stock_item", cascade="delete")
+    def delete(self, id):
+        try:
+            inventory_service.delete_item_category(id)
+            return {}, 204
+        except ApiError as error:
+            self.logger().debug(error)
+            return error.format_api_data()
