@@ -149,7 +149,7 @@ def __parse_filter_for_sqlalquemy_model(model, filter_model_prefix, search_filte
                 __l('Filter value for field {0} is not of the proper type {1}', field_name,
                     field_metadata.data_type.__name__))
         elif field_metadata.data_type is bool:
-            bool_value = True if value and filter_value.lower() == 'true' else False
+            bool_value = True if filter_value and filter_value.lower() == 'true' else False
             filter_condition = __create_boolean_field_filter_expression(field_name, operator, bool_value,
                                                                         field_column,
                                                                         field_column)
