@@ -168,10 +168,8 @@ def get_item(item_id):
 
 def get_item_component(item_id):
     __logger.debug(__l('Querying item component [item_id={0}]', item_id))
-    item = InventoryItemModel.query.get(item_id)
-    if not item:
-        raise ResourceNotFoundApiError('Item not found', missing_id=item_id)
 
+    item = get_item(item_id)
     if not item.component:
         raise ResourceNotFoundApiError('Item has no component', missing_id=item_id)
 
@@ -243,12 +241,9 @@ def get_category_items(category_id, page_number, page_size):
 def create_item_stocks_for_locations(item_id, location_ids):
     __logger.debug(__l('Creating new item-location relations [item_id={0}, footprint_ids={1}]', item_id,
                        location_ids))
-    item = InventoryItemModel.query.get(item_id)
-    item_stocks = []
 
-    # Verify that the given item exists before trying anything else
-    if not item:
-        raise ResourceNotFoundApiError('Inventory item not found', missing_id=item_id)
+    item_stocks = []
+    item = get_item(item_id)
 
     # Add only the locations that are not already associated
     locations_to_add = [location_id for location_id in location_ids if
@@ -426,9 +421,6 @@ def get_item_properties(item_id):
     __logger.debug(__l('Retrieving item properties [item_id={0}]', item_id))
 
     item = get_item(item_id)
-    if not item:
-        # Item not exists
-        raise ResourceNotFoundApiError('Inventory item not found', missing_id=item_id)
 
     return item.item_properties
 
@@ -558,9 +550,7 @@ def set_item_category(item_id, category_id):
     if not category:
         raise ResourceNotFoundApiError('Category not found', missing_id=category_id)
 
-    item = InventoryItemModel.query.get(item_id)
-    if not item:
-        raise ResourceNotFoundApiError('Item not found', missing_id=item_id)
+    item = get_item(item_id)
 
     item.category_id = category.id
     item.category = category
@@ -574,9 +564,7 @@ def set_item_category(item_id, category_id):
 def delete_item_category(item_id):
     __logger.debug(__l('Deleting category from item [item_id={0}]', item_id))
 
-    item = InventoryItemModel.query.get(item_id)
-    if not item:
-        raise ResourceNotFoundApiError('Item not found', missing_id=item_id)
+    item = get_item(item_id)
 
     item.category_id = None
     item.category = None
