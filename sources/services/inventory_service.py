@@ -554,7 +554,7 @@ def update_category(category_id, name, description):
 def set_item_category(item_id, category_id):
     __logger.debug(__l('Setting item category [item_id={1}, category_id={0}]', item_id, category_id))
 
-    category = InventoryCategoryModel.query.get(item_id)
+    category = InventoryCategoryModel.query.get(category_id)
     if not category:
         raise ResourceNotFoundApiError('Category not found', missing_id=category_id)
 
@@ -572,7 +572,7 @@ def set_item_category(item_id, category_id):
 
 
 def delete_item_category(item_id):
-    __logger.debug(__l('Deleting category from item [item_id={1}]', item_id))
+    __logger.debug(__l('Deleting category from item [item_id={0}]', item_id))
 
     item = InventoryItemModel.query.get(item_id)
     if not item:

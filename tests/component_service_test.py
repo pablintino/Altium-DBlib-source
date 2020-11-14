@@ -33,7 +33,7 @@ from models.components.component_model import ComponentModel
 from models.components.resistor_model import ResistorModel
 from services import component_service
 from services.exceptions import InvalidComponentFieldsError, ResourceNotFoundApiError, RelationAlreadyExistsError, \
-    ResourceAlreadyExistsApiError, ResourceInvalidQuery
+    ResourceAlreadyExistsApiError
 
 
 def __get_dummy_resistor_component():

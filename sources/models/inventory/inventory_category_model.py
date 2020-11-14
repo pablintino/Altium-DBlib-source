@@ -37,7 +37,6 @@ class InventoryCategoryModel(db.Model):
 
     # relationships
     parent_id = Column(Integer, ForeignKey('inventory_category.id'))
-    parent = relationship('InventoryCategoryModel', remote_side=[id])
-    children = relation('InventoryCategoryModel', remote_side=[id], uselist=True)
+    children = relationship('InventoryCategoryModel')
 
     category_items = relationship("InventoryItemModel", back_populates='category', lazy=True)
