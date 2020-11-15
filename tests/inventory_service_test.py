@@ -100,6 +100,25 @@ def test_create_item_for_component_ok(db_session):
     assert item_model.mpn == component.mpn
 
 
+def test_create_standalone_item_ok(db_session):
+    model = InventoryItemModel(
+        mpn='mnp_test',
+        manufacturer='test manufacturer',
+        name='test name',
+        description='test description')
+
+    item = inventory_service.create_standalone_item(model)
+
+    assert db_session.query(InventoryItemModel.id).count() == 1
+    item_model = InventoryItemModel.query.get(item.id)
+    assert item_model is not None
+    assert item_model.dici is not None
+    assert item_model.manufacturer == model.manufacturer
+    assert item_model.mpn == model.mpn
+    assert item_model.name == model.name
+    assert item_model.description == model.description
+
+
 def test_create_item_for_component_item_already_exists_ko(db_session):
     item = __create_dummy_component_item(db_session)
     assert item is not None
@@ -162,6 +181,46 @@ def test_update_item_property_ok(db_session):
     assert property_model.property_s_value is None
     assert property_model.property_i_value is None
     assert property_model.property_f_value == 3.2
+
+
+def test_get_item_properties_ok(db_session):
+    item = __create_dummy_component_item(db_session, manufacturer='man1')
+    item2 = __create_dummy_component_item(db_session, manufacturer='man2')
+    assert item is not None
+    assert item2 is not None
+
+    item_property1 = InventoryItemPropertyModel(property_name='test_prop1', property_s_value='test_value', item_id=item.id)
+    item_property2 = InventoryItemPropertyModel(property_name='test_prop2', property_s_value='test_value', item_id=item.id)
+    item_property3 = InventoryItemPropertyModel(property_name='test_prop3', property_s_value='test_value', item_id=item2.id)
+    db_session.add(item_property1)
+    db_session.add(item_property2)
+    db_session.add(item_property3)
+    db_session.commit()
+
+    props = inventory_service.get_item_properties(item.id)
+    props2 = inventory_service.get_item_properties(item2.id)
+
+    assert props is not None
+    assert props2 is not None
+    assert len(props) == 2
+    assert len(props2) == 1
+    assert next((x for x in props if x.id == item_property1.id), None)
+    assert next((x for x in props if x.id == item_property2.id), None)
+    assert next((x for x in props2 if x.id == item_property3.id), None)
+
+
+def test_delete_item_property_ok(db_session):
+    item = __create_dummy_component_item(db_session)
+    assert item is not None
+
+    item_property1 = InventoryItemPropertyModel(property_name='test_prop1', property_s_value='test_value', item_id=item.id)
+    db_session.add(item_property1)
+    db_session.commit()
+
+    assert InventoryItemPropertyModel.query.get(item_property1.id) is not None
+
+    inventory_service.delete_item_property(item_property1.id)
+    assert InventoryItemPropertyModel.query.get(item_property1.id) is None
 
 
 def test_create_category_ok(db_session):
@@ -393,3 +452,37 @@ def test_get_categories_ok(db_session):
     assert next((x for x in page.items if x.id == category_2.id), None)
     assert next((x for x in page.items if x.id == category_3.id), None)
     assert next((x for x in page.items if x.id == category_4.id), None)
+
+
+def test_get_category_items_ok(db_session):
+    item_model1 = __create_dummy_component_item(db_session, mpn='mpn1')
+    item_model2 = __create_dummy_component_item(db_session, mpn='mpn2')
+    item_model3 = __create_dummy_component_item(db_session, mpn='mpn3')
+    category_model1 = InventoryCategoryModel(name='test name 1', description='test description')
+    category_model2 = InventoryCategoryModel(name='test name 2', description='test description')
+    db_session.add(category_model1)
+    db_session.add(category_model2)
+    db_session.commit()
+
+    item_model1.category_id = category_model1.id
+    item_model2.category_id = category_model2.id
+    item_model3.category_id = category_model2.id
+    db_session.add(item_model1)
+    db_session.add(item_model2)
+    db_session.add(item_model3)
+    db_session.commit()
+
+    page = inventory_service.get_category_items(category_model1.id, 1, 4)
+    assert page is not None
+    assert page.pages == 1
+    assert page.total == 1
+    assert next((x for x in page.items if x.id == item_model1.id), None)
+
+    page = inventory_service.get_category_items(category_model2.id, 1, 4)
+    assert page is not None
+    assert page.pages == 1
+    assert page.total == 2
+    assert next((x for x in page.items if x.id == item_model2.id), None)
+    assert next((x for x in page.items if x.id == item_model3.id), None)
+
+

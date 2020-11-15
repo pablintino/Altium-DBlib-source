@@ -157,6 +157,28 @@ def create_item_for_component(component_model, auto_commit=False):
     return item_model
 
 
+def create_standalone_item(model):
+    exists_id = db.session.query(InventoryItemModel.id).filter_by(mpn=model.mpn,
+                                                                  manufacturer=model.manufacturer).scalar()
+    if exists_id:
+        raise ResourceAlreadyExistsApiError(msg="An item already exists for the given item",
+                                            conflicting_id=exists_id)
+
+    item_model = InventoryItemModel(
+        dici=__gen_dici(None),
+        mpn=model.mpn,
+        manufacturer=model.manufacturer,
+        name=model.name,
+        description=model.description,
+        last_buy_price=0.0
+    )
+
+    db.session.add(item_model)
+
+    __logger.debug(__l('Inventory item created [id={0}, dici={1}]', item_model.id, item_model.dici))
+    return item_model
+
+
 def get_item(item_id):
     __logger.debug(__l('Querying item data [item_id={0}]', item_id))
     item = InventoryItemModel.query.get(item_id)
@@ -425,8 +447,8 @@ def get_item_properties(item_id):
     return item.item_properties
 
 
-def delete_item_property(item_id, prop_id):
-    __logger.debug(__l('Removed item property [item_id={0}, prop_id={1}]', item_id, prop_id))
+def delete_item_property(prop_id):
+    __logger.debug(__l('Removed item property [prop_id={0}]', prop_id))
     prop = InventoryItemPropertyModel.query.get(prop_id)
     if prop:
         db.session.delete(prop)

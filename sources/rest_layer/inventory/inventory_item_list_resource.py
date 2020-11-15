@@ -24,18 +24,35 @@
 
 
 from flask import request
+from marshmallow import ValidationError
 
 from dtos import component_model_mapper
 from dtos.generic_objects_search_dtos import SearchPageResultDto
 from dtos.inventory_dtos import InventoryItemDto
 from dtos.schemas.generic_objects_search_schemas import InventorySearchPageResultSchema
+from dtos.schemas.inventory_schemas import InventoryItemSchema
 from rest_layer import rest_layer_utils
 from rest_layer.base_api_resource import BaseApiResource
-from services import search_service
+from services import search_service, inventory_service
 from services.exceptions import ApiError
 
 
 class InventoryItemListResource(BaseApiResource):
+
+    def post(self):
+        try:
+            try:
+                item_dto = InventoryItemSchema().load(data=request.json)
+                item_model = inventory_service.create_standalone_item(InventoryItemDto.to_model(item_dto))
+                return InventoryItemSchema().dump(InventoryItemDto.from_model(item_model)), 201
+            except ValidationError as error:
+                return {"errors": error.messages}, 400
+            except ApiError as error:
+                self.logger().debug(error)
+                return error.format_api_data()
+        except ApiError as error:
+            self.logger().debug(error)
+            return error.format_api_data()
 
     def get(self):
         try:

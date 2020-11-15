@@ -24,7 +24,6 @@
 
 
 from flask import request
-from marshmallow import ValidationError
 
 from dtos.inventory_dtos import InventoryItemPropertyDto
 from dtos.schemas.inventory_schemas import InventoryItemPropertySchema, InventoryItemPropertyUpdateSchema
@@ -46,7 +45,7 @@ class InventoryItemPropertyElementResource(BaseApiResource):
 
     def delete(self, id, prop_id):
         try:
-            inventory_service.delete_item_property(id, prop_id)
+            inventory_service.delete_item_property(prop_id)
             return {}, 204
         except ApiError as error:
             self.logger().debug(error)
