@@ -1,6 +1,6 @@
-from time import sleep
-
 import pytest
+import random
+import string
 
 from models.components.capacitor_ceramic_model import CapacitorCeramicModel
 from models.internal.internal_inventory_models import MassStockMovement, SingleStockMovement
@@ -10,7 +10,11 @@ from models.inventory.inventory_item_model import InventoryItemModel
 from models.inventory.inventory_item_property import InventoryItemPropertyModel
 from models.inventory.inventory_location import InventoryLocationModel
 from services import inventory_service
-from services.exceptions import ResourceAlreadyExistsApiError
+from services.exceptions import ResourceAlreadyExistsApiError, ResourceNotFoundApiError, InvalidMassStockUpdateError
+
+
+def __id_generator(size=10, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 
 def __get_dummy_component(mpn=None, manufacturer=None):
@@ -48,7 +52,7 @@ def __create_dummy_component_item(db_session, mpn=None, manufacturer=None):
         name=model.mpn,
         description=model.description,
         last_buy_price=1.2,
-        dici="dici1")
+        dici=__id_generator())
 
     item_cap1.component_id = model.id
     item_cap1.component = model
@@ -56,6 +60,22 @@ def __create_dummy_component_item(db_session, mpn=None, manufacturer=None):
     db_session.commit()
 
     return item_cap1
+
+
+def __create_dummy_standalone_item(db_session, mpn, manufacturer):
+
+    item_model = InventoryItemModel(
+        mpn=mpn,
+        manufacturer=manufacturer,
+        name=mpn,
+        description=mpn,
+        last_buy_price=1.2,
+        dici=__id_generator())
+
+    db_session.add(item_model)
+    db_session.commit()
+
+    return item_model
 
 
 def __get_create_item_location_and_stock(db_session, suffix):
@@ -69,9 +89,9 @@ def __get_create_item_location_and_stock(db_session, suffix):
     return item_model, location_model
 
 
-def __get_create_item_location_stock(db_session, item_id, location_id):
+def __get_create_item_location_stock(db_session, item_id, location_id, quantity=0.0):
     item_stock_loc = InventoryItemLocationStockModel(location_id=location_id, item_id=item_id,
-                                                     actual_stock=0.0, stock_min_level=0.0,
+                                                     actual_stock=quantity, stock_min_level=0.0,
                                                      stock_notify_min_level=0.0)
 
     db_session.add(item_stock_loc)
@@ -374,6 +394,24 @@ def test_delete_location_ok(db_session):
     assert location_db_model is None
 
 
+def test_get_locations_ok(db_session):
+    location_model_1 = InventoryLocationModel(name='location1', description='description1', dici='dummydici1')
+    location_model_2 = InventoryLocationModel(name='location2', description='description2', dici='dummydici1')
+    location_model_3 = InventoryLocationModel(name='location3', description='description3', dici='dummydici1')
+    db_session.add(location_model_1)
+    db_session.add(location_model_2)
+    db_session.add(location_model_3)
+    db_session.commit()
+
+    page = inventory_service.get_locations(1, 4)
+    assert page is not None
+    assert page.pages == 1
+    assert page.total == 3
+    assert next((x for x in page.items if x.id == location_model_1.id), None)
+    assert next((x for x in page.items if x.id == location_model_2.id), None)
+    assert next((x for x in page.items if x.id == location_model_3.id), None)
+
+
 def test_delete_item_category_ok(db_session):
     item_model = __create_dummy_component_item(db_session)
     category_model = InventoryCategoryModel(name='test name', description='test description')
@@ -486,3 +524,108 @@ def test_get_category_items_ok(db_session):
     assert next((x for x in page.items if x.id == item_model3.id), None)
 
 
+def test_get_location_ko(db_session):
+    with pytest.raises(Exception) as e_info:
+        inventory_service.get_location(34234324)
+
+    assert e_info.type is ResourceNotFoundApiError
+    assert e_info.value.missing_id == 34234324
+
+
+def test_stock_mass_update_ko(db_session):
+    item_model_1, location_model_1 = __get_create_item_location_and_stock(db_session, 1)
+    item_model_2, location_model_2 = __get_create_item_location_and_stock(db_session, 2)
+
+    # Invalid item ID
+    movement = MassStockMovement(reason='test move', comment='test comment', movements=[
+        SingleStockMovement(item_id=12345, location_id=location_model_1.id, quantity=3),
+        SingleStockMovement(item_id=item_model_2.id, location_id=location_model_2.id, quantity=1),
+    ])
+
+    with pytest.raises(Exception) as e_info:
+        inventory_service.stock_mass_update(movement)
+
+    assert e_info.type is ResourceNotFoundApiError
+    assert e_info.value.missing_id == 12345
+
+    # Invalid location ID
+    movement = MassStockMovement(reason='test move', comment='test comment', movements=[
+        SingleStockMovement(item_id=item_model_1.id, location_dici='sdasdas33', quantity=3),
+        SingleStockMovement(item_id=item_model_2.id, location_id=location_model_2.id, quantity=1),
+    ])
+
+    with pytest.raises(Exception) as e_info:
+        inventory_service.stock_mass_update(movement)
+
+    assert e_info.type is ResourceNotFoundApiError
+    assert e_info.value.missing_dici == 'sdasdas33'
+
+    # Invalid line without ID or DICI for the item
+    movement = MassStockMovement(reason='test move', comment='test comment', movements=[
+        SingleStockMovement(item_id=None, item_dici=None, location_dici=location_model_1.dici, quantity=3),
+        SingleStockMovement(item_id=item_model_2.id, location_id=location_model_2.id, quantity=1),
+    ])
+
+    with pytest.raises(Exception) as e_info:
+        inventory_service.stock_mass_update(movement)
+
+    assert e_info.type is InvalidMassStockUpdateError
+
+    # Invalid line without ID or DICI for the location
+    movement = MassStockMovement(reason='test move', comment='test comment', movements=[
+        SingleStockMovement(item_id=item_model_1.id, location_dici=None, location_id=None, quantity=3),
+        SingleStockMovement(item_id=item_model_2.id, location_id=location_model_2.id, quantity=1),
+    ])
+
+    with pytest.raises(Exception) as e_info:
+        inventory_service.stock_mass_update(movement)
+
+    assert e_info.type is InvalidMassStockUpdateError
+
+    # Invalid line without previously created item-location stock relation
+    movement = MassStockMovement(reason='test move', comment='test comment', movements=[
+        SingleStockMovement(item_id=item_model_1.id, location_id=location_model_1.id, quantity=3),
+        SingleStockMovement(item_id=item_model_2.id, location_id=location_model_2.id, quantity=1),
+    ])
+
+    with pytest.raises(Exception) as e_info:
+        inventory_service.stock_mass_update(movement)
+
+    assert e_info.type is ResourceNotFoundApiError
+
+    #Try to retreive more than the minimum stock level
+    item_stock_loc_1 = __get_create_item_location_stock(db_session, item_model_1.id, location_model_1.id, quantity=4)
+    item_stock_loc_2 = __get_create_item_location_stock(db_session, item_model_2.id, location_model_2.id, quantity=3)
+
+    movement = MassStockMovement(reason='test move', comment='test comment', movements=[
+        SingleStockMovement(item_id=item_model_1.id, location_id=location_model_1.id, quantity=-3),
+        SingleStockMovement(item_id=item_model_2.id, location_id=location_model_2.id, quantity=-8),
+    ])
+
+    with pytest.raises(Exception) as e_info:
+        inventory_service.stock_mass_update(movement)
+
+    assert e_info.type is InvalidMassStockUpdateError
+    stock_item_location_1 = InventoryItemLocationStockModel.query.get(item_stock_loc_1.id)
+    stock_item_location_2 = InventoryItemLocationStockModel.query.get(item_stock_loc_2.id)
+    assert stock_item_location_1 is not None
+    assert stock_item_location_2 is not None
+    assert stock_item_location_1.actual_stock == 4
+    assert stock_item_location_2.actual_stock == 3
+
+
+def test_get_item_component_ok(db_session):
+    item_model1 = __create_dummy_component_item(db_session, mpn='mpn1')
+    component = inventory_service.get_item_component(item_model1.id)
+    assert component is not None
+
+
+def test_get_item_component_ko(db_session):
+    item_model1 = __create_dummy_standalone_item(db_session, mpn='mpn1', manufacturer='test_man')
+    with pytest.raises(Exception) as e_info:
+        inventory_service.get_item_component(item_model1.id)
+    assert e_info.type is ResourceNotFoundApiError
+    with pytest.raises(Exception) as e_info:
+        inventory_service.get_item_component(12345)
+    assert e_info.type is ResourceNotFoundApiError
+    assert e_info.value.missing_id == 12345

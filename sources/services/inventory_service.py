@@ -75,6 +75,8 @@ def __search_item_location_stock_by_ids_dicis(item_id=None, item_dici=None, loca
             # Location not exist
             raise ResourceNotFoundApiError("Location doesn't exist", missing_dici=location_dici, missing_id=location_id)
 
+        raise ResourceNotFoundApiError('The given location and item has no item location stock relation')
+
     except MultipleResultsFound:
         raise InvalidMassStockUpdateError('Internal integrity error')
 
