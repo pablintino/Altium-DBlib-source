@@ -25,16 +25,13 @@
 
 import logging
 
-import pyodbc
-from sqlalchemy.exc import SQLAlchemyError
-
 from app import db
 from dtos import component_model_mapper
 from models.components.component_model import ComponentModel
 from models.libraries import LibraryReference, FootprintReference
 from models.metadata.metadata_parser import metadata_parser
 
-from services import metadata_service, inventory_service
+from services import inventory_service
 from services.exceptions import ResourceAlreadyExistsApiError, ResourceNotFoundApiError, ResourceInvalidQuery, \
     RelationAlreadyExistsError, InvalidComponentFieldsError
 from utils.helpers import BraceMessage as __l
@@ -130,10 +127,10 @@ def update_create_symbol_relation(component_id, symbol_id, is_update=False):
             __logger.debug(f'Component symbol {"updated" if is_update else "created"}.'
                            f' Component {component_id} symbol {symbol_id}')
             return component
-        else:
-            raise ResourceNotFoundApiError('Symbol not found', missing_id=symbol_id)
-    else:
-        raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
+
+        raise ResourceNotFoundApiError('Symbol not found', missing_id=symbol_id)
+
+    raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
 
 
 def create_footprints_relation(component_id, footprint_ids):
@@ -186,8 +183,8 @@ def get_component_footprint_relations(component_id, complete_footprints=False):
             for footprint in component.footprint_refs:
                 result_list.append(footprint.id)
         return result_list
-    else:
-        raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
+
+    raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
 
 
 def get_component(component_id):

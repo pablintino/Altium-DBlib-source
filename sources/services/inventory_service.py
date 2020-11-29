@@ -90,11 +90,10 @@ def __update_item_location_stock(stock_item, quantity, reason):
                                                                       stock_item_id=stock_item.id)
         return stock_item_movement
 
-    else:
-        raise InvalidMassStockUpdateError(
-            __l('Item has reached its minimum stock level [item_dici={0}, location_dici={1}]',
-                stock_item.item.dici,
-                stock_item.location.dici))
+    raise InvalidMassStockUpdateError(
+        __l('Item has reached its minimum stock level [item_dici={0}, location_dici={1}]',
+            stock_item.item.dici,
+            stock_item.location.dici))
 
 
 def __get_item_location_stock(item_id, location_id):

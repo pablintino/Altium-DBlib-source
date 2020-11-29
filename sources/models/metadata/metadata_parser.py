@@ -71,11 +71,12 @@ class MetadataParser:
 
     def get_model_by_name(self, model_name):
         if model_name in self.mappers:
-            return self.mappers.get(model_name)
+            model = self.mappers.get(model_name)
         else:
             model = MetadataParser.__get_model_from_alquemy(model_name)
             self.mappers[model_name] = model
-            return model
+
+        return model
 
     def get_model_children_by_parent_name(self, parent_name):
         parent_mapper = inspect(self.get_model_by_name(parent_name))
@@ -98,12 +99,6 @@ class MetadataParser:
             raise GenericIntenalApiError('The given model is not a SQLAlquemy one')
 
         return self.get_model_children_by_parent_name(model.__tablename__)
-
-    def get_model_children_by_parent_model(self, parent_model):
-        if not issubclass(parent_model, db.Model):
-            raise GenericIntenalApiError('The given model is not a SQLAlquemy one')
-
-        return self.get_model_children_by_parent_name(parent_model.__tablename__)
 
 
 metadata_parser = MetadataParser()

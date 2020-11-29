@@ -53,13 +53,18 @@ def __is_git_repo():
 
 
 def __get_repo(git_ssh_cmd):
+    # If repo already exists just get it
     if __is_git_repo():
-        return git.Repo(Config.REPO_PATH)
+        repo = git.Repo(Config.REPO_PATH)
     else:
+        # If repo doesn't exist just clone it using the URL environment variable
         if Config.REPO_URL is None:
             raise IOError('REPO_PATH point to a non initialized repository and REPO_URL was not given')
-        return git.Repo.clone_from(Config.REPO_URL, Config.REPO_PATH, branch=Config.REPO_BRANCH,
+
+        repo = git.Repo.clone_from(Config.REPO_URL, Config.REPO_PATH, branch=Config.REPO_BRANCH,
                                    env=dict(GIT_SSH_COMMAND=git_ssh_cmd))
+
+    return repo
 
 
 def create_file_in_repo(repo, file_name, encoded_data):

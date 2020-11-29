@@ -42,13 +42,13 @@ def __create_numerical_field_filter_expression(field_name, operator, filter_v, k
     key_col_condition = key_column == field_name if key_column.key != field_name else None
     if operator == 'min':
         return __generate_aggreate_filter_expression(value_column > filter_v, key_col_condition)
-    elif operator == 'max':
+    if operator == 'max':
         return __generate_aggreate_filter_expression(value_column < filter_v, key_col_condition)
-    elif operator == 'maxeq':
+    if operator == 'maxeq':
         return __generate_aggreate_filter_expression(value_column <= filter_v, key_col_condition)
-    elif operator == 'mineq':
+    if operator == 'mineq':
         return __generate_aggreate_filter_expression(value_column >= filter_v, key_col_condition)
-    elif operator == 'eq':
+    if operator == 'eq':
         return __generate_aggreate_filter_expression(value_column == filter_v, key_col_condition)
 
     raise MalformedSearchQueryError(__l('Operator {0} not recognised', operator))
@@ -58,9 +58,9 @@ def __create_string_field_filter_expression(field_name, operator, filter_v, key_
     key_col_condition = key_column == field_name if key_column.key != field_name else None
     if operator == 'like':
         return __generate_aggreate_filter_expression(value_column.like(filter_v), key_col_condition)
-    elif operator == 'eq':
+    if operator == 'eq':
         return __generate_aggreate_filter_expression(value_column == filter_v, key_col_condition)
-    elif operator == 'noteq':
+    if operator == 'noteq':
         return __generate_aggreate_filter_expression(value_column != filter_v, key_col_condition)
 
     raise MalformedSearchQueryError(__l('Operator {0} not recognised', operator))
@@ -70,7 +70,7 @@ def __create_boolean_field_filter_expression(field_name, operator, filter_v, key
     key_col_condition = key_column == field_name if key_column.key != field_name else None
     if operator == 'noteq':
         return __generate_aggreate_filter_expression(value_column != filter_v, key_col_condition)
-    elif operator == 'eq':
+    if operator == 'eq':
         return __generate_aggreate_filter_expression(value_column == filter_v, key_col_condition)
 
     raise MalformedSearchQueryError(__l('Operator {0} not recognised', operator))
