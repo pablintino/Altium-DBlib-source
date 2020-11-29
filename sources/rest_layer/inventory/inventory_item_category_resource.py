@@ -36,7 +36,7 @@ class InventoryItemCategoryResource(BaseApiResource):
     def post(self, id):
         try:
             category_reference_dto = InventoryCategoryReferenceSchema().load(data=request.json)
-            category_id = inventory_service.update_item_property(id, category_reference_dto.category_id)
+            category_id = inventory_service.set_item_category(id, category_reference_dto.category_id)
             return InventoryCategoryReferenceSchema().dump(InventoryCategoryReferenceDto.from_model(category_id)), 200
         except ApiError as error:
             self.logger().debug(error)
