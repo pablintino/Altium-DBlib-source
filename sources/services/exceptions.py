@@ -47,16 +47,19 @@ class ApiError(Exception):
         )
 
 
-
 class ResourceNotFoundApiError(ApiError):
 
-    def __init__(self, msg=None, details=None, missing_id=None):
+    def __init__(self, msg=None, details=None, missing_id=None, missing_dici=None):
         super(ResourceNotFoundApiError, self).__init__(msg, details, 404)
         self.missing_id = missing_id
+        self.missing_dici = missing_dici
 
     def format_api_data(self):
         data, code = super(ResourceNotFoundApiError, self).format_api_data()
-        data['missing_id'] = self.missing_id
+        if self.missing_id:
+            data['missing_id'] = self.missing_id
+        if self.missing_dici:
+            data['missing_dici'] = self.missing_dici
         return data, code
 
 
@@ -140,6 +143,7 @@ class InvalidStorageStateError(ApiError):
             data['current_state'] = self.current_state
         return data, code
 
+
 class FileNotFoundStorageError(ApiError):
     def __init__(self, msg=None, details=None):
         super(FileNotFoundStorageError, self).__init__(msg, details, 404)
@@ -163,3 +167,38 @@ class RelationAlreadyExistsError(ApiError):
 class SchemaNotAvailableError(ApiError):
     def __init__(self, msg=None, details=None):
         super(SchemaNotAvailableError, self).__init__(msg, details, 500)
+
+
+class UniqueIdentifierCreationError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(UniqueIdentifierCreationError, self).__init__(msg, details, 500)
+
+
+class RemainingStocksExistError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(RemainingStocksExistError, self).__init__(msg, details, 400)
+
+
+class InvalidMassStockUpdateError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(InvalidMassStockUpdateError, self).__init__(msg, details, 400)
+
+
+class MalformedSearchQueryError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(MalformedSearchQueryError, self).__init__(msg, details, 400)
+
+
+class GenericIntenalApiError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(GenericIntenalApiError, self).__init__(msg, details, 500)
+
+
+class CyclicCategoryDependecy(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(CyclicCategoryDependecy, self).__init__(msg, details, 400)
+
+
+class InvalidCategoryRelationError(ApiError):
+    def __init__(self, msg=None, details=None):
+        super(InvalidCategoryRelationError, self).__init__(msg, details, 400)

@@ -32,3 +32,7 @@ def is_all_data_request_flag():
 
 def is_encoded_data_request_flag():
     return request.args.get('encoded_data', default='false', type=str).lower() == 'true'
+
+
+def is_include_component_request_flag(default):
+    return request.args.get('include_component', default='false' if not default else 'true', type=str).lower() == 'true'

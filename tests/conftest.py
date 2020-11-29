@@ -29,7 +29,7 @@ from tests import setup_db, teardown_db, clean_db
 
 
 class TestConfig:
-    SQLALCHEMY_DATABASE_URI = 'mssql+pyodbc://testuser:Testing12345!@127.0.0.1,1433/altium_db_test?driver=ODBC+Driver+17+for+SQL+Server'
+    SQLALCHEMY_DATABASE_URI = 'mssql+pyodbc://test:test@10.10.80.232,4490/altium_db_test_ut?driver=ODBC+Driver+17+for+SQL+Server'
     REDIS_URL = 'redis://'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 

@@ -22,6 +22,7 @@
 #  SOFTWARE.
 #
 
+
 class BraceMessage(object):
     def __init__(self, fmt, *args, **kwargs):
         self.fmt = fmt
@@ -70,3 +71,21 @@ class CaseInsensitiveDict(dict):
         for k in list(self.keys()):
             v = super(CaseInsensitiveDict, self).pop(k)
             self.__setitem__(k, v)
+
+
+def is_float(value):
+    try:
+        float(value)
+        return True
+    except ValueError:
+        return False
+
+
+def is_int(x):
+    try:
+        a = float(x)
+        b = int(a)
+    except ValueError:
+        return False
+    else:
+        return a == b

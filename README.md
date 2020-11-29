@@ -1,22 +1,23 @@
 # Altium DBlib API
-This repository contains a Python Restful API that manages a MSSQL database to be used as an Altium's DBLib.
-The project is based on:
-- SQL Server
-- Flask and Flask extensions like Flask-Restful, Flask-SQLAlchemy, Flask-Migrations, etc.
-- SQLAlchemy
+
+This repo contains an API that manages Altium DBLib databases. Now with component inventory too!  
+The API has been build using python 3.8 and all the Flask-Restful ecosystem, that means sqlalchemy and migrations are 
+used behind the scenes.
 
 ## Organization
 - *SQL* directory: Contains the all the views that formats database data into something that Altium can understand. The 
 data in the DB is structured in a multiple table manner but Altium queries a single table for component, symbols and 
 footprints data. This views format that multi-table information into a single table.
 - *sources* directory: The Python API
+- *tests* directory: Pytest test of the service layer.
+- Altium_DB_Lib_vX.Y.Z.postman_collection.json: The Postman collection that matches the current API version.
 
 ## Enviroment
-The application is meant to be runned as a Docker container. In order to configure the container the following environment variables
+The application is meant to be run as a Docker container. In order to configure the container the following environment variables
 cab be used:
 - SECRET_KEY: Flask secret used for cookies signing among others
 - FLASK_ENV: The environment where the app is deployed. Typical values are: DEV, STAG, PROD, etc...
-- FLASK_APP: This value is harcoded inside the Docker image to be *app/wsgi.py*
+- FLASK_APP: This value is hardcoded inside the Docker image to be *app/wsgi.py*
 - FLASK_DEBUG
 - SQLALCHEMY_DATABASE_URI: Database URI. This application is meant to be used with a MSSQL database, so this URI would be likely similar to this one:  
 ```mssql+pyodbc://<USER>:<PASSWORD>@<DB_HOST>/<DB>?driver=ODBC+Driver+17+for+SQL+Server```  

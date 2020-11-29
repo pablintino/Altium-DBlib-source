@@ -27,8 +27,11 @@ import logging
 
 from app import db
 from dtos import component_model_mapper
-from models import ComponentModel, LibraryReference, FootprintReference
-from services import metadata_service
+from models.components.component_model import ComponentModel
+from models.libraries import LibraryReference, FootprintReference
+from models.metadata.metadata_parser import metadata_parser
+
+from services import inventory_service
 from services.exceptions import ResourceAlreadyExistsApiError, ResourceNotFoundApiError, ResourceInvalidQuery, \
     RelationAlreadyExistsError, InvalidComponentFieldsError
 from utils.helpers import BraceMessage as __l
@@ -67,9 +70,17 @@ def create_component(model):
     if exists_id:
         raise ResourceAlreadyExistsApiError('Cannot create the requested component cause it already exists',
                                             conflicting_id=exists_id)
+    try:
+        db.session.add(model)
 
-    db.session.add(model)
-    db.session.commit()
+        # Create inventory item automatically
+        inventory_service.create_item_for_component(model)
+
+        db.session.commit()
+
+    except:
+        db.session.rollback()
+        raise
     __logger.debug(__l('Component created [id={0}]', model.id))
     return model
 
@@ -116,10 +127,10 @@ def update_create_symbol_relation(component_id, symbol_id, is_update=False):
             __logger.debug(f'Component symbol {"updated" if is_update else "created"}.'
                            f' Component {component_id} symbol {symbol_id}')
             return component
-        else:
-            raise ResourceNotFoundApiError('Symbol not found', missing_id=symbol_id)
-    else:
-        raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
+
+        raise ResourceNotFoundApiError('Symbol not found', missing_id=symbol_id)
+
+    raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
 
 
 def create_footprints_relation(component_id, footprint_ids):
@@ -172,8 +183,8 @@ def get_component_footprint_relations(component_id, complete_footprints=False):
             for footprint in component.footprint_refs:
                 result_list.append(footprint.id)
         return result_list
-    else:
-        raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
+
+    raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
 
 
 def get_component(component_id):
@@ -182,20 +193,12 @@ def get_component(component_id):
     if not component:
         raise ResourceNotFoundApiError('Component not found', missing_id=component_id)
 
-    return metadata_service.get_polymorphic_model(component.type).query.get(component_id)
+    return metadata_parser.get_model_by_name(component.type).query.get(component_id)
 
 
-def get_component_search(page_number, page_size, filters=None):
+def get_component_list(page_number, page_size):
     __logger.debug(
-        __l('Querying components for search [page_number={0}, page_size={1}, filters={2}]', page_number, page_size,
-            filters))
-
-    # Allow passing empty filters
-    filters = {} if not filters else filters
-
-    component_type = filters.get('type', None)
-    if component_type and not metadata_service.is_component_type_valid(component_type):
-        raise ResourceInvalidQuery('The given component type does not exist', invalid_fields=['type'])
+        __l('Listing components for [page_number={0}, page_size={1}]', page_number, page_size))
 
     if page_number < 1:
         raise ResourceInvalidQuery('Page number should be greater than 0', invalid_fields=['page_n'])
@@ -203,12 +206,7 @@ def get_component_search(page_number, page_size, filters=None):
     if page_size < 1:
         raise ResourceInvalidQuery('Page size should be greater than 0', invalid_fields=['page_size'])
 
-    res, inv_fields = metadata_service.validate_component_fields(filters, component_type)
-    if not res:
-        raise ResourceInvalidQuery('The given search query is invalid', invalid_fields=inv_fields)
-
-    components_page = ComponentModel.query.filter_by(**filters) \
-        .order_by(ComponentModel.id.desc()).paginate(page_number, per_page=page_size)
+    components_page = ComponentModel.query.order_by(ComponentModel.id.desc()).paginate(page_number, per_page=page_size)
     return components_page
 
 

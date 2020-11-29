@@ -31,11 +31,26 @@ from rest_layer.footprint_data_resource import FootprintDataResource
 from rest_layer.footprint_element_component_reference_resource import FootprintElementComponentReferenceResource
 from rest_layer.footprint_list_resource import FootprintListResource
 from rest_layer.footprint_resource import FootprintResource
+from rest_layer.inventory.inventory_category_item_list_resource import InventoryCategoryItemListResource
+from rest_layer.inventory.inventory_category_list_resource import InventoryCategoryListResource
+from rest_layer.inventory.inventory_category_parent_resource import InventoryCategoryParentResource
+from rest_layer.inventory.inventory_category_resource import InventoryCategoryResource
+from rest_layer.inventory.inventory_item_category_resource import InventoryItemCategoryResource
+from rest_layer.inventory.inventory_item_list_resource import InventoryItemListResource
+from rest_layer.inventory.inventory_item_location_resource import InventoryItemLocationResource
+from rest_layer.inventory.inventory_item_property_element_resource import InventoryItemPropertyElementResource
+from rest_layer.inventory.inventory_item_property_list_resource import InventoryItemPropertyListResource
+from rest_layer.inventory.inventory_item_resource import InventoryItemResource
+from rest_layer.inventory.inventory_item_stock_location_resource import InventoryItemStockLocationResource
+from rest_layer.inventory.inventory_location_list_resource import InventoryLocationListResource
+from rest_layer.inventory.inventory_location_resource import InventoryLocationResource
+from rest_layer.inventory.inventory_stocks_mass_update_resource import InventoryStocksMassUpdateResource
 from rest_layer.metadata_api import MetadataResource
 from rest_layer.symbol_component_reference_resource import SymbolComponentReferenceResource
 from rest_layer.symbol_data_resource import SymbolDataResource
 from rest_layer.symbol_list_resource import SymbolListResource
 from rest_layer.symbol_resource import SymbolResource
+
 
 api.add_resource(MetadataResource, '/metadata')
 api.add_resource(ComponentListResource, '/components')
@@ -49,3 +64,25 @@ api.add_resource(SymbolDataResource, '/symbols/<int:id>/data')
 api.add_resource(FootprintListResource, '/footprints')
 api.add_resource(FootprintResource, '/footprints/<int:id>')
 api.add_resource(FootprintDataResource, '/footprints/<int:id>/data')
+
+# Items endpoints
+api.add_resource(InventoryItemListResource, '/inventory/items')
+api.add_resource(InventoryItemResource, '/inventory/items/<int:id>')
+api.add_resource(InventoryItemLocationResource, '/inventory/items/<int:id>/locations')
+api.add_resource(InventoryItemPropertyListResource, '/inventory/items/<int:id>/properties')
+api.add_resource(InventoryItemPropertyElementResource, '/inventory/items/<int:id>/properties/<int:prop_id>')
+api.add_resource(InventoryItemStockLocationResource, '/inventory/items/<int:id>/locations/<int:id_loc>/stock')
+api.add_resource(InventoryItemCategoryResource, '/inventory/items/<int:id>/category')
+
+# Locations endpoints
+api.add_resource(InventoryLocationListResource, '/inventory/locations')
+api.add_resource(InventoryLocationResource, '/inventory/locations/<int:id>')
+
+# Stock management endpoints
+api.add_resource(InventoryStocksMassUpdateResource, '/inventory/stocks/updates')
+
+# Categories endpoints
+api.add_resource(InventoryCategoryListResource, '/inventory/categories')
+api.add_resource(InventoryCategoryResource, '/inventory/categories/<int:id>')
+api.add_resource(InventoryCategoryItemListResource, '/inventory/categories/<int:id>/items')
+api.add_resource(InventoryCategoryParentResource, '/inventory/categories/<int:id>/parent')

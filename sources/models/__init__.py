@@ -23,42 +23,13 @@
 #
 
 
-from models.join_tables import component_footprint_asc_table
-from models.library_reference_model import LibraryReference
-from models.footprint_reference_model import FootprintReference
-from models.resistor_model import ResistorModel
-from models.diode_tvs_model import DiodeTVSModel
-from models.diode_zener_model import DiodeZenerModel
-from models.diode_rectifier_model import DiodeRectifierModel
-from models.power_inductor_model import PowerInductorModel
-from models.ferrite_bead_model import FerriteBeadModel
-from models.transistor_mosfet_model import TransistorMosfetModel
-from models.transistor_bjt_model import TransistorBjtModel
-from models.crystal_oscillator_model import CrystalOscillatorModel
-from models.opamp_model import OpAmpModel
-from models.voltage_regulator_linear_model import VoltageRegulatorLinearModel
-from models.voltage_regulator_dcdc_model import VoltageRegulatorDCDCModel
-from models.potentiometer_model import PotentiometerModel
-from models.microcontroller_model import MicrocontrollerModel
-from models.optocoupler_digital_model import OptocouplerDigitalModel
-from models.optocoupler_linear_model import OptocouplerLinearModel
-from models.led_indicator import LedIndicatorModel
-from models.memory_model import MemoryModel
-from models.connector_pcb_model import ConnectorPcbModel
-from models.switch_pushbutton_model import SwitchPushButtonModel
-from models.switch_switch_model import SwitchSwitchModel
-from models.transceiver_model import TransceiverModel
-from models.transducer_model import TransducerModel
-from models.transformer_model import TransformerModel
-from models.inductor_choke_model import InductorChokeModel
-from models.capacitor_electrolytic_model import CapacitorElectrolyticModel
-from models.capacitor_ceramic_model import CapacitorCeramicModel
-from models.capacitor_tantalum_model import CapacitorTantalumModel
-from models.transistor_array_mosfet_model import TransistorArrayMosfetModel
-from models.oscillator_oscillator_model import OscillatorOscillatorModel
-from models.fuse_pptc_model import FusePPTCModel
-from models.triac_model import TriacModel
-from models.discrete_logic_model import DiscreteLogicModel
-from models.component_model import ComponentModel
+from models.libraries.library_reference_model import LibraryReference
+from models.libraries.footprint_reference_model import FootprintReference
 from models.metadata.model_descriptor import ModelDescriptor, FieldModelDescriptor
-from models.join_tables import component_footprint_asc_table
+import models.components
+import models.inventory
+from utils import python_importer_utils
+
+# Import model recursively
+python_importer_utils.import_submodules(models.components)
+python_importer_utils.import_submodules(models.inventory)

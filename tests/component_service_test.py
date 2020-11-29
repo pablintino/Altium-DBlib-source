@@ -27,10 +27,13 @@ from datetime import datetime
 
 import pytest
 
-from models import ResistorModel, ComponentModel, CapacitorCeramicModel, LibraryReference, FootprintReference
+from models import LibraryReference, FootprintReference
+from models.components.capacitor_ceramic_model import CapacitorCeramicModel
+from models.components.component_model import ComponentModel
+from models.components.resistor_model import ResistorModel
 from services import component_service
 from services.exceptions import InvalidComponentFieldsError, ResourceNotFoundApiError, RelationAlreadyExistsError, \
-    ResourceAlreadyExistsApiError, ResourceInvalidQuery
+    ResourceAlreadyExistsApiError
 
 
 def __get_dummy_resistor_component():
@@ -314,117 +317,6 @@ def test_delete_component_ok(db_session):
     component_service.delete_component(model.id)
 
     assert ComponentModel.query.get(model.id) is None
-
-
-def test_get_component_search_ok(db_session):
-    model_cap1 = CapacitorCeramicModel(
-        voltage="16 V",
-        composition="X7R",
-        tolerance="10%",
-        description="MLCC Ceramic 1 uF 16 V 10% Capacitor",
-        value="1 uF",
-        package="0603 (1608 Metric)",
-        comment="=Value",
-        type="capacitor_ceramic",
-        is_through_hole=False,
-        mpn="0603YC105KAT2A_1",
-        manufacturer="AVX"
-    )
-
-    model_cap2 = CapacitorCeramicModel(
-        voltage="16 V",
-        composition="X7R",
-        tolerance="10%",
-        description="MLCC Ceramic 1 uF 16 V 10% Capacitor",
-        value="1 uF",
-        package="0603 (1608 Metric)",
-        comment="=Value",
-        type="capacitor_ceramic",
-        is_through_hole=False,
-        mpn="0603YC105KAT2A_2",
-        manufacturer="AVX"
-    )
-
-    model_res1 = ResistorModel(
-        power_max='2 W',
-        tolerance="20 %",
-        description="Thin Film Resistor 392 Ohms 1%",
-        value="392 Ohms",
-        package="0603 (1608 Metric)",
-        comment="=Value",
-        type="resistor",
-        is_through_hole=False,
-        mpn="CRCW0603392RFKEAC",
-        manufacturer="Vishay / Dale"
-    )
-
-    db_session.add(model_cap1)
-    db_session.add(model_cap2)
-    db_session.add(model_res1)
-    db_session.commit()
-
-    # Simple search of all components without filters
-    result = component_service.get_component_search(1, 50, {})
-    assert result.total == 3
-    assert result.page == 1
-    assert result.pages == 1
-    assert next((x for x in result.items if x.id == model_cap1.id), None)
-    assert next((x for x in result.items if x.id == model_cap2.id), None)
-    assert next((x for x in result.items if x.id == model_res1.id), None)
-
-    # Simple search of all capacitors
-    result = component_service.get_component_search(1, 50, {"type": model_cap1.type})
-    assert result.total == 2
-    assert result.page == 1
-    assert result.pages == 1
-    assert next((x for x in result.items if x.id == model_cap1.id), None)
-    assert next((x for x in result.items if x.id == model_cap2.id), None)
-
-    # Simple search of all resistors
-    result = component_service.get_component_search(1, 50, {"type": model_res1.type})
-    assert result.total == 1
-    assert result.page == 1
-    assert result.pages == 1
-    assert next((x for x in result.items if x.id == model_res1.id), None)
-
-    # Simple search by MNP
-    result = component_service.get_component_search(1, 50, {"mpn": model_res1.mpn})
-    assert result.total == 1
-    assert result.page == 1
-    assert result.pages == 1
-    assert next((x for x in result.items if x.id == model_res1.id), None)
-
-
-def test_get_component_search_specific_field_no_type_ko(db_session):
-    with pytest.raises(Exception) as e_info:
-        component_service.get_component_search(1, 50, {"power_max": "20 W"})
-    assert e_info.type is ResourceInvalidQuery
-    assert len(e_info.value.invalid_fields) == 1
-    assert e_info.value.invalid_fields[0] == 'power_max'
-
-
-def test_get_component_search_unrecognised_type_ko(db_session):
-    with pytest.raises(Exception) as e_info:
-        component_service.get_component_search(1, 50, {"type": "fiwh9fh9wfhh08f83"})
-    assert e_info.type is ResourceInvalidQuery
-    assert len(e_info.value.invalid_fields) == 1
-    assert e_info.value.invalid_fields[0] == 'type'
-
-
-def test_get_component_search_invalid_page_number_ko(db_session):
-    with pytest.raises(Exception) as e_info:
-        component_service.get_component_search(0, 50, None)
-    assert e_info.type is ResourceInvalidQuery
-    assert len(e_info.value.invalid_fields) == 1
-    assert e_info.value.invalid_fields[0] == 'page_n'
-
-
-def test_get_component_search_invalid_page_size_ko(db_session):
-    with pytest.raises(Exception) as e_info:
-        component_service.get_component_search(1, 0, None)
-    assert e_info.type is ResourceInvalidQuery
-    assert len(e_info.value.invalid_fields) == 1
-    assert e_info.value.invalid_fields[0] == 'page_size'
 
 
 def test_delete_component_symbol_relation_ok(db_session):

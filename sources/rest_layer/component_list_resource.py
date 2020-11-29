@@ -52,11 +52,8 @@ class ComponentListResource(BaseApiResource):
     def get(self):
         page_n = request.args.get('page_n', default=1, type=int)
         page_size = request.args.get('page_size', default=20, type=int)
-        filters = request.args.to_dict(flat=True)
-        filters.pop('page_n', None)
-        filters.pop('page_size', None)
         try:
-            page = component_service.get_component_search(page_n, page_size, filters)
+            page = component_service.get_component_list(page_n, page_size)
             dtos = [component_model_mapper.map_model_to_raw(d) for d in page.items]
             page_dto = SearchPageResultDto(page_size=page.per_page, page_number=page.page, total_elements=page.total,
                                            elements=dtos)
