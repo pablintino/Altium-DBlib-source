@@ -29,7 +29,7 @@ object-mapper==1.1.0
 olefile==0.46
 packaging==20.4
 pluggy==0.13.1
-py==1.9.0
+py==1.10.0
 pyodbc==4.0.30
 pyparsing==2.4.7
 pytest==6.0.1
