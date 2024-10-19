@@ -200,7 +200,7 @@ def search_items(search_filters, page_number, page_size):
             query_build = query_build.join(ComponentModel)
         filters = filters + __parse_filter_for_sqlalquemy_model(component_model, 'comp', search_filters)
 
-    result_page = query_build.filter(*filters).order_by(InventoryItemModel.id.desc()).paginate(page_number,
+    result_page = query_build.filter(*filters).order_by(InventoryItemModel.id.desc()).paginate(page=page_number,
                                                                                                per_page=page_size)
 
     return result_page

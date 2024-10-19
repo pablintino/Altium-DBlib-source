@@ -36,7 +36,7 @@ class MetadataParser:
 
     @staticmethod
     def __get_all_alquemy_models():
-        return [cls for cls in db.Model._decl_class_registry.values() if
+        return [cls for cls in db.Model.registry._class_registry.values() if
                 isinstance(cls, type) and issubclass(cls, db.Model)]
 
     @staticmethod

@@ -57,7 +57,6 @@ def __get_model_for_storable_type(storable_type):
 
 
 def __get_library(expected_type, encoded_data):
-
     # Encoded data is mandatory in order to parse the binary Altium lib
     if not encoded_data:
         raise __get_error_for_type(expected_type)('Encoded library data not provided')
@@ -212,6 +211,6 @@ def get_storable_objects(storable_type, page_number, page_size):
         page_number, page_size))
 
     model_type = __get_model_for_storable_type(storable_type)
-    objects_page = model_type.query.order_by(model_type.id.desc()).paginate(page_number, per_page=page_size)
+    objects_page = model_type.query.order_by(model_type.id.desc()).paginate(page=page_number, per_page=page_size)
 
     return objects_page

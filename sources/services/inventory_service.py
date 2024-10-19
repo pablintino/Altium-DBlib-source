@@ -235,7 +235,7 @@ def get_locations(page_number, page_size):
     if page_size < 1:
         raise ResourceInvalidQuery('Page size should be greater than 0', invalid_fields=['page_size'])
 
-    result_page = InventoryLocationModel.query.order_by(InventoryLocationModel.id.desc()).paginate(page_number,
+    result_page = InventoryLocationModel.query.order_by(InventoryLocationModel.id.desc()).paginate(page_number=page_number,
                                                                                                    per_page=page_size)
     return result_page
 
@@ -256,7 +256,7 @@ def get_category_items(category_id, page_number, page_size):
         raise ResourceNotFoundApiError('Category not found', missing_id=category_id)
 
     result_page = InventoryItemModel.query.filter_by(category_id=category_id).order_by(
-        InventoryItemModel.id.desc()).paginate(page_number,
+        InventoryItemModel.id.desc()).paginate(page=page_number,
                                                per_page=page_size)
     return result_page
 
@@ -495,7 +495,7 @@ def get_categories(page_number, page_size, only_root):
     if only_root:
         query = query.filter_by(parent_id=None)
 
-    result_page = query.order_by(InventoryCategoryModel.id.desc()).paginate(page_number, per_page=page_size)
+    result_page = query.order_by(InventoryCategoryModel.id.desc()).paginate(page=page_number, per_page=page_size)
     return result_page
 
 

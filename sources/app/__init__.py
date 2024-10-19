@@ -56,5 +56,6 @@ def create_app(config_class=None):
         api.init_app(app)
         marshmallow.init_app(app)
         migrate.init_app(app, db)
+        db.create_all()
 
         return app

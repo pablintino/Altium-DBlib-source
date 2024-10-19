@@ -206,7 +206,7 @@ def get_component_list(page_number, page_size):
     if page_size < 1:
         raise ResourceInvalidQuery('Page size should be greater than 0', invalid_fields=['page_size'])
 
-    components_page = ComponentModel.query.order_by(ComponentModel.id.desc()).paginate(page_number, per_page=page_size)
+    components_page = ComponentModel.query.order_by(ComponentModel.id.desc()).paginate(page=page_number, per_page=page_size)
     return components_page
 
 
