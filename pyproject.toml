@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools >= 60"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "edaparts"
+version = "2.0.0"
+description = "A simple EDA parts management service"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+
+keywords = ["sample", "setuptools", "development"]
+
+authors = [
+    { name = "Pablo Rodriguez Nava", email = "pablintino@hotmail.com" }
+]
+
+maintainers = [
+    { name = "Pablo Rodriguez Nava", email = "pablintino@hotmail.com" }
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+]
+
+dependencies = [
+    "peppercorn"
+]
+
+[project.urls]
+"Source" = "https://github.com/pablintino/Altium-DBlib-source/"
+
+[tool.setuptools.packages.find]
+exclude = ["tests*"]
+
+
