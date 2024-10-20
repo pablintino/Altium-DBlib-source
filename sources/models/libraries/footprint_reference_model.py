@@ -32,9 +32,10 @@ from models.libraries.storable_library_model import StorableLibraryModel
 class FootprintReference(StorableLibraryModel):
     __tablename__ = "footprint_ref"
     id = Column(Integer, primary_key=True)
-    footprint_path = Column(String(300))
+    footprint_path = Column(String(400))
     footprint_ref = Column(String(150))
-    description = Column(String(200))
+    alias = Column(String(150))
+    description = Column(String(300))
 
     # relationships
     components_f = relationship("ComponentModel",
@@ -55,7 +56,8 @@ class FootprintReference(StorableLibraryModel):
         self.footprint_ref = reference
 
     def __repr__(self):
-        return "FootprintReference %s %s" % (
+        return "FootprintReference %s %s %s" % (
             self.footprint_path,
             self.footprint_ref,
+            self.alias,
         )

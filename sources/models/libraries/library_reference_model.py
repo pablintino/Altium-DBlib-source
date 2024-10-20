@@ -31,9 +31,10 @@ from models.libraries.storable_library_model import StorableLibraryModel
 class LibraryReference(StorableLibraryModel):
     __tablename__ = "library_ref"
     id = Column(Integer, primary_key=True)
-    symbol_path = Column(String(300))
+    symbol_path = Column(String(400))
     symbol_ref = Column(String(150))
-    description = Column(String(200))
+    alias = Column(String(150))
+    description = Column(String(300))
 
     def get_file_path(self):
         return self.symbol_path
@@ -51,7 +52,8 @@ class LibraryReference(StorableLibraryModel):
     library_components = relationship("ComponentModel", back_populates='library_ref', lazy=True)
 
     def __repr__(self):
-        return "LibraryReference %s %s" % (
+        return "LibraryReference %s %s %s" % (
             self.symbol_path,
             self.symbol_ref,
+            self.alias
         )
