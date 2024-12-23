@@ -155,8 +155,15 @@ def __compute_component_properties(
     # At the moment of writing this KiCad integration
     # it does not support comma/semicolon separated
     # footprints like in other integrations
-    if component.footprint_refs:
-        footprint_ref = next(iter(component.footprint_refs))
+    footprint_ref = next(
+        (
+            footprint_ref
+            for footprint_ref in component.footprint_refs
+            if footprint_ref.cad_type == CadType.KICAD
+        ),
+        None,
+    )
+    if footprint_ref:
         properties["Footprint"] = KiCadPartProperty(
             value=f"{footprint_ref.alias}:{footprint_ref.reference}",
             visible=False,
